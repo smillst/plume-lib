@@ -137,7 +137,7 @@ public class Lookup {
    * Look for the specified keywords in the file(s) and print
    * the corresponding entries.
    */
-  public static void main (String args[]) throws IOException {
+  public static void main (@NotNull String args[]) throws IOException {
 
     Options options = new Options (usage_string, Lookup.class);
     String[] keywords = options.parse_or_usage (args);
@@ -299,7 +299,7 @@ public class Lookup {
   /**
    * Entry point for creating HTML documentation.
    */
-  public static boolean start (RootDoc doc) {
+  public static boolean start (@NotNull RootDoc doc) {
 
     Options options = new Options (Lookup.class);
     options.jdoc (doc);

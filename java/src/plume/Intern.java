@@ -618,7 +618,7 @@ public final class Intern {
    * @return a subsequence of seq from start to end that is interned.
    **/
   @Nullable
-  public static int /*@Interned*/ [] internSubsequence (int /*@Interned*/ [] seq, int start, int end) {
+  public static int /*@Interned*/ [] internSubsequence (@NotNull int /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<int /*@Interned*/ []> sai = new SequenceAndIndices<int /*@Interned*/ []> (seq, start, end);
     WeakReference<int /*@Interned*/ []> lookup = internedIntSequenceAndIndices.get(sai);
@@ -636,7 +636,7 @@ public final class Intern {
    * @see #internSubsequence(int[], int, int)
    **/
   @Nullable
-  public static long /*@Interned*/ [] internSubsequence (long /*@Interned*/ [] seq, int start, int end) {
+  public static long /*@Interned*/ [] internSubsequence (@NotNull long /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<long /*@Interned*/ []> sai = new SequenceAndIndices<long /*@Interned*/ []> (seq, start, end);
     WeakReference<long /*@Interned*/ []> lookup = internedLongSequenceAndIndices.get(sai);
@@ -654,7 +654,7 @@ public final class Intern {
    * @see #internSubsequence(int[], int, int)
    **/
   @Nullable
-  public static double /*@Interned*/ [] internSubsequence (double /*@Interned*/ [] seq, int start, int end) {
+  public static double /*@Interned*/ [] internSubsequence (@NotNull double /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<double /*@Interned*/ []> sai = new SequenceAndIndices<double /*@Interned*/ []> (seq, start, end);
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleSequenceAndIndices.get(sai);
@@ -672,7 +672,7 @@ public final class Intern {
    * @see #internSubsequence(int[], int, int)
    **/
   @Nullable
-  public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] seq, int start, int end) {
+  public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ @NotNull Object /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> (seq, start, end);
     @SuppressWarnings("nullness")                   // same nullness as key
@@ -692,7 +692,7 @@ public final class Intern {
    * @see #internSubsequence(int[], int, int)
    **/
   @Nullable
-  public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] seq, int start, int end) {
+  public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ @NotNull String /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> (seq, start, end);
     @SuppressWarnings("nullness")                   // same nullness as key
