@@ -64,7 +64,7 @@ public class TaskManager {
     long line_number;
 
     @Nullable String task;
-    @Nullable String responsible;
+    @NotNull String responsible;
     /*@-Nullable*/
     @Nullable Date assigned_date;
     @Nullable String milestone;
