@@ -300,7 +300,7 @@ public class Options {
   private boolean parse_options_after_arg = true;
 
   /** All of the argument options as a single string **/
-  @Nullable private String options_str = "";
+  @NotNull private String options_str = "";
 
   /** First specified class.  Void stands for "not yet initialized". **/
   private Class<?> main_class = Void.TYPE;
@@ -545,7 +545,6 @@ public class Options {
    * @return all non-option arguments
    * @see #parse(String[])
    */
-  @Nullable
   public String[] parse_or_usage (@NotNull String[] args) {
 
     String non_options[] = null;

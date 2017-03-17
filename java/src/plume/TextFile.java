@@ -102,7 +102,7 @@ public class TextFile implements Iterable<String> {
     static class TextFileIterator
 	implements Iterator<String>
     {
-	@Nullable LineNumberReader in;
+	@NotNull final LineNumberReader in;
 	/*@-Nullable*/ String nextline;
 	boolean closed = false;
 

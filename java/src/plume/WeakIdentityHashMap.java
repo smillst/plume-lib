@@ -802,6 +802,7 @@ public class WeakIdentityHashMap<K,V>
                 throw new NoSuchElementException();
 
             lastReturned = entry;
+            //noinspection ConstantConditions
             entry = entry.next;
             currentKey = nextKey;
             nextKey = null;
@@ -825,6 +826,7 @@ public class WeakIdentityHashMap<K,V>
     private class ValueIterator extends HashIterator<V> {
         @Nullable
         public V next() {
+            //noinspection ConstantConditions
             return nextEntry().value;
         }
     }
@@ -832,6 +834,7 @@ public class WeakIdentityHashMap<K,V>
     private class KeyIterator extends HashIterator<K> {
         @Nullable
         public K next() {
+            //noinspection ConstantConditions
             return nextEntry().getKey();
         }
     }
@@ -862,6 +865,7 @@ public class WeakIdentityHashMap<K,V>
     @NotNull
     public Set<K> keySet() {
         Set<K> ks = our_keySet;
+        //noinspection ConstantConditions
         return (ks != null ? ks : (our_keySet = new KeySet()));
     }
 
@@ -925,6 +929,7 @@ public class WeakIdentityHashMap<K,V>
     @NotNull
     public Collection<V> values() {
         Collection<V> vs = our_values;
+        //noinspection ConstantConditions
         return (vs != null ?  vs : (our_values = new Values()));
     }
 

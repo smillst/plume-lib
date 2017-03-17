@@ -131,7 +131,6 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  @Nullable
   public static InputStreamReader fileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     // return fileReader(filename, "ISO-8859-1");
     return fileReader(new File(filename), null);
@@ -146,7 +145,6 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  @Nullable
   public static InputStreamReader fileReader(@NotNull File file) throws FileNotFoundException, IOException {
     return fileReader(file, null);
   }
@@ -162,7 +160,6 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  @Nullable
   public static InputStreamReader fileReader(@NotNull File file, /*@-Nullable*/ @Nullable String charsetName) throws FileNotFoundException, IOException {
     InputStream in = new FileInputStream(file);
     InputStreamReader file_reader;
