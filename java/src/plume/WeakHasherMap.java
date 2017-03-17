@@ -136,11 +136,11 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     // were static in the original version of this code.
     // This finesses that.
 
-    private /*@Nullable*/ WeakKey WeakKeyCreate(K k) {
+    private /*@-Nullable*/ WeakKey WeakKeyCreate(K k) {
 	if (k == null) return null;
 	else return new WeakKey(k);
     }
-    private /*@Nullable*/ WeakKey WeakKeyCreate(K k, ReferenceQueue<? super K> q) {
+    private /*@-Nullable*/ WeakKey WeakKeyCreate(K k, ReferenceQueue<? super K> q) {
 	if (k == null) return null;
 	else return new WeakKey(k, q);
     }
@@ -155,7 +155,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	    hash = keyHashCode(k);
 	}
 
-	private /*@Nullable*/ WeakKey create(K k) {
+	private /*@-Nullable*/ WeakKey create(K k) {
 	    if (k == null) return null;
 	    else return new WeakKey(k);
 	}
@@ -165,14 +165,14 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	    hash = keyHashCode(k);
 	}
 
-	private /*@Nullable*/ WeakKey create(K k, ReferenceQueue<? super K> q) {
+	private /*@-Nullable*/ WeakKey create(K k, ReferenceQueue<? super K> q) {
 	    if (k == null) return null;
 	    else return new WeakKey(k, q);
 	}
 
         /* A WeakKey is equal to another WeakKey iff they both refer to objects
 	   that are, in turn, equal according to their own equals methods */
-	public boolean equals(/*@Nullable*/ Object o) {
+	public boolean equals(/*@-Nullable*/ Object o) {
 	    if (this == o) return true;
             // This test is illegal because WeakKey is a generic type,
             // so use the getClass hack below instead.
@@ -309,7 +309,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
      *
      * @param  key  The key whose associated value, if any, is to be returned
      */
-    public /*@Nullable*/ V get(Object key) {  // type of argument is Object, not K
+    public /*@-Nullable*/ V get(Object key) {  // type of argument is Object, not K
         @SuppressWarnings("unchecked")
         K kkey = (K) key;
 	return hash.get(WeakKeyCreate(kkey));
@@ -493,7 +493,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     }
 
 
-    private /*@Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
+    private /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
 
     /**
      * Returns a <code>Set</code> view of the mappings in this map.

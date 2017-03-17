@@ -18,7 +18,7 @@ import java.io.*;
 public class FileIOException extends IOException {
   static final long serialVersionUID = 20050923L;
 
-  public final /*@Nullable*/ String fileName;
+  public final /*@-Nullable*/ String fileName;
   public final int lineNumber;
 
   ///
@@ -37,7 +37,7 @@ public class FileIOException extends IOException {
 
   // If cause is null, the super call throws a null pointer exception.
   // This looks like a JDK bug.  -MDE 12/9/2008
-  public FileIOException(/*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ Throwable cause) {
     // The "super(Throwable)" constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     initCause(cause);
@@ -49,13 +49,13 @@ public class FileIOException extends IOException {
   /// Without a Reader
   ///
 
-  public FileIOException(/*@Nullable*/ String s) {
+  public FileIOException(/*@-Nullable*/ String s) {
     super(s);
     fileName = null;
     lineNumber = -1;
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ Throwable cause) {
     // The "super(String, Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     super(s);
@@ -67,13 +67,13 @@ public class FileIOException extends IOException {
   // Design choice:  require filename and linenumber, don't support
   // interface with just one or the other.
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ String fileName, int lineNumber) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ String fileName, int lineNumber) {
     super(s);
     this.fileName = fileName;
     this.lineNumber = lineNumber;
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ Throwable cause, /*@Nullable*/ String fileName, int lineNumber) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ Throwable cause, /*@-Nullable*/ String fileName, int lineNumber) {
     // The "super(String, Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     super(s);
@@ -89,29 +89,29 @@ public class FileIOException extends IOException {
   // I cannot infer the filename from the reader, because LineNumberReader
   // gives no access to the underlying stream.
 
-  public FileIOException(/*@Nullable*/ LineNumberReader reader, /*@Nullable*/ Throwable cause) {
-    this(reader, /*fileName=*/ (/*@Nullable*/ String)null, cause);
+  public FileIOException(/*@-Nullable*/ LineNumberReader reader, /*@-Nullable*/ Throwable cause) {
+    this(reader, /*fileName=*/ (/*@-Nullable*/ String)null, cause);
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader) {
-    this(s, reader, /*fileName=*/ (/*@Nullable*/ String)null);
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader) {
+    this(s, reader, /*fileName=*/ (/*@-Nullable*/ String)null);
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader, /*@Nullable*/ Throwable cause) {
-    this(s, reader, /*fileName=*/ (/*@Nullable*/ String)null, cause);
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, /*@-Nullable*/ Throwable cause) {
+    this(s, reader, /*fileName=*/ (/*@-Nullable*/ String)null, cause);
   }
 
   ///////////////////////////////////////////////////////////////////////////
   /// With a filename
   ///
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader, /*@Nullable*/ String fileName) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, /*@-Nullable*/ String fileName) {
     super(s);
     this.fileName = fileName;
     this.lineNumber = getLineNumber(reader);
   }
 
-  public FileIOException(/*@Nullable*/ LineNumberReader reader, /*@Nullable*/ String fileName, /*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ LineNumberReader reader, /*@-Nullable*/ String fileName, /*@-Nullable*/ Throwable cause) {
     // The "super(Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     initCause(cause);
@@ -119,7 +119,7 @@ public class FileIOException extends IOException {
     this.lineNumber = getLineNumber(reader);
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader, /*@Nullable*/ String fileName, /*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, /*@-Nullable*/ String fileName, /*@-Nullable*/ Throwable cause) {
     // The "super(String, Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     super(s);
@@ -132,15 +132,15 @@ public class FileIOException extends IOException {
   /// With a File
   ///
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader, File file) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, File file) {
     this(s, reader, file.getName());
   }
 
-  public FileIOException(/*@Nullable*/ String s, /*@Nullable*/ LineNumberReader reader, File file, /*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, File file, /*@-Nullable*/ Throwable cause) {
     this(s, reader, file.getName(), cause);
   }
 
-  public FileIOException(/*@Nullable*/ LineNumberReader reader, File file, /*@Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ LineNumberReader reader, File file, /*@-Nullable*/ Throwable cause) {
     // The "super(Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     initCause(cause);
@@ -168,7 +168,7 @@ public class FileIOException extends IOException {
   // Assumes the "reader" field is already set.
   // Not a setter method because field lineNumber is final, but
   // still clearer to abstract out.
-  private int getLineNumber(/*@Nullable*/ LineNumberReader reader) /*@Raw*/ {
+  private int getLineNumber(/*@-Nullable*/ LineNumberReader reader) /*@Raw*/ {
     if (reader != null) {
       return reader.getLineNumber();
     } else {

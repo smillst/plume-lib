@@ -29,7 +29,7 @@ public class LimitedSizeIntSet
 
   // If null, then at least num_values distinct values have been seen.
   // The size is not separately stored, because that would take extra space.
-  protected int /*@Nullable*/ [] values;
+  protected int /*@-Nullable*/ [] values;
   // The number of active elements (equivalently, the first unused index).
   int num_values;
 

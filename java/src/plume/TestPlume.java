@@ -63,7 +63,7 @@ public final class TestPlume extends TestCase {
 //     System.out.println("All plume tests succeeded.");
 //   }
 
-  public static final void assert_arrays_equals(int /*@Nullable*/ [] a1, int /*@Nullable*/ [] a2) {
+  public static final void assert_arrays_equals(int /*@-Nullable*/ [] a1, int /*@-Nullable*/ [] a2) {
      boolean result = Arrays.equals(a1, a2);
      if (! result)
        System.out.println("Arrays differ: " + ArraysMDE.toString(a1)
@@ -351,9 +351,9 @@ public final class TestPlume extends TestCase {
     // (The subarray tests are missing; I hope that the array indexOf
     // operations above test them sufficiently.)
 
-    // public static String toString(Object /*@Nullable*/ [] a)
-    // public static String toStringQuoted(Object /*@Nullable*/ [] a)
-    // public static String toString(Object /*@Nullable*/ [] a, boolean quoted)
+    // public static String toString(Object /*@-Nullable*/ [] a)
+    // public static String toStringQuoted(Object /*@-Nullable*/ [] a)
+    // public static String toString(Object /*@-Nullable*/ [] a, boolean quoted)
     // public static String toString(List<?> a)
     // public static String toStringQuoted(List<?> a)
     // public static String toString(List<?> a, boolean quoted)
@@ -962,7 +962,7 @@ public final class TestPlume extends TestCase {
 
   // Tests the method "Object intern(Object)" in Intern.java
   public static void testInternObject() {
-    Object nIntern = Intern.intern((/*@Nullable*/ Object) null);
+    Object nIntern = Intern.intern((/*@-Nullable*/ Object) null);
     assert nIntern == null;
 
     String sOrig = new String("foo");
@@ -2416,15 +2416,15 @@ public final class TestPlume extends TestCase {
     @Option ("-a <filename> argument 1")
       public String arg1 = "/tmp/foobar";
     @Option ("argument 2")
-      public /*@Nullable*/ String arg2;
+      public /*@-Nullable*/ String arg2;
     @Option ("-d double value")
       public double temperature;
     @Option ("-f the input file")
-      public /*@Nullable*/ File input_file;
+      public /*@-Nullable*/ File input_file;
     @Option ("-b boolean")
       public boolean bool;
     @Option ("-i Integer")
-      public /*@Nullable*/ Integer integer_reference;
+      public /*@-Nullable*/ Integer integer_reference;
     @Option ("list of doubles")
       public List<Double> ld = new ArrayList<Double>();
   }

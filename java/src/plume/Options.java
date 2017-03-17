@@ -130,10 +130,10 @@ public class Options {
     Option option;
 
     /** Object containing the field.  Null if the field is static. **/
-    /*@Nullable*/ Object obj;
+    /*@-Nullable*/ Object obj;
 
     /** Short (one character) argument name **/
-    /*@Nullable*/ String short_name;
+    /*@-Nullable*/ String short_name;
 
     /** Long argument name **/
     String long_name;
@@ -142,7 +142,7 @@ public class Options {
     String description;
 
     /** Javadoc description **/
-    /*@Nullable*/ String jdoc;
+    /*@-Nullable*/ String jdoc;
 
     /**
      * Name of the argument type.  Defaults to the type of the field, but
@@ -157,17 +157,17 @@ public class Options {
     Class<?> base_type;
 
     /** Default value of the option as a string **/
-    /*@Nullable*/ String default_str = null;
+    /*@-Nullable*/ String default_str = null;
 
     /** If the option is a list, this references that list. **/
     // Not type-safe; must suppress warnings
-    /*@Nullable*/ List<Object> list = null;
+    /*@-Nullable*/ List<Object> list = null;
 
     /** Constructor that takes one String for the type **/
-    /*@Nullable*/ Constructor<?> constructor = null;
+    /*@-Nullable*/ Constructor<?> constructor = null;
 
     /** Factory that takes a string (some classes don't have a string constructor) */
-    /*@Nullable*/ Method factory = null;
+    /*@-Nullable*/ Method factory = null;
 
     /**
      * Create the specified option.  If obj is null, the field must be
@@ -175,7 +175,7 @@ public class Options {
      * from the option annotation.  The long name is the name of the
      * field.  The default value is the current value of the field.
      */
-    OptionInfo (Field field, Option option, /*@Nullable*/ /*@Raw*/ Object obj) {
+    OptionInfo (Field field, Option option, /*@-Nullable*/ /*@Raw*/ Object obj) {
       this.field = field;
       this.option = option;
       @SuppressWarnings("rawness")
@@ -319,7 +319,7 @@ public class Options {
    * This variable is public so that clients can reset it (useful for
    * masquerading as another program, based on parsed options).
    **/
-  public /*@Nullable*/ String usage_synopsis = null;
+  public /*@-Nullable*/ String usage_synopsis = null;
 
   // Debug loggers
   private SimpleLog debug_options = new SimpleLog (false);
@@ -645,7 +645,7 @@ public class Options {
    * Prints a message followed by usage information.
    * The message is printed in addition to (not replacing) the usage synopsis.
    */
-  public void print_usage (PrintStream ps, String format, /*@Nullable*/ Object... args) {
+  public void print_usage (PrintStream ps, String format, /*@-Nullable*/ Object... args) {
     ps.printf (format, args);
     if (! format.endsWith("%n")) {
       ps.println();
@@ -657,7 +657,7 @@ public class Options {
    * Prints, to standard output, a message followed by usage information.
    * The message is printed in addition to (not replacing) the usage synopsis.
    */
-  public void print_usage (String format, /*@Nullable*/ Object... args) {
+  public void print_usage (String format, /*@-Nullable*/ Object... args) {
     print_usage(System.out, format, args);
   }
 
@@ -696,7 +696,7 @@ public class Options {
    * Set the specified option to the value specified in arg_value.  Throws
    * an ArgException if there are any errors.
    */
-  public void set_arg (OptionInfo oi, String arg_name, /*@Nullable*/ String arg_value)
+  public void set_arg (OptionInfo oi, String arg_name, /*@-Nullable*/ String arg_value)
     throws ArgException {
 
     Field f = oi.field;
@@ -884,7 +884,7 @@ public class Options {
   public static class ArgException extends Exception {
     static final long serialVersionUID = 20051223L;
     public ArgException (String s) { super (s); }
-    public ArgException (String format, /*@Nullable*/ Object... args) {
+    public ArgException (String format, /*@-Nullable*/ Object... args) {
       super (String.format (format, args));
     }
   }
@@ -931,7 +931,7 @@ public class Options {
 
   }
 
-  /*@Nullable*/ ClassDoc find_class_doc (RootDoc doc, Class<?> c) {
+  /*@-Nullable*/ ClassDoc find_class_doc (RootDoc doc, Class<?> c) {
 
     for (ClassDoc cd : doc.classes()) {
       if (cd.qualifiedName().equals (c.getName())) {
@@ -942,10 +942,10 @@ public class Options {
   }
 
   private static class ParseResult {
-    /*@Nullable*/ String short_name;
-    /*@Nullable*/ String type_name;
+    /*@-Nullable*/ String short_name;
+    /*@-Nullable*/ String type_name;
     String description;
-    ParseResult(/*@Nullable*/ String short_name, /*@Nullable*/ String type_name, String description) {
+    ParseResult(/*@-Nullable*/ String short_name, /*@-Nullable*/ String type_name, String description) {
       this.short_name = short_name;
       this.type_name = type_name;
       this.description = description;

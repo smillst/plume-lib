@@ -3,7 +3,7 @@ package plume;
 /**
  * Simple pair class.
  **/
-public class Pair<T1 extends /*@Nullable*/ Object,T2 extends /*@Nullable*/ Object> {
+public class Pair<T1 extends /*@-Nullable*/ Object,T2 extends /*@-Nullable*/ Object> {
   public T1 a;
   public T2 b;
 
@@ -21,7 +21,7 @@ public class Pair<T1 extends /*@Nullable*/ Object,T2 extends /*@Nullable*/ Objec
     return "<" + String.valueOf(a) + "," + String.valueOf(b) + ">";
   }
 
-  public boolean equals(/*@Nullable*/ Object obj) {
+  public boolean equals(/*@-Nullable*/ Object obj) {
     if (obj instanceof Pair<?, ?>) { // generics are not checked at run time!
       @SuppressWarnings("unchecked")
       Pair<T1, T2> other = (Pair<T1, T2>) obj;

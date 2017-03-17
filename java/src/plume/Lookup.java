@@ -109,10 +109,10 @@ public class Lookup {
   public static Pattern entry_stop_re = Pattern.compile ("^<entry");
 
   @Option ("Regex that finds an entry's description (for long entries)")
-  public static /*@Nullable*/ Pattern description_re = null;
+  public static /*@-Nullable*/ Pattern description_re = null;
 
   @Option ("Regex that matches an entire comment (not just a comment start)")
-  public static /*@Nullable*/ String comment_re = "^%.*";
+  public static /*@-Nullable*/ String comment_re = "^%.*";
 
   @Option ("Regex that matches an include directive; group 1 is the file name")
   public static String include_re = "\\\\include\\{(.*)\\}";
@@ -301,7 +301,7 @@ public class Lookup {
   /**
    * Returns the next entry.  If no more entries are available, returns null.
    */
-  public static /*@Nullable*/ Entry old_get_entry (EntryReader reader) throws IOException {
+  public static /*@-Nullable*/ Entry old_get_entry (EntryReader reader) throws IOException {
 
     try {
 

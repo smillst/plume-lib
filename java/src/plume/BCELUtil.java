@@ -95,7 +95,7 @@ public class BCELUtil {
   }
 
   /** Returns the constant string at the specified offset */
-  public static /*@Nullable*/ String get_constant_str(ConstantPool pool, int index) {
+  public static /*@-Nullable*/ String get_constant_str(ConstantPool pool, int index) {
 
     Constant c = pool.getConstant(index);
     if (c instanceof ConstantUtf8)

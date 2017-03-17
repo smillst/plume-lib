@@ -142,7 +142,7 @@ public class WeakIdentityHashMap<K,V>
     /**
      * The table, resized as necessary. Length MUST Always be a power of two.
      */
-    private /*@Nullable*/ Entry<K,V>[] table;
+    private /*@-Nullable*/ Entry<K,V>[] table;
 
     /**
      * The number of key-value mappings contained in this weak hash map.
@@ -261,7 +261,7 @@ public class WeakIdentityHashMap<K,V>
      * Use NULL_KEY for key if it is null.
      */
     // not: "private static <K> K maskNull(K key)" because NULL_KEY isn't of type K.
-    private static /*@NonNull*/ Object maskNull(/*@Nullable*/ Object key) {
+    private static /*@NonNull*/ Object maskNull(/*@-Nullable*/ Object key) {
         return (key == null ? NULL_KEY : key);
     }
 
@@ -270,7 +270,7 @@ public class WeakIdentityHashMap<K,V>
      */
     // Argument is actually either of type K, or is NULL_KEY.
     @SuppressWarnings("unchecked")
-    private static <K> /*@Nullable*/ K unmaskNull(K key) {
+    private static <K> /*@-Nullable*/ K unmaskNull(K key) {
         return (key == NULL_KEY ? null : key);
     }
 
@@ -278,7 +278,7 @@ public class WeakIdentityHashMap<K,V>
      * Check for equality of non-null reference x and possibly-null y.  Uses
      * identity equality.
      */
-    static boolean eq(Object x, /*@Nullable*/ Object y) {
+    static boolean eq(Object x, /*@-Nullable*/ Object y) {
         return x == y;
     }
 
@@ -327,7 +327,7 @@ public class WeakIdentityHashMap<K,V>
     /**
      * Return the table after first expunging stale entries
      */
-    private /*@Nullable*/ Entry<K,V>[] getTable() {
+    private /*@-Nullable*/ Entry<K,V>[] getTable() {
         expungeStaleEntries();
         return table;
     }
@@ -369,10 +369,10 @@ public class WeakIdentityHashMap<K,V>
      *          <tt>null</tt> if the map contains no mapping for this key.
      * @see #put(Object, Object)
      */
-    public /*@Nullable*/ V get(/*@Nullable*/ Object key) {
+    public /*@-Nullable*/ V get(/*@-Nullable*/ Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
-        /*@Nullable*/ Entry<K,V>[] tab = getTable();
+        /*@-Nullable*/ Entry<K,V>[] tab = getTable();
         int index = indexFor(h, tab.length);
         Entry<K,V> e = tab[index];
         while (e != null) {
@@ -391,7 +391,7 @@ public class WeakIdentityHashMap<K,V>
      * @return  <tt>true</tt> if there is a mapping for <tt>key</tt>;
      *          <tt>false</tt> otherwise
      */
-    public boolean containsKey(/*@Nullable*/ Object key) {
+    public boolean containsKey(/*@-Nullable*/ Object key) {
         return getEntry(key) != null;
     }
 
@@ -399,10 +399,10 @@ public class WeakIdentityHashMap<K,V>
      * Returns the entry associated with the specified key in the HashMap.
      * Returns null if the HashMap contains no mapping for this key.
      */
-    /*@Nullable*/ Entry<K,V> getEntry(/*@Nullable*/ Object key) {
+    /*@-Nullable*/ Entry<K,V> getEntry(/*@-Nullable*/ Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
-        /*@Nullable*/ Entry<K,V>[] tab = getTable();
+        /*@-Nullable*/ Entry<K,V>[] tab = getTable();
         int index = indexFor(h, tab.length);
         Entry<K,V> e = tab[index];
         while (e != null && !(e.hash == h && eq(k, e.get())))
@@ -422,11 +422,11 @@ public class WeakIdentityHashMap<K,V>
      *	       also indicate that the HashMap previously associated
      *	       <tt>null</tt> with the specified key.
      */
-    public /*@Nullable*/ V put(K key, V value) {
+    public /*@-Nullable*/ V put(K key, V value) {
         @SuppressWarnings("unchecked")
         K k = (K) maskNull(key);
         int h = System.identityHashCode (k);
-        /*@Nullable*/ Entry<K,V>[] tab = getTable();
+        /*@-Nullable*/ Entry<K,V>[] tab = getTable();
         int i = indexFor(h, tab.length);
 
         for (Entry<K,V> e = tab[i]; e != null; e = e.next) {
@@ -461,7 +461,7 @@ public class WeakIdentityHashMap<K,V>
      *        is irrelevant).
      */
     void resize(int newCapacity) {
-        /*@Nullable*/ Entry<K,V>[] oldTable = getTable();
+        /*@-Nullable*/ Entry<K,V>[] oldTable = getTable();
         int oldCapacity = oldTable.length;
         if (oldCapacity == MAXIMUM_CAPACITY) {
             threshold = Integer.MAX_VALUE;
@@ -488,7 +488,7 @@ public class WeakIdentityHashMap<K,V>
     }
 
     /** Transfer all entries from src to dest tables */
-    private void transfer(/*@Nullable*/ Entry<K,V>[] src, /*@Nullable*/ Entry<K,V>[] dest) {
+    private void transfer(/*@-Nullable*/ Entry<K,V>[] src, /*@-Nullable*/ Entry<K,V>[] dest) {
         for (int j = 0; j < src.length; ++j) {
             Entry<K,V> e = src[j];
             src[j] = null;          // Help GC (?)
@@ -557,10 +557,10 @@ public class WeakIdentityHashMap<K,V>
      *	       also indicate that the map previously associated <tt>null</tt>
      *	       with the specified key.
      */
-    public /*@Nullable*/ V remove(Object key) {
+    public /*@-Nullable*/ V remove(Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
-        /*@Nullable*/ Entry<K,V>[] tab = getTable();
+        /*@-Nullable*/ Entry<K,V>[] tab = getTable();
         int i = indexFor(h, tab.length);
         Entry<K,V> prev = tab[i];
         Entry<K,V> e = prev;
@@ -586,10 +586,10 @@ public class WeakIdentityHashMap<K,V>
 
 
     /** Special version of remove needed by Entry set */
-    /*@Nullable*/ Entry<K,V> removeMapping(/*@Nullable*/ Object o) {
+    /*@-Nullable*/ Entry<K,V> removeMapping(/*@-Nullable*/ Object o) {
         if (!(o instanceof Map.Entry))
             return null;
-        /*@Nullable*/ Entry<K,V>[] tab = getTable();
+        /*@-Nullable*/ Entry<K,V>[] tab = getTable();
         Map.Entry entry = (/*@NonNull*/ Map.Entry)o;
         Object k = maskNull(entry.getKey());
         int h = hasher (k);
@@ -625,7 +625,7 @@ public class WeakIdentityHashMap<K,V>
             ;
 
         modCount++;
-        /*@Nullable*/ Entry<K,V>[] tab = table;
+        /*@-Nullable*/ Entry<K,V>[] tab = table;
         for (int i = 0; i < tab.length; ++i)
             tab[i] = null;                   // Help GC (?)
         size = 0;
@@ -645,11 +645,11 @@ public class WeakIdentityHashMap<K,V>
      * @return <tt>true</tt> if this map maps one or more keys to the
      *         specified value.
      */
-    public boolean containsValue(/*@Nullable*/ Object value) {
+    public boolean containsValue(/*@-Nullable*/ Object value) {
 	if (value==null)
             return containsNullValue();
 
-	/*@Nullable*/ Entry<K,V>[] tab = getTable();
+	/*@-Nullable*/ Entry<K,V>[] tab = getTable();
         for (int i = tab.length ; i-- > 0 ;)
             for (Entry e = tab[i] ; e != null ; e = e.next)
                 if (value.equals(e.value))
@@ -661,7 +661,7 @@ public class WeakIdentityHashMap<K,V>
      * Special-case code for containsValue with null argument
      */
     private boolean containsNullValue() {
-	/*@Nullable*/ Entry<K,V>[] tab = getTable();
+	/*@-Nullable*/ Entry<K,V>[] tab = getTable();
         for (int i = tab.length ; i-- > 0 ;)
             for (Entry e = tab[i] ; e != null ; e = e.next)
                 if (e.value==null)
@@ -676,7 +676,7 @@ public class WeakIdentityHashMap<K,V>
     private static class Entry<K,V> extends WeakReference<K> implements Map.Entry<K,V> {
         private V value;
         private final int hash;
-        private /*@Nullable*/ Entry<K,V> next;
+        private /*@-Nullable*/ Entry<K,V> next;
 
         /**
          * Create new entry.
@@ -704,7 +704,7 @@ public class WeakIdentityHashMap<K,V>
             return oldValue;
         }
 
-        public boolean equals(/*@Nullable*/ Object o) {
+        public boolean equals(/*@-Nullable*/ Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
             Map.Entry e = (/*@NonNull*/ Map.Entry)o;   // This annotation shouldn't be necessary??
@@ -733,28 +733,28 @@ public class WeakIdentityHashMap<K,V>
 
     private abstract class HashIterator<T> implements Iterator<T> {
         int index;
-        /*@Nullable*/ Entry<K,V> entry = null;
-        /*@Nullable*/ Entry<K,V> lastReturned = null;
+        /*@-Nullable*/ Entry<K,V> entry = null;
+        /*@-Nullable*/ Entry<K,V> lastReturned = null;
         int expectedModCount = modCount;
 
         /**
          * Strong reference needed to avoid disappearance of key
          * between hasNext and next
          */
-        /*@Nullable*/ Object nextKey = null;
+        /*@-Nullable*/ Object nextKey = null;
 
         /**
          * Strong reference needed to avoid disappearance of key
          * between nextEntry() and any use of the entry
          */
-	/*@Nullable*/ Object currentKey = null;
+	/*@-Nullable*/ Object currentKey = null;
 
         HashIterator() {
             index = (size() != 0 ? table.length : 0);
         }
 
         public boolean hasNext() {
-            /*@Nullable*/ Entry<K,V>[] t = table;
+            /*@-Nullable*/ Entry<K,V>[] t = table;
 
             while (nextKey == null) {
                 Entry<K,V> e = entry;
@@ -822,8 +822,8 @@ public class WeakIdentityHashMap<K,V>
 
     // Views
 
-    private transient /*@Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
-    private transient volatile /*@Nullable*/ Set<K>   our_keySet = null;
+    private transient /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
+    private transient volatile /*@-Nullable*/ Set<K>   our_keySet = null;
 
     /**
      * Returns a set view of the keys contained in this map.  The set is
@@ -850,11 +850,11 @@ public class WeakIdentityHashMap<K,V>
             return WeakIdentityHashMap.this.size();
         }
 
-        public boolean contains(/*@Nullable*/ Object o) {
+        public boolean contains(/*@-Nullable*/ Object o) {
             return containsKey(o);
         }
 
-        public boolean remove(/*@Nullable*/ Object o) {
+        public boolean remove(/*@-Nullable*/ Object o) {
             if (containsKey(o)) {
                 WeakIdentityHashMap.this.remove(o);
                 return true;
@@ -882,7 +882,7 @@ public class WeakIdentityHashMap<K,V>
         }
     }
 
-    transient volatile /*@Nullable*/ Collection<V> our_values = null;
+    transient volatile /*@-Nullable*/ Collection<V> our_values = null;
 
     /**
      * Returns a collection view of the values contained in this map.  The
@@ -909,7 +909,7 @@ public class WeakIdentityHashMap<K,V>
             return WeakIdentityHashMap.this.size();
         }
 
-        public boolean contains(/*@Nullable*/ Object o) {
+        public boolean contains(/*@-Nullable*/ Object o) {
             return containsValue(o);
         }
 
@@ -955,7 +955,7 @@ public class WeakIdentityHashMap<K,V>
             return new EntryIterator();
         }
 
-        public boolean contains(/*@Nullable*/ Object o) {
+        public boolean contains(/*@-Nullable*/ Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
             Map.Entry e = (/*@NonNull*/ Map.Entry)o;
@@ -964,7 +964,7 @@ public class WeakIdentityHashMap<K,V>
             return candidate != null && candidate.equals(e);
         }
 
-        public boolean remove(/*@Nullable*/ Object o) {
+        public boolean remove(/*@-Nullable*/ Object o) {
             return removeMapping(o) != null;
         }
 
@@ -1020,7 +1020,7 @@ public class WeakIdentityHashMap<K,V>
             return oldValue;
         }
 
-        public boolean equals(/*@Nullable*/ Object o) {
+        public boolean equals(/*@-Nullable*/ Object o) {
             if (!(o instanceof Map.Entry))
             return false;
             Map.Entry e = (Map.Entry)o;
@@ -1037,7 +1037,7 @@ public class WeakIdentityHashMap<K,V>
             return key + "=" + value;
         }
 
-        private static boolean eq(/*@Nullable*/ Object o1, /*@Nullable*/ Object o2) {
+        private static boolean eq(/*@-Nullable*/ Object o1, /*@-Nullable*/ Object o2) {
             return (o1 == null ? o2 == null : o1.equals(o2));
         }
     }

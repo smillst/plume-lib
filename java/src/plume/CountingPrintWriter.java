@@ -155,7 +155,7 @@ public class CountingPrintWriter extends PrintWriter {
    * these bytes are written in exactly the manner of the write(int)
    * method.
    */
-  public void print(/*@Nullable*/ String s) {
+  public void print(/*@-Nullable*/ String s) {
     if (s == null) {
       printedBytes += countBytes("null");
       printedChars += 4;
@@ -289,7 +289,7 @@ public class CountingPrintWriter extends PrintWriter {
    * to the platform's default character encoding, and these bytes are
    * written in exactly the manner of the write(int) method.
    */
-  public void print(/*@Nullable*/ Object obj) {
+  public void print(/*@-Nullable*/ Object obj) {
     String s = String.valueOf(obj);
     printedBytes += countBytes(s);
     printedChars += s.length();
@@ -318,7 +318,7 @@ public class CountingPrintWriter extends PrintWriter {
    * Print a String and then terminate the line. This method behaves
    * as though it invokes print(String) and then println().
    */
-  public void println(/*@Nullable*/ String x) {
+  public void println(/*@-Nullable*/ String x) {
     print(x);
     println();
   }

@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
 @Deprecated
 public class TextFile implements Iterable<String> {
     InputStream is;
-    /*@Nullable*/ String charsetName;
+    /*@-Nullable*/ String charsetName;
 
     public TextFile(String filename)
 	throws IOException
@@ -48,7 +48,7 @@ public class TextFile implements Iterable<String> {
         this(filename, null);
     }
 
-    public TextFile(String filename, /*@Nullable*/ String charsetName)
+    public TextFile(String filename, /*@-Nullable*/ String charsetName)
 	throws IOException
     {
         this(new File(filename), charsetName);
@@ -60,7 +60,7 @@ public class TextFile implements Iterable<String> {
         this(f, null);
     }
 
-    public TextFile(File f, /*@Nullable*/ String charsetName)
+    public TextFile(File f, /*@-Nullable*/ String charsetName)
 	throws IOException
     {
 	if (!f.exists())
@@ -79,7 +79,7 @@ public class TextFile implements Iterable<String> {
         this(is, null);
     }
 
-    public TextFile(InputStream is, /*@Nullable*/ String charsetName)
+    public TextFile(InputStream is, /*@-Nullable*/ String charsetName)
     {
         this.is = is;
 	this.charsetName = charsetName;
@@ -99,16 +99,16 @@ public class TextFile implements Iterable<String> {
 	implements Iterator<String>
     {
 	LineNumberReader in;
-	/*@Nullable*/ String nextline;
+	/*@-Nullable*/ String nextline;
 	boolean closed = false;
 
-	public TextFileIterator(File f, /*@Nullable*/ String charsetName)
+	public TextFileIterator(File f, /*@-Nullable*/ String charsetName)
 	    throws IOException
 	{
 	    this(new FileInputStream(f), charsetName);
         }
 
-	public TextFileIterator(InputStream is, /*@Nullable*/ String charsetName)
+	public TextFileIterator(InputStream is, /*@-Nullable*/ String charsetName)
 	    throws IOException
 	{
 	    Reader isr;

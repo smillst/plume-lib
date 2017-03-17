@@ -317,7 +317,7 @@ public final class ArraysMDE {
    *    or -1 if no such element is found in the array.
    * @see java.util.List#indexOf(java.lang.Object)
    **/
- public static <T> int indexOf(T[] a, /*@Nullable*/ Object elt) {
+ public static <T> int indexOf(T[] a, /*@-Nullable*/ Object elt) {
     if (elt == null) {
       return indexOfEq(a, elt);
     }
@@ -335,7 +335,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in that section of the array.
    * @see java.util.List#indexOf(java.lang.Object)
    **/
-  public static <T> int indexOf(T[] a, /*@Nullable*/ Object elt, int minindex, int indexlimit) {
+  public static <T> int indexOf(T[] a, /*@-Nullable*/ Object elt, int minindex, int indexlimit) {
     if (elt == null) {
       return indexOfEq(a, elt, minindex, indexlimit);
         }
@@ -353,7 +353,7 @@ public final class ArraysMDE {
    *    or -1 if no such element is found in the list.
    * @see java.util.List#indexOf(java.lang.Object)
    **/
-  public static int indexOf(List<? extends /*@PolyNull*/ Object> a, /*@Nullable*/ Object elt) {
+  public static int indexOf(List<? extends /*@PolyNull*/ Object> a, /*@-Nullable*/ Object elt) {
     return a.indexOf(elt);
   }
 
@@ -365,7 +365,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in that section of the list.
    * @see java.util.List#indexOf(java.lang.Object)
    **/
-  public static int indexOf(List<? extends /*@PolyNull*/ Object> a, /*@Nullable*/ Object elt, int minindex, int indexlimit) {
+  public static int indexOf(List<? extends /*@PolyNull*/ Object> a, /*@-Nullable*/ Object elt, int minindex, int indexlimit) {
     if (elt == null) {
       return indexOfEq(a, elt, minindex, indexlimit);
     }
@@ -382,7 +382,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in the array.
    * @see java.util.Vector#indexOf(java.lang.Object)
    **/
-  public static int indexOfEq(/*@PolyNull*/ Object[] a, /*@Nullable*/ Object elt) {
+  public static int indexOfEq(/*@PolyNull*/ Object[] a, /*@-Nullable*/ Object elt) {
     for (int i=0; i<a.length; i++)
       if (elt == a[i])
         return i;
@@ -397,7 +397,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in that section of the array.
    * @see java.util.Vector#indexOf(java.lang.Object)
    **/
-  public static int indexOfEq(/*@PolyNull*/ Object[] a, /*@Nullable*/ Object elt, int minindex, int indexlimit) {
+  public static int indexOfEq(/*@PolyNull*/ Object[] a, /*@-Nullable*/ Object elt, int minindex, int indexlimit) {
     for (int i=minindex; i<indexlimit; i++)
       if (elt == a[i])
         return i;
@@ -411,7 +411,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in the list.
    * @see java.util.Vector#indexOf(java.lang.Object)
    **/
-  public static int indexOfEq(List<? extends /*@PolyNull*/ Object> a, /*@Nullable*/ Object elt) {
+  public static int indexOfEq(List<? extends /*@PolyNull*/ Object> a, /*@-Nullable*/ Object elt) {
     for (int i=0; i<a.size(); i++)
       if (elt == a.get(i))
         return i;
@@ -426,7 +426,7 @@ public final class ArraysMDE {
    *    or -1 if the element is not found in that section of the list.
    * @see java.util.Vector#indexOf(java.lang.Object)
    **/
-  public static int indexOfEq(List<? extends /*@PolyNull*/ Object> a, /*@Nullable*/ Object elt, int minindex, int indexlimit) {
+  public static int indexOfEq(List<? extends /*@PolyNull*/ Object> a, /*@-Nullable*/ Object elt, int minindex, int indexlimit) {
     for (int i=minindex; i<indexlimit; i++)
       if (elt == a.get(i))
         return i;
@@ -1136,7 +1136,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static <T> T[] concat(T /*@Nullable*/ [] a, T /*@Nullable*/ [] b) {
+  public static <T> T[] concat(T /*@-Nullable*/ [] a, T /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b != null) {
         return b;
@@ -1165,7 +1165,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static <T> T[] concat(T /*@Nullable*/ [] a, /*@Nullable*/ List<T> b) {
+  public static <T> T[] concat(T /*@-Nullable*/ [] a, /*@-Nullable*/ List<T> b) {
     if (a == null) {
       if (b != null) {
         return toTArray(b);
@@ -1197,7 +1197,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static <T> T[] concat(/*@Nullable*/ List<T> a, T /*@Nullable*/ [] b) {
+  public static <T> T[] concat(/*@-Nullable*/ List<T> a, T /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b != null) {
         return b;
@@ -1229,7 +1229,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static <T> T[] concat(/*@Nullable*/ List<T> a, /*@Nullable*/ List<T> b) {
+  public static <T> T[] concat(/*@-Nullable*/ List<T> a, /*@-Nullable*/ List<T> b) {
     if (a == null) {
       if (b != null) {
         return toTArray(b);
@@ -1264,7 +1264,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static String[] concat(String /*@Nullable*/ [] a, String /*@Nullable*/ [] b) {
+  public static String[] concat(String /*@-Nullable*/ [] a, String /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new String[0];
@@ -1291,7 +1291,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static byte[] concat(byte /*@Nullable*/ [] a, byte /*@Nullable*/ [] b) {
+  public static byte[] concat(byte /*@-Nullable*/ [] a, byte /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new byte[0];
@@ -1317,7 +1317,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static boolean[] concat(boolean /*@Nullable*/ [] a, boolean /*@Nullable*/ [] b) {
+  public static boolean[] concat(boolean /*@-Nullable*/ [] a, boolean /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new boolean[0];
@@ -1343,7 +1343,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static char[] concat(char /*@Nullable*/ [] a, char /*@Nullable*/ [] b) {
+  public static char[] concat(char /*@-Nullable*/ [] a, char /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new char[0];
@@ -1370,7 +1370,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static double[] concat(double /*@Nullable*/ [] a, double /*@Nullable*/ [] b) {
+  public static double[] concat(double /*@-Nullable*/ [] a, double /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new double[0];
@@ -1396,7 +1396,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static float[] concat(float /*@Nullable*/ [] a, float /*@Nullable*/ [] b) {
+  public static float[] concat(float /*@-Nullable*/ [] a, float /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new float[0];
@@ -1422,7 +1422,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static int[] concat(int /*@Nullable*/ [] a, int /*@Nullable*/ [] b) {
+  public static int[] concat(int /*@-Nullable*/ [] a, int /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new int[0];
@@ -1448,7 +1448,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static long[] concat(long /*@Nullable*/ [] a, long /*@Nullable*/ [] b) {
+  public static long[] concat(long /*@-Nullable*/ [] a, long /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new long[0];
@@ -1474,7 +1474,7 @@ public final class ArraysMDE {
    * Returns a new array unless one argument is null, in which case
    * it returns the other array.
    **/
-  public static short[] concat(short /*@Nullable*/ [] a, short /*@Nullable*/ [] b) {
+  public static short[] concat(short /*@-Nullable*/ [] a, short /*@-Nullable*/ [] b) {
     if (a == null) {
       if (b == null) {
         return new short[0];
@@ -1508,7 +1508,7 @@ public final class ArraysMDE {
    * The representation is patterned after that of java.util.Vector.
    * @see java.util.Vector#toString
    **/
-  public static String toString(Object /*@Nullable*/ [] a) {
+  public static String toString(Object /*@-Nullable*/ [] a) {
     return toString(a, false);
   }
 
@@ -1518,7 +1518,7 @@ public final class ArraysMDE {
    * Furthermore, each element is quoted like a Java String.
    * @see java.util.Vector#toString
    **/
-  public static String toStringQuoted(Object /*@Nullable*/ [] a) {
+  public static String toStringQuoted(Object /*@-Nullable*/ [] a) {
     return toString(a, true);
   }
 
@@ -1528,7 +1528,7 @@ public final class ArraysMDE {
    * Furthermore, if quoted is true, then each element is quoted like a Java String.
    * @see java.util.Vector#toString
    **/
-  public static String toString(Object /*@Nullable*/ [] a, boolean quoted) {
+  public static String toString(Object /*@-Nullable*/ [] a, boolean quoted) {
     if (a == null) {
       return "null";
     }
@@ -1556,7 +1556,7 @@ public final class ArraysMDE {
    * The representation is patterned after that of java.util.Vector.
    * @see java.util.Vector#toString
    **/
-  public static String toString(/*@Nullable*/ List<?> a) {
+  public static String toString(/*@-Nullable*/ List<?> a) {
     return toString(a, false);
   }
 
@@ -1565,7 +1565,7 @@ public final class ArraysMDE {
    * The representation is patterned after that of java.util.Vector.
    * @see java.util.Vector#toString
    **/
-  public static String toStringQuoted(/*@Nullable*/ List<?> a) {
+  public static String toStringQuoted(/*@-Nullable*/ List<?> a) {
     return toString(a, true);
   }
 
@@ -1574,7 +1574,7 @@ public final class ArraysMDE {
    * The representation is patterned after that of java.util.Vector.
    * @see java.util.Vector#toString
    **/
-  public static String toString(/*@Nullable*/ List<?> a, boolean quoted) {
+  public static String toString(/*@-Nullable*/ List<?> a, boolean quoted) {
     if (a == null) {
       return "null";
     }
@@ -2398,7 +2398,7 @@ public final class ArraysMDE {
     if (a.length == 0)
       return false;
     // The cast ensures that the right version of IndexOfEq gets called.
-    return indexOfEq(a, (/*@Nullable*/ Object) null) >= 0;
+    return indexOfEq(a, (/*@-Nullable*/ Object) null) >= 0;
   }
 
   /**
@@ -2419,7 +2419,7 @@ public final class ArraysMDE {
     if (a.size() == 0)
       return false;
     // The cast ensures that the right version of IndexOfEq gets called.
-    return indexOfEq(a, (/*@Nullable*/ Object) null) >= 0;
+    return indexOfEq(a, (/*@-Nullable*/ Object) null) >= 0;
   }
 
   /**

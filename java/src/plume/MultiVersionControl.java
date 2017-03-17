@@ -332,20 +332,20 @@ public class MultiVersionControl {
      * <p>
      * Most operations don't need this.  it is needed for checkout, though.
      */
-    /*@Nullable*/ String repository;
+    /*@-Nullable*/ String repository;
     /**
      * Null if no module, just whole thing.
      * Non-null for CVS and, optionally, for SVN.
      * Null for distributed version control systems (Bzr, Git, Hg).
      */
-    /*@Nullable*/ String module;
+    /*@-Nullable*/ String module;
 
 
     Checkout(RepoType repoType, File directory) {
       this(repoType, directory, null, null);
     }
 
-    Checkout(RepoType repoType, File directory, /*@Nullable*/ String repository, /*@Nullable*/ String module) {
+    Checkout(RepoType repoType, File directory, /*@-Nullable*/ String repository, /*@-Nullable*/ String module) {
       // Directory might not exist if we are running the checkout command.
       // If it exists, it must be a directory.
       assert (directory.exists() ? directory.isDirectory() : true)
@@ -393,7 +393,7 @@ public class MultiVersionControl {
 
 
     @Override
-    public boolean equals(/*@Nullable*/ Object other) {
+    public boolean equals(/*@-Nullable*/ Object other) {
       if (! (other instanceof Checkout))
         return false;
       Checkout c2 = (Checkout) other;
@@ -643,7 +643,7 @@ public class MultiVersionControl {
     }
 
     // strip common suffix off of local dir and repo url
-    Pair</*@Nullable*/ File, /*@Nullable*/ File> stripped
+    Pair</*@-Nullable*/ File, /*@-Nullable*/ File> stripped
       = removeCommonSuffixDirs(dir, new File(pathInRepo),
                                repoFileRoot, "CVS");
     File cDir = stripped.a;
@@ -721,7 +721,7 @@ public class MultiVersionControl {
     //   might be slow for large checkouts).
 
     @SuppressWarnings("nullness") // SVNKit is not yet annotated
-    SVNWCClient wcClient = new SVNWCClient((/*@Nullable*/ ISVNAuthenticationManager) null, null);
+    SVNWCClient wcClient = new SVNWCClient((/*@-Nullable*/ ISVNAuthenticationManager) null, null);
     SVNInfo info;
     try {
       info = wcClient.doInfo(new File(dir.toString()), SVNRevision.WORKING);
@@ -749,7 +749,7 @@ public class MultiVersionControl {
     }
 
     // Strip common suffix off of local dir and repo url.
-    Pair</*@Nullable*/ File, /*@Nullable*/ File> stripped
+    Pair</*@-Nullable*/ File, /*@-Nullable*/ File> stripped
       = removeCommonSuffixDirs(dir, new File(url.getPath()),
                                new File(repoRoot.getPath()), ".svn");
     File cDir = stripped.a;
@@ -802,7 +802,7 @@ public class MultiVersionControl {
    * when p2 becomes p2_limit.  If p1_contains is non-null, then p1 must
    * contain a subdirectory of that name.
    */
-  static Pair</*@Nullable*/ File,/*@Nullable*/ File> removeCommonSuffixDirs(File p1, File p2, File p2_limit, String p1_contains) {
+  static Pair</*@-Nullable*/ File,/*@-Nullable*/ File> removeCommonSuffixDirs(File p1, File p2, File p2_limit, String p1_contains) {
     if (debug) {
       System.out.printf("removeCommonSuffixDirs(%s, %s, %s, %s)%n", p1, p2, p2_limit, p1_contains);
     }

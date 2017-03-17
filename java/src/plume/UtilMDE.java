@@ -157,7 +157,7 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static InputStreamReader fileReader(File file, /*@Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  public static InputStreamReader fileReader(File file, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
     InputStream in = new FileInputStream(file);
     InputStreamReader file_reader;
     if (charsetName == null) {
@@ -203,7 +203,7 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(String filename, /*@Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  public static BufferedReader bufferedFileReader(String filename, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
     return bufferedFileReader(new File(filename), charsetName);
   }
 
@@ -216,7 +216,7 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(File file, /*@Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  public static BufferedReader bufferedFileReader(File file, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
     Reader file_reader = fileReader(file, charsetName);
     return new BufferedReader(file_reader);
   }
@@ -924,7 +924,7 @@ public final class UtilMDE {
    * If the key isn't in the HashMap, it is added.
    * Throws an error if the key is in the HashMap but maps to a non-Integer.
    **/
-  public static <T> /*@Nullable*/ Integer incrementMap(Map<T,Integer> m, T key, int count) {
+  public static <T> /*@-Nullable*/ Integer incrementMap(Map<T,Integer> m, T key, int count) {
     Integer old = m.get(key);
     int new_total;
     if (old == null) {
@@ -1004,7 +1004,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(double /*@Nullable*/ [] a) {
+  public static final int hash(double /*@-Nullable*/ [] a) {
     double result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1015,7 +1015,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(double /*@Nullable*/ [] a, double /*@Nullable*/ [] b) {
+  public static final int hash(double /*@-Nullable*/ [] a, double /*@-Nullable*/ [] b) {
     return hash(hash(a), hash(b));
   }
 
@@ -1053,7 +1053,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(long /*@Nullable*/ [] a) {
+  public static final int hash(long /*@-Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1064,22 +1064,22 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(long /*@Nullable*/ [] a, long /*@Nullable*/ [] b) {
+  public static final int hash(long /*@-Nullable*/ [] a, long /*@-Nullable*/ [] b) {
     return hash(hash(a), hash(b));
   }
 
-  public static final int hash(/*@Nullable*/ String a) {
+  public static final int hash(/*@-Nullable*/ String a) {
     return (a == null) ? 0 : a.hashCode();
   }
 
-  public static final int hash(/*@Nullable*/ String a, /*@Nullable*/ String b) {
+  public static final int hash(/*@-Nullable*/ String a, /*@-Nullable*/ String b) {
     long result = 17;
     result = result * 37 + hash(a);
     result = result * 37 + hash(b);
     return hash(result);
   }
 
-  public static final int hash(/*@Nullable*/ String a, /*@Nullable*/ String b, /*@Nullable*/ String c) {
+  public static final int hash(/*@-Nullable*/ String a, /*@-Nullable*/ String b, /*@-Nullable*/ String c) {
     long result = 17;
     result = result * 37 + hash(a);
     result = result * 37 + hash(b);
@@ -1087,7 +1087,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(/*@Nullable*/ String /*@Nullable*/ [] a) {
+  public static final int hash(/*@-Nullable*/ String /*@-Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1225,7 +1225,7 @@ public final class UtilMDE {
   public static final class RemoveFirstAndLastIterator<T> implements Iterator<T> {
     Iterator<T> itor;
     // I don't think this works, because the iterator might itself return null
-    // /*@Nullable*/ T nothing = (/*@Nullable*/ T) null;
+    // /*@-Nullable*/ T nothing = (/*@-Nullable*/ T) null;
     @SuppressWarnings("unchecked")
     T nothing = (T) new Object();
     T first = nothing;
@@ -1444,7 +1444,7 @@ public final class UtilMDE {
    * @see Properties#getProperty
    * @see Properties#setProperty
    **/
-  public static /*@Nullable*/ String appendProperty(Properties p, String key, String value) {
+  public static /*@-Nullable*/ String appendProperty(Properties p, String key, String value) {
     return (String)p.setProperty(key, p.getProperty(key, "") + value);
   }
 
@@ -1455,7 +1455,7 @@ public final class UtilMDE {
    * @see Properties#setProperty
    **/
   @Deprecated
-  public static /*@Nullable*/ String setDefault(Properties p, String key, String value) {
+  public static /*@-Nullable*/ String setDefault(Properties p, String key, String value) {
     String currentValue = p.getProperty(key);
     if (currentValue == null) {
       p.setProperty(key, value);
@@ -1468,7 +1468,7 @@ public final class UtilMDE {
    * @see Properties#getProperty
    * @see Properties#setProperty
    **/
-  public static /*@Nullable*/ String setDefaultMaybe(Properties p, String key, String value) {
+  public static /*@-Nullable*/ String setDefaultMaybe(Properties p, String key, String value) {
     String currentValue = p.getProperty(key);
     if (currentValue == null) {
       p.setProperty(key, value);
@@ -1543,7 +1543,7 @@ public final class UtilMDE {
    * The Set abstraction doesn't provide this; it only provides "contains".
    * Returns null if the argument is null, or if it isn't in the set.
    **/
-  public static /*@Nullable*/ Object getFromSet(Set<?> set, Object key) {
+  public static /*@-Nullable*/ Object getFromSet(Set<?> set, Object key) {
     if (key == null) {
       return null;
     }

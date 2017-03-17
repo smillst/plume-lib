@@ -20,7 +20,7 @@ public class LimitedSizeSet<T>
 
   // If null, then at least num_values distinct values have been seen.
   // The size is not separately stored, because that would take extra space.
-  protected T /*@Nullable*/ [] values;
+  protected T /*@-Nullable*/ [] values;
   // The number of active elements (equivalently, the first unused index).
   int num_values;
 
