@@ -427,7 +427,6 @@ public class ICalAvailable {
    * Parses a date when formatted in several common formats.
    * @see dateFormats
    **/
-  @Nullable
   static java.util.Date parseDate(String strDate ) throws ParseException {
     java.util.Date result = null;
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
