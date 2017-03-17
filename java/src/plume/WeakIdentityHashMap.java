@@ -165,7 +165,7 @@ public class WeakIdentityHashMap<K,V>
     /**
      * Reference queue for cleared WeakEntries
      */
-    private final ReferenceQueue<K> queue = new ReferenceQueue<K>();
+   @NotNull private final ReferenceQueue<K> queue = new ReferenceQueue<K>();
 
     /**
      * The number of times this HashMap has been structurally modified
@@ -258,7 +258,7 @@ public class WeakIdentityHashMap<K,V>
     // This is problematic because it isn't of the right type.
     // We can't lie here to the type system by claiming it is of type K,
     // because NULL_KEY is a static field but K is a per-instance type parameter.
-    private static final Object NULL_KEY = new Object();
+    @NotNull private static final Object NULL_KEY = new Object();
 
     /**
      * Use NULL_KEY for key if it is null.
