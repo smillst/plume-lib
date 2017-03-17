@@ -189,6 +189,7 @@ public class Lookup {
       for (Exception file_error : file_errors)
         System.out.printf ("  entry file %s%n", file_error.getMessage());
       System.exit (254);
+      return;
     }
 
     // Setup the regular expressions for long entries

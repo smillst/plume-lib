@@ -493,6 +493,7 @@ public class MultiVersionControl {
         System.err.printf("need root before directory at line %d of file %s%n",
                           er.getLineNumber(), er.getFileName());
         System.exit(1);
+        return;
       }
 
       // Replace "~" by "$HOME", because -d (and Athena's "cd" command) does not
@@ -651,6 +652,7 @@ public class MultiVersionControl {
       System.out.printf("dir (%s) is parent of path in repo (%s)",
                         dir, pathInRepo);
       System.exit(1);
+      return;
     }
     String pathInRepoAtCheckout;
     if (stripped.b != null) {
@@ -740,6 +742,7 @@ public class MultiVersionControl {
       System.err.println("Check it out again to get a 'Repository Root' entry in the svn info output.");
       System.err.println("  repoUrl = " + url);
       System.exit(2);
+      return null;
     }
     if (debug) {
       System.out.println();
@@ -757,6 +760,7 @@ public class MultiVersionControl {
       System.out.printf("dir (%s) is parent of repository URL (%s)",
                          dir, url.getPath());
       System.exit(1);
+      return null;
     }
     if (stripped.b == null) {
       System.out.printf("dir (%s) is child of repository URL (%s)",
@@ -1067,6 +1071,7 @@ public class MultiVersionControl {
         if (parent == null) {
           System.err.println("Root directory cannot be a checkout");
           System.exit(1);
+          return;
         }
         switch (action) {
         case CHECKOUT:

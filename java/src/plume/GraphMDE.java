@@ -80,6 +80,8 @@ public class GraphMDE {
             new_doms.retainAll(dom_of_pred);
           }
         }
+        assert new_doms != null
+          : "@AssumeAssertion(nullness): the loop was entered at least once because this is a non-root, which has at least one predecessor";
         new_doms.add(node);
         assert dom.containsKey(node);
         if (! dom.get(node).equals(new_doms)) {
