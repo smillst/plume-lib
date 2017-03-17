@@ -77,6 +77,7 @@ public class MultiRandSelector<T> {
      */
     public void accept (T next) {
         T equivClass = eq.assignToBucket (next);
+        //noinspection ConstantConditions
         if (equivClass == null)
             return;
         RandomSelector<T> delegation = map.get (equivClass);

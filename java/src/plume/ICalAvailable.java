@@ -141,6 +141,7 @@ public class ICalAvailable {
         System.exit(1);
       }
     }
+    //noinspection ConstantConditions
     if (start_date == null) {
       System.err.println("Could not parse date: " + date);
       System.exit(1);

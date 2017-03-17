@@ -474,6 +474,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
       // Read until we find the termination of the entry
       Matcher end_entry_match = entry_stop_re.matcher(line);
+      //noinspection ConstantConditions,ConstantConditions
       while ((line != null) && !entry_match.find() &&
              !end_entry_match.find() && filename.equals (get_filename())) {
         body.append (line);
@@ -488,6 +489,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
       // If this entry was terminated by the start of the next one,
       // put that line back
+      //noinspection ConstantConditions,ConstantConditions
       if ((line != null) && (entry_match.find(0)
                              || !filename.equals (get_filename())))
         putback (line);

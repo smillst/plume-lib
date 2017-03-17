@@ -203,6 +203,7 @@ public class BCELUtil {
       checkMgen(new MethodGen(method, gen.getClassName(), gen.getConstantPool()));
     }
 
+    //noinspection ConstantConditions
     if (false) {
       Throwable t = new Throwable();
       t.fillInStackTrace();

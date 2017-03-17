@@ -2059,7 +2059,9 @@ public final class UtilMDE {
   {
     public int compare(@Nullable String s1, @Nullable String s2) {
       if (s1 == null && s2 == null) return 0;
+      //noinspection ConstantConditions
       if (s1 == null && s2 != null) return 1;
+      //noinspection ConstantConditions
       if (s1 != null && s2 == null) return -1;
       return s1.compareTo(s2);
     }
