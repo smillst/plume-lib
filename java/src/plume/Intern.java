@@ -403,7 +403,6 @@ public final class Intern {
    * Returns a canonical representation for the int[] array.
    * Arrays are compared according to their elements.
    **/
-  @Nullable
   @SuppressWarnings("interning")
   public static int /*@Interned*/ [] intern(int[] a) {
     // Throwable stack = new Throwable("debug traceback");
