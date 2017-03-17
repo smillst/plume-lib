@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -18,8 +21,9 @@ public final class Intern {
    * Side-effects the array, but also returns it.
    * @see String#intern
    **/
+  @NotNull
   @SuppressWarnings("interning")
-  public static /*@Interned*/ String[] internStrings(String[] a) {
+  public static /*@Interned*/ String[] internStrings(@NotNull String[] a) {
     for (int i=0; i<a.length; i++)
       if (a[i] != null)
         a[i] = a[i].intern();
@@ -36,7 +40,7 @@ public final class Intern {
    * objects equal to itself).
    **/
   @SuppressWarnings("interning")
-  public static boolean isInterned(/*@-Nullable*/ Object value) {
+  public static boolean isInterned(/*@-Nullable*/ @Nullable Object value) {
     if (value == null) {
       // nothing to do
       return true;
@@ -76,7 +80,7 @@ public final class Intern {
    * @see Hasher
    **/
   private static final class IntegerHasher implements Hasher {
-    public boolean equals(Object a1, Object a2) {
+    public boolean equals(@NotNull Object a1, Object a2) {
       return a1.equals(a2);
     }
     public int hashCode(Object o) {
@@ -91,7 +95,7 @@ public final class Intern {
    * @see Hasher
    **/
   private static final class LongHasher implements Hasher {
-    public boolean equals(Object a1, Object a2) {
+    public boolean equals(@NotNull Object a1, Object a2) {
       return a1.equals(a2);
     }
     public int hashCode(Object o) {
@@ -149,7 +153,7 @@ public final class Intern {
    * @see Hasher
    **/
   private static final class DoubleHasher implements Hasher {
-    public boolean equals(Object a1, Object a2) {
+    public boolean equals(@NotNull Object a1, Object a2) {
       return a1.equals(a2);
     }
     public int hashCode(Object o) {
@@ -300,7 +304,8 @@ public final class Intern {
   // Interns a String.
   // Delegates to the builtin String.intern() method.  Provided for
   // completeness, so we can intern() any type used in OneOf.java.jpp.
-  public static /*@Interned*/ /*@PolyNull*/ String intern(/*@PolyNull*/ String a) {
+  @Nullable
+  public static /*@Interned*/ /*@PolyNull*/ String intern(/*@PolyNull*/ @Nullable String a) {
     return (a == null) ? null : a.intern();
   }
 
@@ -325,6 +330,7 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Intern.valueOf is intended to promise
   // the same).  This does not currently take advantage of that.
+  @Nullable
   @SuppressWarnings("interning")
   public static /*@Interned*/ Integer intern(Integer a) {
     WeakReference</*@Interned*/ Integer> lookup = internedIntegers.get(a);
@@ -340,13 +346,15 @@ public final class Intern {
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Integer with value i. */
+  @Nullable
   public static /*@Interned*/ Integer internedInteger(int i) {
     return intern(Integer.valueOf(i));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Integer with value parsed from the string. */
-  public static /*@Interned*/ Integer internedInteger(String s) {
+  @Nullable
+  public static /*@Interned*/ Integer internedInteger(@NotNull String s) {
     return intern(Integer.decode(s));
   }
 
@@ -358,6 +366,7 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Long.valueOf is intended to promise
   // the same).  This could take advantage of that.
+  @Nullable
   @SuppressWarnings("interning")
   public static /*@Interned*/ Long intern(Long a) {
     WeakReference</*@Interned*/ Long> lookup =  internedLongs.get(a);
@@ -373,13 +382,15 @@ public final class Intern {
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Long with value i. */
+  @Nullable
   public static /*@Interned*/ Long internedLong(long i) {
     return intern(Long.valueOf(i));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Long with value parsed from the string. */
-  public static /*@Interned*/ Long internedLong(String s) {
+  @Nullable
+  public static /*@Interned*/ Long internedLong(@NotNull String s) {
     return intern(Long.decode(s));
   }
 
@@ -394,6 +405,7 @@ public final class Intern {
    * Returns a canonical representation for the int[] array.
    * Arrays are compared according to their elements.
    **/
+  @Nullable
   @SuppressWarnings("interning")
   public static int /*@Interned*/ [] intern(int[] a) {
     // Throwable stack = new Throwable("debug traceback");
@@ -416,6 +428,7 @@ public final class Intern {
    * Returns a canonical representation for the long[] array.
    * Arrays are compared according to their elements.
    **/
+  @Nullable
   @SuppressWarnings("interning")
   public static long /*@Interned*/ [] intern(long[] a) {
     //System.out.printf ("intern %s %s long[] %s\n", a.getClass(),
@@ -438,8 +451,9 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Double.valueOf is intended to promise
   // the same).  This could take advantage of that.
+  @Nullable
   @SuppressWarnings("interning")
-  public static /*@Interned*/ Double intern(Double a) {
+  public static /*@Interned*/ Double intern(@NotNull Double a) {
     // Double.NaN == Double.Nan  always evaluates to false.
     if (a.isNaN())
       return internedDoubleNaN;
@@ -459,13 +473,15 @@ public final class Intern {
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Double with value i. */
+  @Nullable
   public static /*@Interned*/ Double internedDouble(double d) {
     return intern(Double.valueOf(d));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Double with value parsed from the string. */
-  public static /*@Interned*/ Double internedDouble(String s) {
+  @Nullable
+  public static /*@Interned*/ Double internedDouble(@NotNull String s) {
     return internedDouble(Double.parseDouble(s));
   }
 
@@ -480,6 +496,7 @@ public final class Intern {
    * Returns a canonical representation for the double[] array.
    * Arrays are compared according to their elements.
    **/
+  @Nullable
   @SuppressWarnings("interning")
   public static double /*@Interned*/ [] intern(double[] a) {
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleArrays.get(a);
@@ -500,8 +517,9 @@ public final class Intern {
    * The elements should themselves already be interned;
    * they are compared using their equals() methods.
    **/
+  @Nullable
   @SuppressWarnings("interning")
-  public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] intern(/*@PolyNull*/ /*@Interned*/ String[] a) {
+  public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] intern(/*@PolyNull*/ /*@Interned*/ @NotNull String[] a) {
 
     // Make sure each element is already interned
     for (int k = 0; k < a.length; k++)
@@ -528,6 +546,7 @@ public final class Intern {
    * The elements should themselves already be interned;
    * they are compared using their equals() methods.
    **/
+  @Nullable
   @SuppressWarnings({"interning"})
   public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] intern(/*@PolyNull*/ /*@Interned*/ Object[] a) {
     // PolyNull because the value = parameter a, so the type is the same as
@@ -552,7 +571,8 @@ public final class Intern {
    * If the argument is an array, its elements should themselves be
    * interned.
    **/
-  public static /*@Interned*/ /*@PolyNull*/ Object intern(/*@PolyNull*/ Object a) {
+  @Nullable
+  public static /*@Interned*/ /*@PolyNull*/ Object intern(/*@PolyNull*/ @Nullable Object a) {
     if (a == null) {
       return null;
     } else if (a instanceof String) {
@@ -597,6 +617,7 @@ public final class Intern {
    * Requires that seq is already interned.
    * @return a subsequence of seq from start to end that is interned.
    **/
+  @Nullable
   public static int /*@Interned*/ [] internSubsequence (int /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<int /*@Interned*/ []> sai = new SequenceAndIndices<int /*@Interned*/ []> (seq, start, end);
@@ -614,6 +635,7 @@ public final class Intern {
   /**
    * @see #internSubsequence(int[], int, int)
    **/
+  @Nullable
   public static long /*@Interned*/ [] internSubsequence (long /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<long /*@Interned*/ []> sai = new SequenceAndIndices<long /*@Interned*/ []> (seq, start, end);
@@ -631,6 +653,7 @@ public final class Intern {
   /**
    * @see #internSubsequence(int[], int, int)
    **/
+  @Nullable
   public static double /*@Interned*/ [] internSubsequence (double /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<double /*@Interned*/ []> sai = new SequenceAndIndices<double /*@Interned*/ []> (seq, start, end);
@@ -648,6 +671,7 @@ public final class Intern {
   /**
    * @see #internSubsequence(int[], int, int)
    **/
+  @Nullable
   public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> (seq, start, end);
@@ -667,6 +691,7 @@ public final class Intern {
   /**
    * @see #internSubsequence(int[], int, int)
    **/
+  @Nullable
   public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> (seq, start, end);
@@ -715,7 +740,7 @@ public final class Intern {
       }
     }
 
-    public boolean equals (SequenceAndIndices<T> other) {
+    public boolean equals (@NotNull SequenceAndIndices<T> other) {
       return ((this.seq == other.seq)
               && this.start == other.start
               && this.end == other.end);
@@ -726,6 +751,7 @@ public final class Intern {
     }
 
     // For debugging
+    @NotNull
     public String toString() {
       return "SAI(" + start + "," + end + ") from: " + ArraysMDE.toString(seq);
     }
@@ -747,7 +773,7 @@ public final class Intern {
       return sai1.equals(sai2);
     }
 
-    public int hashCode(Object o) {
+    public int hashCode(@NotNull Object o) {
       return o.hashCode();
     }
   }

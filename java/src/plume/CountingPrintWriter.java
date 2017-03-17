@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 
 // This solution only works for PrintWriter.
@@ -38,7 +41,7 @@ public class CountingPrintWriter extends PrintWriter {
    *
    * @param out An output stream
    */
-  public CountingPrintWriter(OutputStream out) {
+  public CountingPrintWriter(@NotNull OutputStream out) {
     super(out);
     printedBytes = 0;
     writtenChars = 0;
@@ -53,7 +56,7 @@ public class CountingPrintWriter extends PrintWriter {
    * @param out An output stream
    * @param autoFlush A boolean; if true, the println() methods will flush the output buffer
    */
-  public CountingPrintWriter(OutputStream out, boolean autoFlush)  {
+  public CountingPrintWriter(@NotNull OutputStream out, boolean autoFlush)  {
     super(out, autoFlush);
     printedBytes = 0;
     writtenChars = 0;
@@ -63,7 +66,7 @@ public class CountingPrintWriter extends PrintWriter {
   /** Create a new PrintWriter, without automatic line flushing.
    *  @param out a Writer
    */
-  public CountingPrintWriter(Writer out) {
+  public CountingPrintWriter(@NotNull Writer out) {
     super(out);
     printedBytes = 0;
     writtenChars = 0;
@@ -74,7 +77,7 @@ public class CountingPrintWriter extends PrintWriter {
    * @param out A writer
    * @param autoFlush A boolean; if true, the println() methods will flush the output buffer
    */
-  public CountingPrintWriter(Writer out, boolean autoFlush) {
+  public CountingPrintWriter(@NotNull Writer out, boolean autoFlush) {
     super(out,autoFlush);
     printedBytes = 0;
     writtenChars = 0;
@@ -87,7 +90,7 @@ public class CountingPrintWriter extends PrintWriter {
    * If s is null, returns -1
    * @param s A String
    */
-  public int countBytes (String s) {
+  public int countBytes (@Nullable String s) {
     if (s == null)
       return -1;
     int numchars = s.length();
@@ -155,7 +158,7 @@ public class CountingPrintWriter extends PrintWriter {
    * these bytes are written in exactly the manner of the write(int)
    * method.
    */
-  public void print(/*@-Nullable*/ String s) {
+  public void print(/*@-Nullable*/ @Nullable String s) {
     if (s == null) {
       printedBytes += countBytes("null");
       printedChars += 4;
@@ -197,7 +200,7 @@ public class CountingPrintWriter extends PrintWriter {
    * these bytes are written in exactly the manner of the write(int)
    * method.
    */
-  public void print(char[] s) {
+  public void print(@NotNull char[] s) {
     for (int i=0; i < s.length; i++) {
       printedBytes += countBytes(s[i]);
 
@@ -328,7 +331,7 @@ public class CountingPrintWriter extends PrintWriter {
    * Write an array of characters. This method cannot be inherited
    * from the Writer class because it must suppress I/O exceptions.
    */
-  public void write(char[] buf) {
+  public void write(@NotNull char[] buf) {
     for (int i=0; i < buf.length; i++) {
       writtenBytes += countBytes(buf[i]);
     }
@@ -343,7 +346,7 @@ public class CountingPrintWriter extends PrintWriter {
    * @param off Offset from which to start writing characters
    * @param len Number of characters to write
    */
-  public void write(char[] buf, int off, int len) {
+  public void write(@NotNull char[] buf, int off, int len) {
     for (int i=off; i < off+len; i++) {
       writtenBytes += countBytes(buf[i]);
     }
@@ -354,7 +357,7 @@ public class CountingPrintWriter extends PrintWriter {
   /**
    * Write a string.
    */
-  public void write(String s) {
+  public void write(@NotNull String s) {
     writtenBytes += countBytes(s);
     writtenChars += s.length();
     super.write(s);
@@ -368,7 +371,7 @@ public class CountingPrintWriter extends PrintWriter {
    * @param off Offset from which to start writing characters
    * @param len Number of characters to write
    */
-  public void write(String s, int off, int len) {
+  public void write(@NotNull String s, int off, int len) {
     writtenBytes += countBytes(s.substring(off,len));
     writtenChars += len;
     super.write(s,off,len);

@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.util.jar.*;
 import java.util.*;
@@ -22,7 +24,7 @@ public class ClassFileVersion {
   /** Only report versions that are at least this large. **/
   static double minversion = 0;
 
-  public static void main(String[] args) throws Exception {
+  public static void main(@NotNull String[] args) throws Exception {
     if (args.length == 0) {
       System.out.println("Supplied no arguments.");
       System.out.println("Usage: java ClassFileVersion [-min JDKVER] <.class or .jar files>");
@@ -68,7 +70,7 @@ public class ClassFileVersion {
     }
   }
 
-  public static void processClassFile(String filename, InputStream is) {
+  public static void processClassFile(String filename, @NotNull InputStream is) {
     double[] versions = versionNumbers(is);
     if (versions == null) {
       System.out.println(filename + " is not a .class file (or IOException)");
@@ -89,7 +91,7 @@ public class ClassFileVersion {
 
 
   /** Returns null if there is an error or the input isn't a class file. */
-  public static double /*@-Nullable*/ [] versionNumbers(InputStream is) {
+  public static double /*@-Nullable*/ [] versionNumbers(@NotNull InputStream is) {
     try {
       DataInputStream dis = new DataInputStream(is);
       int magic = dis.readInt();

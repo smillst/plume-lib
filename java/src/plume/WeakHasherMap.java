@@ -14,6 +14,9 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.AbstractMap;
@@ -120,12 +123,12 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
        done.  Fortunately these are small, short-lived objects, so the added
        allocation overhead is tolerable. */
 
-    private Hasher hasher = null;
-    private boolean keyEquals(Object k1, Object k2) {
+    @Nullable private Hasher hasher = null;
+    private boolean keyEquals(@NotNull Object k1, Object k2) {
 	return (hasher==null ? k1.equals(k2)
 			     : hasher.equals(k1, k2));
     }
-    private int keyHashCode(Object k1) {
+    private int keyHashCode(@NotNull Object k1) {
 	return (hasher==null ? k1.hashCode()
 			     : hasher.hashCode(k1));
     }
@@ -136,11 +139,13 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     // were static in the original version of this code.
     // This finesses that.
 
-    private /*@-Nullable*/ WeakKey WeakKeyCreate(K k) {
+    @Nullable
+    private /*@-Nullable*/ WeakKey WeakKeyCreate(@Nullable K k) {
 	if (k == null) return null;
 	else return new WeakKey(k);
     }
-    private /*@-Nullable*/ WeakKey WeakKeyCreate(K k, ReferenceQueue<? super K> q) {
+    @Nullable
+    private /*@-Nullable*/ WeakKey WeakKeyCreate(@Nullable K k, ReferenceQueue<? super K> q) {
 	if (k == null) return null;
 	else return new WeakKey(k, q);
     }
@@ -150,29 +155,31 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	private int hash;	/* Hashcode of key, stored here since the key
 				   may be tossed by the GC */
 
-	private WeakKey(K k) {
+	private WeakKey(@NotNull K k) {
 	    super(k);
 	    hash = keyHashCode(k);
 	}
 
-	private /*@-Nullable*/ WeakKey create(K k) {
+	@Nullable
+	private /*@-Nullable*/ WeakKey create(@Nullable K k) {
 	    if (k == null) return null;
 	    else return new WeakKey(k);
 	}
 
-	private WeakKey(K k, ReferenceQueue<? super K> q) {
+	private WeakKey(@NotNull K k, ReferenceQueue<? super K> q) {
 	    super(k, q);
 	    hash = keyHashCode(k);
 	}
 
-	private /*@-Nullable*/ WeakKey create(K k, ReferenceQueue<? super K> q) {
+	@Nullable
+	private /*@-Nullable*/ WeakKey create(@Nullable K k, ReferenceQueue<? super K> q) {
 	    if (k == null) return null;
 	    else return new WeakKey(k, q);
 	}
 
         /* A WeakKey is equal to another WeakKey iff they both refer to objects
 	   that are, in turn, equal according to their own equals methods */
-	public boolean equals(/*@-Nullable*/ Object o) {
+	public boolean equals(/*@-Nullable*/ @NotNull Object o) {
 	    if (this == o) return true;
             // This test is illegal because WeakKey is a generic type,
             // so use the getClass hack below instead.
@@ -197,7 +204,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     private Map<WeakKey,V> hash;
 
     /* Reference queue for cleared WeakKeys */
-    private ReferenceQueue<? super K> queue = new ReferenceQueue<K>();
+    @NotNull private ReferenceQueue<? super K> queue = new ReferenceQueue<K>();
 
 
     /* Remove all invalidated entries from the map, that is, remove all entries
@@ -387,15 +394,15 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	    return ent.setValue(value);
 	}
 
-	private boolean keyvalEquals(K o1, K o2) {
+	private boolean keyvalEquals(@Nullable K o1, @Nullable K o2) {
 	    return (o1 == null) ? (o2 == null) : keyEquals(o1, o2);
 	}
 
-	private boolean valEquals(V o1, V o2) {
+	private boolean valEquals(@Nullable V o1, @Nullable V o2) {
 	    return (o1 == null) ? (o2 == null) : o1.equals(o2);
 	}
 
-	public boolean equals(Map.Entry<K,V> e /* Object o*/) {
+	public boolean equals(@NotNull Map.Entry<K,V> e /* Object o*/) {
             // if (! (o instanceof Map.Entry)) return false;
             // Map.Entry<K,V> e = (Map.Entry<K,V>)o;
 	    return (keyvalEquals(key, e.getKey())
@@ -413,13 +420,14 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 
     /* Internal class for entry sets */
     private final class EntrySet extends AbstractSet<Map.Entry<K,V>> {
-	Set<Map.Entry<WeakKey,V>> hashEntrySet = hash.entrySet();
+	@NotNull Set<Map.Entry<WeakKey,V>> hashEntrySet = hash.entrySet();
 
+	@NotNull
 	public Iterator<Map.Entry<K,V>> iterator() {
 
 	    return new Iterator<Map.Entry<K,V>>() {
-		Iterator<Map.Entry<WeakKey,V>> hashIterator = hashEntrySet.iterator();
-		Map.Entry<K,V> next = null;
+		@NotNull Iterator<Map.Entry<WeakKey,V>> hashIterator = hashEntrySet.iterator();
+		@Nullable Map.Entry<K,V> next = null;
 
 		public boolean hasNext() {
 		    while (hashIterator.hasNext()) {
@@ -436,6 +444,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 		    return false;
 		}
 
+		@Nullable
 		public Map.Entry<K,V> next() {
 		    if ((next == null) && !hasNext())
 			throw new NoSuchElementException();
@@ -493,11 +502,12 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     }
 
 
-    private /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
+    @Nullable private /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
 
     /**
      * Returns a <code>Set</code> view of the mappings in this map.
      */
+    @NotNull
     public Set<Map.Entry<K,V>> entrySet() {
 	if (entrySet == null) entrySet = new EntrySet();
 	return entrySet;

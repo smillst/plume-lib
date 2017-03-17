@@ -32,6 +32,8 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.net.URL;
 import java.util.StringTokenizer;
@@ -74,7 +76,7 @@ public class JWhich {
 	 *
 	 * @param className Name of the class.
 	 */
-	public static void which(String className) {
+	public static void which(@NotNull String className) {
 
 		URL classUrl = findClass(className);
 
@@ -98,11 +100,12 @@ public class JWhich {
 	 * @param className Name of the class.
 	 * @return Class URL, or null of the class was not found.
 	 */
-	public static /*@-Nullable*/ URL findClass(final String className) {
+	public static /*@-Nullable*/ URL findClass(@NotNull final String className) {
 		return JWhich.class.getResource(asResourceName(className));
 	}
 
-	protected static String asResourceName(String resource) {
+	@NotNull
+	protected static String asResourceName(@NotNull String resource) {
 		if (!resource.startsWith("/")) {
 			resource = "/" + resource;
 		}
@@ -166,7 +169,7 @@ public class JWhich {
 		return CLASSPATH;
 	}
 
-	private static void instanceMain(String[] args) {
+	private static void instanceMain(@NotNull String[] args) {
 
 		if (args.length == 0) {
 			printUsage();
@@ -198,7 +201,7 @@ public class JWhich {
 		System.exit(0);
 	}
 
-	public static void main(String[] args) {
+	public static void main(@NotNull String[] args) {
 		JWhich.instanceMain(args);
 	}
 }

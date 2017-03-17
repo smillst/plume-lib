@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Simple triple class.
  **/
@@ -14,6 +16,7 @@ public class Triple<T1,T2,T3> {
     this.c = c;
   }
 
+  @NotNull
   public String toString() {
     return "<" + String.valueOf(a)
       + "," + String.valueOf(b)

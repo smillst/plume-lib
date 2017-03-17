@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -20,7 +23,7 @@ public class LimitedSizeSet<T>
 
   // If null, then at least num_values distinct values have been seen.
   // The size is not separately stored, because that would take extra space.
-  protected T /*@-Nullable*/ [] values;
+  @Nullable protected T /*@-Nullable*/ [] values;
   // The number of active elements (equivalently, the first unused index).
   int num_values;
 
@@ -51,7 +54,7 @@ public class LimitedSizeSet<T>
     num_values++;
   }
 
-  public void addAll(LimitedSizeSet<? extends T> s) {
+  public void addAll(@NotNull LimitedSizeSet<? extends T> s) {
     if (repNulled())
       return;
     if (s.repNulled()) {
@@ -140,7 +143,8 @@ public class LimitedSizeSet<T>
    * represents the values seen by the entire list.  Returns the new
    * object, whose max_values is the given integer.
    **/
-  public static <T> LimitedSizeSet<T> merge(int max_values, List<LimitedSizeSet<? extends T>> slist) {
+  @NotNull
+  public static <T> LimitedSizeSet<T> merge(int max_values, @NotNull List<LimitedSizeSet<? extends T>> slist) {
     LimitedSizeSet<T> result = new LimitedSizeSet<T>(max_values);
     for (LimitedSizeSet<? extends T> s : slist) {
       result.addAll(s);
@@ -148,6 +152,7 @@ public class LimitedSizeSet<T>
     return result;
   }
 
+  @NotNull
   public String toString() {
     return ("[size=" + size() + "; " +
             ((values == null) ? "null" : ArraysMDE.toString(values))

@@ -13,6 +13,8 @@ import java.lang.annotation.*;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The Options class parses command-line options and sets fields in your
@@ -157,17 +159,21 @@ public class Options {
     Class<?> base_type;
 
     /** Default value of the option as a string **/
-    /*@-Nullable*/ String default_str = null;
+    /*@-Nullable*/
+    @Nullable String default_str = null;
 
     /** If the option is a list, this references that list. **/
     // Not type-safe; must suppress warnings
-    /*@-Nullable*/ List<Object> list = null;
+    /*@-Nullable*/
+    @Nullable List<Object> list = null;
 
     /** Constructor that takes one String for the type **/
-    /*@-Nullable*/ Constructor<?> constructor = null;
+    /*@-Nullable*/
+    @Nullable Constructor<?> constructor = null;
 
     /** Factory that takes a string (some classes don't have a string constructor) */
-    /*@-Nullable*/ Method factory = null;
+    /*@-Nullable*/
+    @Nullable Method factory = null;
 
     /**
      * Create the specified option.  If obj is null, the field must be
@@ -175,7 +181,7 @@ public class Options {
      * from the option annotation.  The long name is the name of the
      * field.  The default value is the current value of the field.
      */
-    OptionInfo (Field field, Option option, /*@-Nullable*/ /*@Raw*/ Object obj) {
+    OptionInfo (@NotNull Field field, @NotNull Option option, /*@-Nullable*/ /*@Raw*/ Object obj) {
       this.field = field;
       this.option = option;
       @SuppressWarnings("rawness")
@@ -294,16 +300,16 @@ public class Options {
   private boolean parse_options_after_arg = true;
 
   /** All of the argument options as a single string **/
-  private String options_str = "";
+  @Nullable private String options_str = "";
 
   /** First specified class.  Void stands for "not yet initialized". **/
   private Class<?> main_class = Void.TYPE;
 
   /** List of all of the defined options **/
-  private List<OptionInfo> options = new ArrayList<OptionInfo>();
+  @NotNull private List<OptionInfo> options = new ArrayList<OptionInfo>();
 
   /** Map from option names (with leading dashes) to option information **/
-  private Map<String,OptionInfo> name_map
+  @NotNull private Map<String,OptionInfo> name_map
     = new LinkedHashMap<String,OptionInfo>();
 
   /**
@@ -319,10 +325,10 @@ public class Options {
    * This variable is public so that clients can reset it (useful for
    * masquerading as another program, based on parsed options).
    **/
-  public /*@-Nullable*/ String usage_synopsis = null;
+  @Nullable public /*@-Nullable*/ String usage_synopsis = null;
 
   // Debug loggers
-  private SimpleLog debug_options = new SimpleLog (false);
+  @NotNull private SimpleLog debug_options = new SimpleLog (false);
 
   /**
    * Prepare for option processing.  Creates an object that will set fields
@@ -343,7 +349,7 @@ public class Options {
    * unique across all the arguments.
    * @param usage_synopsis A synopsis of how to call your program
    */
-  public Options (String usage_synopsis, /*@Raw*/ Object... args) {
+  public Options (String usage_synopsis, /*@Raw*/ @NotNull Object... args) {
 
     if (args.length == 0) {
       throw new Error("Must pass at least one object to Options constructor");
@@ -427,7 +433,8 @@ public class Options {
    * @throws ArgException if the command line contains unknown option or
    * misused options.
    */
-  public String[] parse (String[] args) throws ArgException {
+  @NotNull
+  public String[] parse (@NotNull String[] args) throws ArgException {
 
     List<String> non_options = new ArrayList<String>();
     boolean ignore_options = false;
@@ -495,6 +502,7 @@ public class Options {
    * misused options.
    * @see #parse(String[])
    */
+  @NotNull
   public String[] parse (String args) throws ArgException {
 
     // Split the args string on whitespace boundaries accounting for quoted
@@ -537,7 +545,8 @@ public class Options {
    * @return all non-option arguments
    * @see #parse(String[])
    */
-  public String[] parse_or_usage (String[] args) {
+  @Nullable
+  public String[] parse_or_usage (@NotNull String[] args) {
 
     String non_options[] = null;
 
@@ -565,6 +574,7 @@ public class Options {
    * @return all non-option arguments
    * @see #parse_or_usage(String[])
    */
+  @Nullable
   public String[] parse_or_usage (String args) {
 
     String non_options[] = null;
@@ -585,12 +595,14 @@ public class Options {
   }
 
   /** @deprecated Use {@link #parse_or_usage(String[])}. */
+  @Nullable
   @Deprecated
-  public String[] parse_and_usage (String[] args) {
+  public String[] parse_and_usage (@NotNull String[] args) {
     return parse_or_usage(args);
   }
 
   /** @deprecated Use {@link #parse_or_usage(String)}. */
+  @Nullable
   @Deprecated
   public String[] parse_and_usage (String args) {
     return parse_or_usage(args);
@@ -604,7 +616,7 @@ public class Options {
    * Prints usage information.  Uses the usage synopsis passed into the
    * constructor, if any.
    */
-  public void print_usage (PrintStream ps) {
+  public void print_usage (@NotNull PrintStream ps) {
     if (usage_synopsis != null) {
       ps.printf ("Usage: %s%n", usage_synopsis);
     }
@@ -628,7 +640,7 @@ public class Options {
    * Prints a message followed by indented usage information.
    * The message is printed in addition to (not replacing) the usage synopsis.
    **/
-  public void print_usage (PrintStream ps, String msg) {
+  public void print_usage (@NotNull PrintStream ps, String msg) {
     ps.println (msg);
     print_usage (ps);
   }
@@ -645,7 +657,7 @@ public class Options {
    * Prints a message followed by usage information.
    * The message is printed in addition to (not replacing) the usage synopsis.
    */
-  public void print_usage (PrintStream ps, String format, /*@-Nullable*/ Object... args) {
+  public void print_usage (@NotNull PrintStream ps, @NotNull String format, /*@-Nullable*/ Object... args) {
     ps.printf (format, args);
     if (! format.endsWith("%n")) {
       ps.println();
@@ -657,7 +669,7 @@ public class Options {
    * Prints, to standard output, a message followed by usage information.
    * The message is printed in addition to (not replacing) the usage synopsis.
    */
-  public void print_usage (String format, /*@-Nullable*/ Object... args) {
+  public void print_usage (@NotNull String format, /*@-Nullable*/ Object... args) {
     print_usage(System.out, format, args);
   }
 
@@ -665,6 +677,7 @@ public class Options {
    * Returns an array of Strings, where each String describes the usage of
    * one command-line option.  Does not include the usage synopsis.
    **/
+  @NotNull
   public String[] usage () {
 
     List<String> uses = new ArrayList<String>();
@@ -696,7 +709,7 @@ public class Options {
    * Set the specified option to the value specified in arg_value.  Throws
    * an ArgException if there are any errors.
    */
-  public void set_arg (OptionInfo oi, String arg_name, /*@-Nullable*/ String arg_value)
+  public void set_arg (@NotNull OptionInfo oi, String arg_name, /*@-Nullable*/ @Nullable String arg_value)
     throws ArgException {
 
     Field f = oi.field;
@@ -806,7 +819,7 @@ public class Options {
   /**
    * Returns a short name for the specified type for use in messages.
    */
-  private static String type_short_name (Class<?> type) {
+  private static String type_short_name (@NotNull Class<?> type) {
 
     if (type.isPrimitive())
       return type.getName();
@@ -826,6 +839,7 @@ public class Options {
    * non-options removed.
    * @see #settings()
    */
+  @Nullable
   public String get_options_str() {
     return (options_str);
   }
@@ -884,7 +898,7 @@ public class Options {
   public static class ArgException extends Exception {
     static final long serialVersionUID = 20051223L;
     public ArgException (String s) { super (s); }
-    public ArgException (String format, /*@-Nullable*/ Object... args) {
+    public ArgException (@NotNull String format, /*@-Nullable*/ Object... args) {
       super (String.format (format, args));
     }
   }
@@ -892,7 +906,7 @@ public class Options {
   /**
    * Entry point for creating HTML documentation.
    */
-  public void jdoc (RootDoc doc) {
+  public void jdoc (@NotNull RootDoc doc) {
 
     // Find the overall documentation (on the main class)
     ClassDoc main = find_class_doc (doc, main_class);
@@ -931,7 +945,9 @@ public class Options {
 
   }
 
-  /*@-Nullable*/ ClassDoc find_class_doc (RootDoc doc, Class<?> c) {
+  /*@-Nullable*/
+  @Nullable
+  ClassDoc find_class_doc (@NotNull RootDoc doc, @NotNull Class<?> c) {
 
     for (ClassDoc cd : doc.classes()) {
       if (cd.qualifiedName().equals (c.getName())) {
@@ -958,7 +974,8 @@ public class Options {
    * type_name, and description).  The short_name and type_name are null
    * if they are not specified in the string.
    */
-  private static ParseResult parse_option (String val) {
+  @NotNull
+  private static ParseResult parse_option (@NotNull String val) {
 
     // Get the short name, long name, and description
     String short_name;

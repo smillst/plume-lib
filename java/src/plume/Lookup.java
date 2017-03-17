@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 import com.sun.javadoc.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Lookup searches a set of files for information.  The user specifies
@@ -46,6 +48,7 @@ public class Lookup {
    * information to be searched.  Only the first file found is used, though
    * it may itself contain include directives.
    */
+  @NotNull
   @Option ("-f Specify the search list of files of information")
   public static String entry_file = "~/lookup/root";
 
@@ -102,18 +105,23 @@ public class Lookup {
   @Option ("-v Print progress information")
   public static boolean verbose = false;
 
+  @NotNull
   @Option ("Regex that denotes the start of a long entry")
   public static Pattern entry_start_re = Pattern.compile ("^>entry *()");
 
+  @NotNull
   @Option ("Regex that denotes the end of a long entry")
   public static Pattern entry_stop_re = Pattern.compile ("^<entry");
 
+  @Nullable
   @Option ("Regex that finds an entry's description (for long entries)")
   public static /*@-Nullable*/ Pattern description_re = null;
 
+  @Nullable
   @Option ("Regex that matches an entire comment (not just a comment start)")
   public static /*@-Nullable*/ String comment_re = "^%.*";
 
+  @NotNull
   @Option ("Regex that matches an include directive; group 1 is the file name")
   public static String include_re = "\\\\include\\{(.*)\\}";
 
@@ -122,7 +130,7 @@ public class Lookup {
   private static final String lineSep = System.getProperty("line.separator");
 
   /** One line synopsis of usage **/
-  private static String usage_string
+  @NotNull private static String usage_string
     = "lookup [options] <keyword> <keyword> ...";
 
   /**
@@ -301,7 +309,8 @@ public class Lookup {
   /**
    * Returns the next entry.  If no more entries are available, returns null.
    */
-  public static /*@-Nullable*/ Entry old_get_entry (EntryReader reader) throws IOException {
+  @Nullable
+  public static /*@-Nullable*/ Entry old_get_entry (@NotNull EntryReader reader) throws IOException {
 
     try {
 
@@ -368,7 +377,8 @@ public class Lookup {
   }
 
   /** Returns the first line of entry. **/
-  public static String first_line (String entry) {
+  @NotNull
+  public static String first_line (@NotNull String entry) {
 
     int ii = entry.indexOf (lineSep);
     if (ii == -1)

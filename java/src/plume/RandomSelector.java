@@ -1,5 +1,7 @@
 // RandomSelector.java
 package plume;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 
@@ -150,6 +152,7 @@ public class RandomSelector<T> {
     }
 
     /** Returns current_values, modifies none.  **/
+    @NotNull
     public List<T> getValues() {
         // avoid concurrent mod errors and rep exposure
         ArrayList<T> ret = new ArrayList<T>();

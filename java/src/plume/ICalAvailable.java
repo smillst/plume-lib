@@ -6,6 +6,9 @@ import net.fortuna.ical4j.model.parameter.*;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.data.*;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.net.URL;
 import java.text.*;
@@ -37,14 +40,16 @@ public class ICalAvailable {
 
   /// User options
 
+  @NotNull
   @Option("first date to summarize")
   public static String date = "today";
 
-  public static DateTime start_date = new DateTime();
+  @NotNull public static DateTime start_date = new DateTime();
 
   @Option("number of calendar days to summarize,")
   public static int days = 8;
 
+  @NotNull
   @Option("<url> schedule in iCal format")
   // For a Google calendar:  go to setting, then click on the green "ICAL"
   // icon for the "private addrss".
@@ -54,6 +59,7 @@ public class ICalAvailable {
   /**
    * A list of time ranges, expressed as a String.
    * Example: 9am-5pm,7:30pm-9:30pm */
+  @NotNull
   @Option("time ranges during which appointments are permitted")
   public static String business_hours = "9am-5pm";
 
@@ -86,7 +92,7 @@ public class ICalAvailable {
   public static boolean debug = false;
 
   /** The appointments (the times that are unavailable for meeting) */
-  static List<Calendar> calendars = new ArrayList<Calendar>();
+  @NotNull static List<Calendar> calendars = new ArrayList<Calendar>();
 
   static DateFormat tf = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US);
   static DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
@@ -95,7 +101,7 @@ public class ICalAvailable {
   /// Procedures
 
   @SuppressWarnings("deprecation") // for iCal4j
-  static void processOptions(String[] args) {
+  static void processOptions(@NotNull String[] args) {
     Options options = new Options ("ICalAvailable [options]", ICalAvailable.class);
     String[] remaining_args = options.parse_or_usage (args);
     if (remaining_args.length != 0) {
@@ -178,8 +184,8 @@ public class ICalAvailable {
 
   }
 
-  static Map<String,String> canonicalTimezones = new HashMap<String,String>();
-  static Map<String,String> printedTimezones = new HashMap<String,String>();
+  @NotNull static Map<String,String> canonicalTimezones = new HashMap<String,String>();
+  @NotNull static Map<String,String> printedTimezones = new HashMap<String,String>();
   // Yuck, this should really be a separate configuration file.
   static {
     canonicalTimezones.put("eastern", "America/New_York");
@@ -203,22 +209,24 @@ public class ICalAvailable {
   }
 
 
-  static String canonicalizeTimezone(String timezone) {
+  @NotNull
+  static String canonicalizeTimezone(@NotNull String timezone) {
     String result = canonicalTimezones.get(timezone.toLowerCase());
     return (result == null) ? timezone : result;
   }
 
-  static String printedTimezone(TimeZone tz) {
+  static String printedTimezone(@NotNull TimeZone tz) {
     String tzString = tz.getDisplayName();
     String result = printedTimezones.get(tzString);
     return (result == null) ? tzString : result;
   }
 
-  static Pattern timeRegexp = Pattern.compile("([0-2]?[0-9])(:([0-5][0-9]))?([aApP][mM])?");
+  @NotNull static Pattern timeRegexp = Pattern.compile("([0-2]?[0-9])(:([0-5][0-9]))?([aApP][mM])?");
 
   // Parse a time like "9:30pm"
+  @NotNull
   @SuppressWarnings("deprecation") // for iCal4j
-  static DateTime parseTime(String time) {
+  static DateTime parseTime(@NotNull String time) {
 
     Matcher m = timeRegexp.matcher(time);
     if (! m.matches()) {
@@ -261,7 +269,7 @@ public class ICalAvailable {
     System.out.println("iCal_URL: " + iCal_URL);
   }
 
-  public static void main(String[] args) {
+  public static void main(@NotNull String[] args) {
 
     processOptions(args);
 
@@ -300,7 +308,7 @@ public class ICalAvailable {
 
   }
 
-  static String rangeString(Period p, TimeZone tz) {
+  static String rangeString(@NotNull Period p, TimeZone tz) {
     tf.setTimeZone(tz);
     DateTime pstart = p.getStart();
     DateTime pend = p.getEnd();
@@ -310,7 +318,7 @@ public class ICalAvailable {
     return rangeString;
   }
 
-  static String periodListString(PeriodList pl, TimeZone tz) {
+  static String periodListString(@NotNull PeriodList pl, TimeZone tz) {
     tf.setTimeZone(tz);
     StringBuilder result = new StringBuilder();
     for (Object p : pl) {
@@ -325,8 +333,9 @@ public class ICalAvailable {
    * Creates a new DateTime with date taken from the first argument and
    * time taken from the second argument.
    **/
+  @NotNull
   @SuppressWarnings("deprecation") // for iCal4j
-  static DateTime mergeDateAndTime(DateTime date, DateTime time) {
+  static DateTime mergeDateAndTime(@NotNull DateTime date, @NotNull DateTime time) {
     if (date.getTimeZone() != time.getTimeZone()) {
       throw new Error(String.format("non-matching timezones: %s %s", date.getTimeZone(), time.getTimeZone()));
     }
@@ -341,8 +350,9 @@ public class ICalAvailable {
   // TODO:  don't propose times that are before the current moment.
 
   // Process day-by-day because otherwise weekends and evenings are included.
+  @NotNull
   @SuppressWarnings("unchecked") // for iCal4j
-  static List<Period> oneDayAvailable(DateTime day, List<Calendar> calendars) {
+  static List<Period> oneDayAvailable(@NotNull DateTime day, @NotNull List<Calendar> calendars) {
     if (debug) {
       System.err.printf("oneDayAvailable(%s, ...)%n", day);
     }
@@ -404,7 +414,7 @@ public class ICalAvailable {
     return result;
   }
 
-  static SimpleDateFormat[] dateFormats
+  @NotNull static SimpleDateFormat[] dateFormats
     = { new SimpleDateFormat( "yyyy/MM/dd" ),
         new SimpleDateFormat( "MM/dd/yyyy" ),
         new SimpleDateFormat( "MM/dd/yy" ),
@@ -416,7 +426,8 @@ public class ICalAvailable {
    * Parses a date when formatted in several common formats.
    * @see dateFormats
    **/
-  static java.util.Date parseDate( String strDate ) throws ParseException {
+  @Nullable
+  static java.util.Date parseDate(String strDate ) throws ParseException {
     java.util.Date result = null;
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
       @SuppressWarnings("deprecation") // for iCal4j
@@ -435,6 +446,7 @@ public class ICalAvailable {
     throw new ParseException("bad date " + strDate, 0);
   }
 
+  @NotNull
   static String formatDate(DateTime d, TimeZone tz) {
     df.setTimeZone(tz);
     String result = df.format(d);

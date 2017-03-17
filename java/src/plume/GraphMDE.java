@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.io.*;
 
@@ -39,8 +41,9 @@ public class GraphMDE {
    * Computes, for each node in the graph, its set of (pre-)dominators.
    * Supply a successor graph if you want post-dominators.
    **/
+  @NotNull
   public static
-  <T> Map<T,List<T>> dominators(Map<T,List<T>> preds) {
+  <T> Map<T,List<T>> dominators(@NotNull Map<T,List<T>> preds) {
 
     List<T> nodes = new ArrayList<T>(preds.keySet());
 
@@ -98,7 +101,7 @@ public class GraphMDE {
   }
 
   public static
-  <T> void print(Map<T,List<T>> graph, PrintStream ps, int indent) {
+  <T> void print(@NotNull Map<T,List<T>> graph, @NotNull PrintStream ps, int indent) {
     String indentString = "";
     for (int i=0; i<indent; i++) {
       indentString += " ";

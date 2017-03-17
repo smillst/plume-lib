@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Stack;
 import java.io.PrintStream;
 
@@ -27,9 +29,9 @@ public final class SimpleLog {
   public PrintStream logfile = System.out;
 
   /** The current indentation string. */
-  public String indent_str = "";
+  @NotNull public String indent_str = "";
   /** Indentation string for one level of indentation. */
-  public String indent_str_one_level = "  ";
+  @NotNull public String indent_str_one_level = "  ";
 
   /** Always provide a backtrace (traceback) when calling log. */
   public boolean always_traceback = false;
@@ -42,7 +44,7 @@ public final class SimpleLog {
    */
   public boolean line_oriented = true;
 
-  public Stack<Long> start_times = new Stack<Long>();
+  @NotNull public Stack<Long> start_times = new Stack<Long>();
 
 
 
@@ -60,7 +62,7 @@ public final class SimpleLog {
     this (true);
   }
 
-  public SimpleLog (String filename, boolean enabled) {
+  public SimpleLog (@NotNull String filename, boolean enabled) {
     this (enabled);
     try {
       logfile = new PrintStream (filename);
@@ -113,7 +115,8 @@ public final class SimpleLog {
    * Helper method:  add a newline if one isn't already there, and if
    * variable line_oriented is set.
    */
-  private final String add_newline (String format) {
+  @NotNull
+  private final String add_newline (@NotNull String format) {
 
     if (!line_oriented)
       return format;

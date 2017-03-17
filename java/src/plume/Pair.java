@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Simple pair class.
  **/
@@ -13,10 +15,12 @@ public class Pair<T1 extends /*@-Nullable*/ Object,T2 extends /*@-Nullable*/ Obj
   }
 
   /** Factory method with short name and no need to name type parameters. */
+  @NotNull
   public static <A, B> Pair<A, B> of(A a, B b) {
     return new Pair<A, B>(a, b);
   }
 
+  @NotNull
   public String toString() {
     return "<" + String.valueOf(a) + "," + String.valueOf(b) + ">";
   }

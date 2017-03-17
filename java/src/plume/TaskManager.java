@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.regex.*;
 import java.text.*;
 import com.sun.javadoc.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * TaskManager extracts information about tasks from text files and
@@ -20,9 +22,11 @@ public class TaskManager {
   public enum OutputFormat {short_ascii, short_html, milestone_html};
 
   // Command line options
+  @Nullable
   @Option ("-r Include only those tasks assigned to the specified person")
   /*@-Nullable*/ public static String responsible = null;
 
+  @Nullable
   @Option ("-m Include only those tasks required for the specified milestone")
   /*@-Nullable*/ public static String milestone = null;
 
@@ -35,16 +39,19 @@ public class TaskManager {
   @Option ("-v Print progress information")
   public static boolean verbose = false;
 
+  @NotNull
   @Option ("-f Specify output format (short_ascii, short_html, milestone_html)")
   public static OutputFormat format = OutputFormat.short_ascii;
 
+  @NotNull
   @Option ("Regex that matches an entire comment (not just a comment start)")
   public static String comment_re = "^%.*";
 
+  @NotNull
   @Option ("Regex that matches an include directive; group 1 is the file name")
   public static String include_re = "\\\\include\\{(.*)\\}";
 
-  private static String usage_string
+  @NotNull private static String usage_string
     = "TaskManger [options] <task-file> <task_file> ...";
 
   @SuppressWarnings("nullness") // line.separator property always exists
@@ -56,16 +63,19 @@ public class TaskManager {
     String filename;
     long line_number;
 
-    String task;
-    String responsible;
-    /*@-Nullable*/ Date assigned_date;
-    String milestone;
-    /*@-Nullable*/ Float duration;
-    /*@-Nullable*/ Float completed;
-    String description;
-    String notes;
+    @Nullable String task;
+    @Nullable String responsible;
+    /*@-Nullable*/
+    @Nullable Date assigned_date;
+    @Nullable String milestone;
+    /*@-Nullable*/
+    @Nullable Float duration;
+    /*@-Nullable*/
+    @Nullable Float completed;
+    @Nullable String description;
+    @Nullable String notes;
 
-    public Task (String body, String filename, long line_number)
+    public Task (@NotNull String body, String filename, long line_number)
       throws IOException {
 
       this.filename = filename;
@@ -182,6 +192,7 @@ public class TaskManager {
     }
 
 
+    @NotNull
     public String all_vals() {
       StringBuilder out = new StringBuilder();
       out.append ("task:            " + task + lineSep);
@@ -197,14 +208,14 @@ public class TaskManager {
   }
 
   /** List of all of the tasks **/
-  public List<Task> tasks = new ArrayList<Task>();
+  @NotNull public List<Task> tasks = new ArrayList<Task>();
 
   /** empty TaskManger **/
   public TaskManager() {
   }
 
   /** initializes a task manager with all of the tasks in filenames **/
-  public TaskManager (String[] filenames) throws IOException {
+  public TaskManager (@NotNull String[] filenames) throws IOException {
 
     // Read in each specified task file
     for (String filename : filenames) {
@@ -223,7 +234,7 @@ public class TaskManager {
     }
   }
 
-  public static void main (String args[]) throws IOException {
+  public static void main (@NotNull String args[]) throws IOException {
 
     Options options = new Options (usage_string, TaskManager.class);
     String[] filenames = options.parse_or_usage (args);
@@ -267,6 +278,7 @@ public class TaskManager {
     }
   }
 
+  @NotNull
   public String toString_short_ascii() {
     StringBuilder out = new StringBuilder();
     for (Task task : tasks) {
@@ -275,6 +287,7 @@ public class TaskManager {
     return (out.toString());
   }
 
+  @NotNull
   public String toString_short_html() {
     StringBuilder out = new StringBuilder();
     double total = 0.0;
@@ -292,6 +305,7 @@ public class TaskManager {
     return (out.toString());
   }
 
+  @NotNull
   public String toString_milestone_html() {
     StringBuilder out = new StringBuilder();
     out.append ("<table border cellspacing=0 cellpadding=2>" + lineSep);
@@ -322,7 +336,8 @@ public class TaskManager {
    * Create a new TaskManger with only those tasks assigned to responsible.
    * All tasks match a responsible value of null
    **/
-  public TaskManager responsible_match (String responsible) {
+  @NotNull
+  public TaskManager responsible_match (@Nullable String responsible) {
 
     TaskManager tm = new TaskManager();
 
@@ -336,7 +351,8 @@ public class TaskManager {
   }
 
   /** Create a new TaskManger with only those tasks in milestone **/
-  public TaskManager milestone_match (String milestone) {
+  @NotNull
+  public TaskManager milestone_match (@Nullable String milestone) {
 
     TaskManager tm = new TaskManager();
     if (milestone == null)
@@ -353,6 +369,7 @@ public class TaskManager {
   /**
    * Create a new TaskManger with only completed tasks.
    **/
+  @NotNull
   public TaskManager completed_only () {
 
     TaskManager tm = new TaskManager();
@@ -368,6 +385,7 @@ public class TaskManager {
   /**
    * Create a new TaskManger with only open tasks.
    **/
+  @NotNull
   public TaskManager open_only () {
 
     TaskManager tm = new TaskManager();

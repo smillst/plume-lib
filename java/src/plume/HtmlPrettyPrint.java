@@ -3,6 +3,7 @@ package plume;
 import java.io.*;
 
 import nu.xom.*;
+import org.jetbrains.annotations.NotNull;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
@@ -13,7 +14,7 @@ import org.xml.sax.helpers.*;
  */
 public class HtmlPrettyPrint {
 
-  public static void main(String[] args) {
+  public static void main(@NotNull String[] args) {
 
     for (String arg : args) {
       File f = new File(arg);

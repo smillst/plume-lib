@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 
 // TODO:  A better name would be LineNumberException.
@@ -18,7 +21,7 @@ import java.io.*;
 public class FileIOException extends IOException {
   static final long serialVersionUID = 20050923L;
 
-  public final /*@-Nullable*/ String fileName;
+  @Nullable public final /*@-Nullable*/ String fileName;
   public final int lineNumber;
 
   ///
@@ -132,15 +135,15 @@ public class FileIOException extends IOException {
   /// With a File
   ///
 
-  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, File file) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, @NotNull File file) {
     this(s, reader, file.getName());
   }
 
-  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, File file, /*@-Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ String s, /*@-Nullable*/ LineNumberReader reader, @NotNull File file, /*@-Nullable*/ Throwable cause) {
     this(s, reader, file.getName(), cause);
   }
 
-  public FileIOException(/*@-Nullable*/ LineNumberReader reader, File file, /*@-Nullable*/ Throwable cause) {
+  public FileIOException(/*@-Nullable*/ LineNumberReader reader, @NotNull File file, /*@-Nullable*/ Throwable cause) {
     // The "super(Throwable) constructor exists in Java 6 and later.
     // For backward compatibility, use the initCause method instead.
     initCause(cause);
@@ -153,6 +156,7 @@ public class FileIOException extends IOException {
   /// Utility and helper methods
   ///
 
+  @Nullable
   public String toString() {
     String result = super.toString();
     if (fileName != null) {
@@ -168,7 +172,7 @@ public class FileIOException extends IOException {
   // Assumes the "reader" field is already set.
   // Not a setter method because field lineNumber is final, but
   // still clearer to abstract out.
-  private int getLineNumber(/*@-Nullable*/ LineNumberReader reader) /*@Raw*/ {
+  private int getLineNumber(/*@-Nullable*/ @Nullable LineNumberReader reader) /*@Raw*/ {
     if (reader != null) {
       return reader.getLineNumber();
     } else {

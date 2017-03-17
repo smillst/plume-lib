@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -42,25 +45,25 @@ public class TextFile implements Iterable<String> {
     InputStream is;
     /*@-Nullable*/ String charsetName;
 
-    public TextFile(String filename)
+    public TextFile(@NotNull String filename)
 	throws IOException
     {
         this(filename, null);
     }
 
-    public TextFile(String filename, /*@-Nullable*/ String charsetName)
+    public TextFile(@NotNull String filename, /*@-Nullable*/ String charsetName)
 	throws IOException
     {
         this(new File(filename), charsetName);
     }
 
-    public TextFile(File f)
+    public TextFile(@NotNull File f)
 	throws IOException
     {
         this(f, null);
     }
 
-    public TextFile(File f, /*@-Nullable*/ String charsetName)
+    public TextFile(@NotNull File f, /*@-Nullable*/ String charsetName)
 	throws IOException
     {
 	if (!f.exists())
@@ -85,6 +88,7 @@ public class TextFile implements Iterable<String> {
 	this.charsetName = charsetName;
     }
 
+    @NotNull
     public Iterator<String> iterator() {
 	try {
 	    return new TextFileIterator(is, charsetName);
@@ -98,17 +102,17 @@ public class TextFile implements Iterable<String> {
     static class TextFileIterator
 	implements Iterator<String>
     {
-	LineNumberReader in;
+	@Nullable LineNumberReader in;
 	/*@-Nullable*/ String nextline;
 	boolean closed = false;
 
-	public TextFileIterator(File f, /*@-Nullable*/ String charsetName)
+	public TextFileIterator(@NotNull File f, /*@-Nullable*/ String charsetName)
 	    throws IOException
 	{
 	    this(new FileInputStream(f), charsetName);
         }
 
-	public TextFileIterator(InputStream is, /*@-Nullable*/ String charsetName)
+	public TextFileIterator(@NotNull InputStream is, /*@-Nullable*/ @Nullable String charsetName)
 	    throws IOException
 	{
 	    Reader isr;

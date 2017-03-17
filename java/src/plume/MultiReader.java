@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -34,14 +36,14 @@ public class MultiReader extends EntryReader {
    *                      The expression should define one group that contains
    *                      the include file name
    */
-  public MultiReader (BufferedReader reader, String filename, /*@-Nullable*/ String comment_re_string,
+  public MultiReader (@NotNull BufferedReader reader, String filename, /*@-Nullable*/ String comment_re_string,
                       /*@-Nullable*/ String include_re_string) {
     super(reader, filename, comment_re_string, include_re_string);
   }
 
   /** Create a MultiReader that does not support comments or include directives.
    * @see #MultiReader(BufferedReader,String,String,String) **/
-  public MultiReader (BufferedReader reader) {
+  public MultiReader (@NotNull BufferedReader reader) {
     super(reader);
   }
 
@@ -56,14 +58,14 @@ public class MultiReader extends EntryReader {
    *                      The expression should define one group that contains
    *                      the include file name.
    */
-  public MultiReader (File file, /*@-Nullable*/ String comment_re,
+  public MultiReader (@NotNull File file, /*@-Nullable*/ String comment_re,
                       /*@-Nullable*/ String include_re) throws IOException {
     super(file, comment_re, include_re);
   }
 
   /** Create a MultiReader that does not support comments or include directives.
    * @see #MultiReader(File,String,String) **/
-  public MultiReader (File file) throws IOException {
+  public MultiReader (@NotNull File file) throws IOException {
     super (file);
   }
 
@@ -71,14 +73,14 @@ public class MultiReader extends EntryReader {
    * Create a new MultiReader starting with the specified file.
    * @see #MultiReader(File,String,String)
    */
-  public MultiReader (String filename, /*@-Nullable*/ String comment_re,
+  public MultiReader (@NotNull String filename, /*@-Nullable*/ String comment_re,
                       /*@-Nullable*/ String include_re) throws IOException {
     super(filename, comment_re, include_re);
   }
 
   /** Create a MultiReader that does not support comments or include directives.
    * @see #MultiReader(String,String,String) **/
-  public MultiReader (String filename) throws IOException {
+  public MultiReader (@NotNull String filename) throws IOException {
     super(filename);
   }
 

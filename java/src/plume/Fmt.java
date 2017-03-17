@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -18,7 +20,7 @@ public class Fmt {
    * object in args and writes the result to System.out.  Each
    * argument is converted to a string with toString().
    */
-  public static void pf (String format, Object[] args) {
+  public static void pf (@NotNull String format, @NotNull Object[] args) {
     System.out.println (spf (format, args));
   }
 
@@ -27,7 +29,8 @@ public class Fmt {
    * object in args and returns the result.  Each argument is
    * converted to a string with toString().
    */
-  public static String spf (String format, Object[] args) {
+  @NotNull
+  public static String spf (@NotNull String format, @NotNull Object[] args) {
 
     StringBuffer result = new StringBuffer(format.length() + args.length*20);
 
@@ -70,68 +73,74 @@ public class Fmt {
   }
 
   /** Convenience routine for new Integer(val). **/
+  @NotNull
   public static Integer i (int val) {
     return new Integer (val);
   }
 
-  public static String spf (String format, Object arg1) {
+  @NotNull
+  public static String spf (@NotNull String format, Object arg1) {
     return (spf (format, new Object[] {arg1}));
   }
 
-  public static String spf (String format, Object arg1, Object arg2) {
+  @NotNull
+  public static String spf (@NotNull String format, Object arg1, Object arg2) {
     return (spf (format, new Object[] {arg1, arg2}));
   }
 
-  public static String spf (String format, Object arg1, Object arg2,
+  @NotNull
+  public static String spf (@NotNull String format, Object arg1, Object arg2,
                             Object arg3) {
     return (spf (format, new Object[] {arg1, arg2, arg3}));
   }
 
-  public static String spf (String format, Object arg1, Object arg2,
-                           Object arg3, Object arg4) {
+  @NotNull
+  public static String spf (@NotNull String format, Object arg1, Object arg2,
+                            Object arg3, Object arg4) {
     return (spf (format, new Object[] {arg1, arg2, arg3, arg4}));
   }
 
-  public static String spf (String format, Object arg1, Object arg2,
-                           Object arg3, Object arg4, Object arg5) {
+  @NotNull
+  public static String spf (@NotNull String format, Object arg1, Object arg2,
+                            Object arg3, Object arg4, Object arg5) {
     return (spf (format, new Object[] {arg1, arg2, arg3, arg4, arg5}));
   }
 
-  public static void pf (String format) {
+  public static void pf (@NotNull String format) {
     pf (format, new Object[0]);
   }
 
-  public static void pf (String format, Object arg1) {
+  public static void pf (@NotNull String format, Object arg1) {
     pf (format, new Object[] {arg1});
     return;
   }
 
-  public static void pf (String format, Object arg1, Object arg2) {
+  public static void pf (@NotNull String format, Object arg1, Object arg2) {
     pf (format, new Object[] {arg1, arg2});
     return;
   }
 
-  public static void pf (String format, Object arg1, Object arg2,
-                            Object arg3) {
+  public static void pf (@NotNull String format, Object arg1, Object arg2,
+                         Object arg3) {
     pf (format, new Object[] {arg1, arg2, arg3});
     return;
   }
 
-  public static void pf (String format, Object arg1, Object arg2,
-                           Object arg3, Object arg4) {
+  public static void pf (@NotNull String format, Object arg1, Object arg2,
+                         Object arg3, Object arg4) {
     pf (format, new Object[] {arg1, arg2, arg3, arg4});
     return;
   }
 
-  public static void pf (String format, Object arg1, Object arg2,
-                           Object arg3, Object arg4, Object arg5) {
+  public static void pf (@NotNull String format, Object arg1, Object arg2,
+                         Object arg3, Object arg4, Object arg5) {
     pf (format, new Object[] {arg1, arg2, arg3, arg4, arg5});
     return;
   }
 
-  static public void pf (String format, Object arg1, Object arg2,
-                           Object arg3, Object arg4, Object arg5,
-                           Object arg6) {
+  static public void pf (@NotNull String format, Object arg1, Object arg2,
+                         Object arg3, Object arg4, Object arg5,
+                         Object arg6) {
     pf (format, new Object[] {arg1, arg2, arg3, arg4, arg5, arg6});
     return;
   }

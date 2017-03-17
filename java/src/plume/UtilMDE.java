@@ -3,6 +3,9 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
@@ -30,7 +33,7 @@ public final class UtilMDE {
    * Returns true if the cardinality of the intersection of the two
    * BitSets is at least the given value.
    **/
-  public static boolean intersectionCardinalityAtLeast(BitSet a, BitSet b, int i) {
+  public static boolean intersectionCardinalityAtLeast(@NotNull BitSet a, @NotNull BitSet b, int i) {
     // Here are three implementation strategies to determine the
     // cardinality of the intersection:
     // 1. a.clone().and(b).cardinality()
@@ -58,7 +61,7 @@ public final class UtilMDE {
    * Returns true if the cardinality of the intersection of the two
    * BitSets is at least the given value.
    **/
-  public static boolean intersectionCardinalityAtLeast(BitSet a, BitSet b, BitSet c, int i) {
+  public static boolean intersectionCardinalityAtLeast(@NotNull BitSet a, @NotNull BitSet b, @NotNull BitSet c, int i) {
     // See comments in intersectionCardinalityAtLeast(BitSet, BitSet, int).
     // This is a copy of that.
 
@@ -78,14 +81,14 @@ public final class UtilMDE {
   }
 
   /** Returns the cardinality of the intersection of the two BitSets. **/
-  public static int intersectionCardinality(BitSet a, BitSet b) {
+  public static int intersectionCardinality(@NotNull BitSet a, BitSet b) {
     BitSet intersection = (BitSet) a.clone();
     intersection.and(b);
     return intersection.cardinality();
   }
 
   /** Returns the cardinality of the intersection of the three BitSets. **/
-  public static int intersectionCardinality(BitSet a, BitSet b, BitSet c) {
+  public static int intersectionCardinality(@NotNull BitSet a, BitSet b, BitSet c) {
     BitSet intersection = (BitSet) a.clone();
     intersection.and(b);
     intersection.and(c);
@@ -109,7 +112,7 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    */
-  public static InputStream fileInputStream(File file) throws IOException {
+  public static InputStream fileInputStream(@NotNull File file) throws IOException {
     InputStream in;
     if (file.getName().endsWith(".gz")) {
       in = new GZIPInputStream(new FileInputStream(file));
@@ -128,7 +131,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static InputStreamReader fileReader(String filename) throws FileNotFoundException, IOException {
+  @Nullable
+  public static InputStreamReader fileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     // return fileReader(filename, "ISO-8859-1");
     return fileReader(new File(filename), null);
   }
@@ -142,7 +146,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static InputStreamReader fileReader(File file) throws FileNotFoundException, IOException {
+  @Nullable
+  public static InputStreamReader fileReader(@NotNull File file) throws FileNotFoundException, IOException {
     return fileReader(file, null);
   }
 
@@ -157,7 +162,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static InputStreamReader fileReader(File file, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  @Nullable
+  public static InputStreamReader fileReader(@NotNull File file, /*@-Nullable*/ @Nullable String charsetName) throws FileNotFoundException, IOException {
     InputStream in = new FileInputStream(file);
     InputStreamReader file_reader;
     if (charsetName == null) {
@@ -177,7 +183,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(String filename) throws FileNotFoundException, IOException {
+  @NotNull
+  public static BufferedReader bufferedFileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     return bufferedFileReader(new File(filename));
   }
 
@@ -190,7 +197,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(File file) throws FileNotFoundException, IOException {
+  @NotNull
+  public static BufferedReader bufferedFileReader(@NotNull File file) throws FileNotFoundException, IOException {
     return(bufferedFileReader(file, null));
   }
 
@@ -203,7 +211,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(String filename, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  @NotNull
+  public static BufferedReader bufferedFileReader(@NotNull String filename, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
     return bufferedFileReader(new File(filename), charsetName);
   }
 
@@ -216,7 +225,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedReader bufferedFileReader(File file, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
+  @NotNull
+  public static BufferedReader bufferedFileReader(@NotNull File file, /*@-Nullable*/ String charsetName) throws FileNotFoundException, IOException {
     Reader file_reader = fileReader(file, charsetName);
     return new BufferedReader(file_reader);
   }
@@ -231,7 +241,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static LineNumberReader lineNumberFileReader(String filename) throws FileNotFoundException, IOException {
+  @NotNull
+  public static LineNumberReader lineNumberFileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     return lineNumberFileReader(new File(filename));
   }
 
@@ -244,7 +255,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static LineNumberReader lineNumberFileReader(File file) throws FileNotFoundException, IOException {
+  @NotNull
+  public static LineNumberReader lineNumberFileReader(@NotNull File file) throws FileNotFoundException, IOException {
     Reader file_reader;
     if (file.getName().endsWith(".gz")) {
       file_reader = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)),
@@ -265,7 +277,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedWriter bufferedFileWriter(String filename) throws IOException {
+  @NotNull
+  public static BufferedWriter bufferedFileWriter(@NotNull String filename) throws IOException {
     return bufferedFileWriter (filename, false);
   }
 
@@ -280,7 +293,8 @@ public final class UtilMDE {
    * just the first one:  it silently discards all characters (including
    * gzipped files) after the first gzipped file.
    **/
-  public static BufferedWriter bufferedFileWriter(String filename, boolean append) throws IOException {
+  @NotNull
+  public static BufferedWriter bufferedFileWriter(@NotNull String filename, boolean append) throws IOException {
     Writer file_writer;
     if (filename.endsWith(".gz")) {
       file_writer = new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(filename, append)));
@@ -292,28 +306,33 @@ public final class UtilMDE {
 
 
   /** @deprecated use BufferedFileReader (note lowercase first letter) */
+  @NotNull
   @Deprecated // since June 2005
-  public static BufferedReader BufferedFileReader(String filename) throws FileNotFoundException, IOException {
+  public static BufferedReader BufferedFileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     return bufferedFileReader(filename);
   }
   /** @deprecated use lineNumberFileReader (note lowercase first letter) */
+  @NotNull
   @Deprecated // since June 2005
-  public static LineNumberReader LineNumberFileReader(String filename) throws FileNotFoundException, IOException {
+  public static LineNumberReader LineNumberFileReader(@NotNull String filename) throws FileNotFoundException, IOException {
     return lineNumberFileReader(filename);
   }
   /** @deprecated use lineNumberFileReader (note lowercase first letter) */
+  @NotNull
   @Deprecated // since June 2005
-  public static LineNumberReader LineNumberFileReader(File file) throws FileNotFoundException, IOException {
+  public static LineNumberReader LineNumberFileReader(@NotNull File file) throws FileNotFoundException, IOException {
     return lineNumberFileReader(file);
   }
   /** @deprecated use BufferedFileWriter (note lowercase first letter) */
+  @NotNull
   @Deprecated // since June 2005
-  public static BufferedWriter BufferedFileWriter(String filename) throws IOException {
+  public static BufferedWriter BufferedFileWriter(@NotNull String filename) throws IOException {
     return bufferedFileWriter(filename);
   }
   /** @deprecated use bufferedFileWriter (note lowercase first letter) */
+  @NotNull
   @Deprecated // since June 2005
-  public static BufferedWriter BufferedFileWriter(String filename, boolean append) throws IOException {
+  public static BufferedWriter BufferedFileWriter(@NotNull String filename, boolean append) throws IOException {
     return bufferedFileWriter(filename, append);
   }
 
@@ -322,7 +341,7 @@ public final class UtilMDE {
   /// Class
   ///
 
-  private static HashMap<String,Class<?>> primitiveClasses = new HashMap<String,Class<?>>(8);
+  @NotNull private static HashMap<String,Class<?>> primitiveClasses = new HashMap<String,Class<?>>(8);
   static {
     primitiveClasses.put("boolean", Boolean.TYPE);
     primitiveClasses.put("byte", Byte.TYPE);
@@ -341,7 +360,7 @@ public final class UtilMDE {
    * changed to a dollar sign ($).  This accounts for inner classes
    * which are sometimes separated with '.'.
    **/
-  public static Class<?> classForName(String className) throws ClassNotFoundException {
+  public static Class<?> classForName(@NotNull String className) throws ClassNotFoundException {
     Class<?> result = primitiveClasses.get(className);
     if (result != null)
       return result;
@@ -361,7 +380,7 @@ public final class UtilMDE {
     }
   }
 
-  private static HashMap<String,String> primitiveClassesJvm = new HashMap<String,String>(8);
+  @NotNull private static HashMap<String,String> primitiveClassesJvm = new HashMap<String,String>(8);
   static {
     primitiveClassesJvm.put("boolean", "Z");
     primitiveClassesJvm.put("byte", "B");
@@ -377,7 +396,7 @@ public final class UtilMDE {
    * Convert a fully-qualified classname from Java format to JVML format.
    * For example, convert "java.lang.Object[]" to "[Ljava/lang/Object;".
    **/
-  public static String classnameToJvm(String classname) {
+  public static String classnameToJvm(@NotNull String classname) {
     int dims = 0;
     while (classname.endsWith("[]")) {
       dims++;
@@ -411,7 +430,8 @@ public final class UtilMDE {
    * For example, convert "(java.lang.Integer[], int, java.lang.Integer[][])"
    * to "([Ljava/lang/Integer;I[[Ljava/lang/Integer;)".
    **/
-  public static String arglistToJvm(String arglist) {
+  @NotNull
+  public static String arglistToJvm(@NotNull String arglist) {
     if (! (arglist.startsWith("(") && arglist.endsWith(")"))) {
       throw new Error("Malformed arglist: " + arglist);
     }
@@ -428,7 +448,7 @@ public final class UtilMDE {
     return result;
   }
 
-  private static HashMap<String,String> primitiveClassesFromJvm = new HashMap<String,String>(8);
+  @NotNull private static HashMap<String,String> primitiveClassesFromJvm = new HashMap<String,String>(8);
   static {
     primitiveClassesFromJvm.put("Z", "boolean");
     primitiveClassesFromJvm.put("B", "byte");
@@ -444,7 +464,7 @@ public final class UtilMDE {
    * Convert a classname from JVML format to Java format.
    * For example, convert "[Ljava/lang/Object;" to "java.lang.Object[]".
    **/
-  public static String classnameFromJvm(String classname) {
+  public static String classnameFromJvm(@NotNull String classname) {
     int dims = 0;
     while (classname.startsWith("[")) {
       dims++;
@@ -470,7 +490,8 @@ public final class UtilMDE {
    * For example, convert "([Ljava/lang/Integer;I[[Ljava/lang/Integer;)"
    * to "(java.lang.Integer[], int, java.lang.Integer[][])".
    **/
-  public static String arglistFromJvm(String arglist) {
+  @NotNull
+  public static String arglistFromJvm(@NotNull String arglist) {
     if (! (arglist.startsWith("(") && arglist.endsWith(")"))) {
       throw new Error("Malformed arglist: " + arglist);
     }
@@ -512,7 +533,7 @@ public final class UtilMDE {
    * order to call defineClass.
    **/
   private static class PromiscuousLoader extends ClassLoader {
-    public Class<?> loadClassFromFile(String className, String pathname) throws FileNotFoundException, IOException {
+    public Class<?> loadClassFromFile(String className, @NotNull String pathname) throws FileNotFoundException, IOException {
       FileInputStream fi = new FileInputStream(pathname);
       int numbytes = fi.available();
       byte[] classBytes = new byte[numbytes];
@@ -524,13 +545,13 @@ public final class UtilMDE {
     }
   }
 
-  private static PromiscuousLoader thePromiscuousLoader = new PromiscuousLoader();
+  @NotNull private static PromiscuousLoader thePromiscuousLoader = new PromiscuousLoader();
 
   /**
    * @param pathname the pathname of a .class file
    * @return a Java Object corresponding to the Class defined in the .class file
    **/
-  public static Class<?> loadClassFromFile(String className, String pathname) throws FileNotFoundException, IOException {
+  public static Class<?> loadClassFromFile(String className, @NotNull String pathname) throws FileNotFoundException, IOException {
     return thePromiscuousLoader.loadClassFromFile(className, pathname);
   }
 
@@ -563,7 +584,7 @@ public final class UtilMDE {
 
 
   /** Count the number of lines in the specified file **/
-  public static long count_lines(String filename) throws IOException {
+  public static long count_lines(@NotNull String filename) throws IOException {
     LineNumberReader reader = UtilMDE.lineNumberFileReader(filename);
     long count = 0;
     while (reader.readLine() != null)
@@ -572,12 +593,12 @@ public final class UtilMDE {
   }
 
   /** Tries to infer the line separator used in a file. **/
-  public static String inferLineSeparator(String filename) throws IOException {
+  public static String inferLineSeparator(@NotNull String filename) throws IOException {
     return inferLineSeparator(new File(filename));
   }
 
   /** Tries to infer the line separator used in a file. **/
-  public static String inferLineSeparator(File filename) throws IOException {
+  public static String inferLineSeparator(@NotNull File filename) throws IOException {
     BufferedReader r = UtilMDE.bufferedFileReader(filename);
     int unix = 0;
     int dos = 0;
@@ -619,7 +640,7 @@ public final class UtilMDE {
   /**
    * Returns true iff files have the same contents.
    */
-  public static boolean equalFiles(String file1, String file2) {
+  public static boolean equalFiles(@NotNull String file1, @NotNull String file2) {
     return equalFiles(file1, file2, false);
   }
 
@@ -627,7 +648,7 @@ public final class UtilMDE {
    * Returns true iff files have the same contents.
    * @param trimLines if true, call String.trim on each line before comparing
    */
-  public static boolean equalFiles(String file1, String file2, boolean trimLines) {
+  public static boolean equalFiles(@NotNull String file1, @NotNull String file2, boolean trimLines) {
     try {
       LineNumberReader reader1 = UtilMDE.lineNumberFileReader(file1);
       LineNumberReader reader2 = UtilMDE.lineNumberFileReader(file2);
@@ -659,7 +680,7 @@ public final class UtilMDE {
    *  if the file exists and is writable, or
    *  if the file can be created.
    **/
-  public static boolean canCreateAndWrite(File file) {
+  public static boolean canCreateAndWrite(@NotNull File file) {
     if (file.exists()) {
       return file.canWrite();
     } else {
@@ -710,6 +731,7 @@ public final class UtilMDE {
    *  file to be created
    * @see java.io.File#createTempFile(String, String, File)
    **/
+  @NotNull
   public static File createTempDir(String prefix, String suffix)
     throws IOException {
     String fs = File.separator;
@@ -730,7 +752,7 @@ public final class UtilMDE {
    * Deletes the directory at dirName and all its files.
    * Fails if dirName has any subdirectories.
    */
-  public static void deleteDir(String dirName) {
+  public static void deleteDir(@NotNull String dirName) {
     deleteDir(new File(dirName));
   }
 
@@ -738,7 +760,7 @@ public final class UtilMDE {
    * Deletes the directory at dirName and all its files.
    * Fails if dirName has any subdirectories.
    */
-  public static void deleteDir(File dir) {
+  public static void deleteDir(@NotNull File dir) {
     File[] files = dir.listFiles();
     if (files == null) {
       return;
@@ -760,7 +782,7 @@ public final class UtilMDE {
   public static final class WildcardFilter implements FilenameFilter {
     String prefix;
     String suffix;
-    public WildcardFilter(String filename) {
+    public WildcardFilter(@NotNull String filename) {
       int astloc = filename.indexOf("*");
       if (astloc == -1)
         throw new Error("No asterisk in wildcard argument: " + filename);
@@ -769,7 +791,7 @@ public final class UtilMDE {
       if (filename.indexOf("*") != -1)
         throw new Error("Multiple asterisks in wildcard argument: " + filename);
     }
-    public boolean accept(File dir, String name) {
+    public boolean accept(File dir, @NotNull String name) {
       return name.startsWith(prefix) && name.endsWith(suffix);
     }
   }
@@ -782,7 +804,8 @@ public final class UtilMDE {
    * Fixes a file name to do tilde expansion (to the user's home directory).
    * There maybe other logical things to do as well.
    */
-  public static File fix_filename (File name) {
+  @NotNull
+  public static File fix_filename (@NotNull File name) {
     String path = name.getPath();
     String newname = fix_filename (path);
     if (newname == path)
@@ -796,7 +819,7 @@ public final class UtilMDE {
    * Fixes a file name to do tilde expansion (to the users home directory).
    * There maybe other logical things to do as well.
    */
-  public static String fix_filename (String name) {
+  public static String fix_filename (@NotNull String name) {
     if (name.contains ("~"))
       return (name.replace ("~", userHome));
     else
@@ -814,7 +837,7 @@ public final class UtilMDE {
    * in filenames except as windows path separators.  That seems like a
    * reasonable assumption.
    */
-  public static String java_source (File name) {
+  public static String java_source (@NotNull File name) {
 
     return name.getPath().replace ("\\", "\\\\");
   }
@@ -826,7 +849,7 @@ public final class UtilMDE {
   /**
    * Writes an Object to a File.
    **/
-  public static void writeObject(Object o, File file) throws IOException {
+  public static void writeObject(Object o, @NotNull File file) throws IOException {
     // 8192 is the buffer size in BufferedReader
     OutputStream bytes =
       new BufferedOutputStream(new FileOutputStream(file), 8192);
@@ -842,7 +865,7 @@ public final class UtilMDE {
   /**
    * Reads an Object from a File.
    **/
-  public static Object readObject(File file) throws
+  public static Object readObject(@NotNull File file) throws
   IOException, ClassNotFoundException {
     // 8192 is the buffer size in BufferedReader
     InputStream istream =
@@ -858,7 +881,7 @@ public final class UtilMDE {
    * Reads the entire contents of the reader and returns it as a string.
    * Any IOException encountered will be turned into an Error.
    */
-  public static String readerContents(Reader r) {
+  public static String readerContents(@NotNull Reader r) {
     try {
       StringBuilder contents = new StringBuilder();
       int ch;
@@ -877,7 +900,7 @@ public final class UtilMDE {
    * Reads the entire contents of the file and returns it as a string.
    * Any IOException encountered will be turned into an Error.
    */
-  public static String readFile (File file) {
+  public static String readFile (@NotNull File file) {
 
     try {
       BufferedReader reader = UtilMDE.bufferedFileReader (file);
@@ -901,7 +924,7 @@ public final class UtilMDE {
    * to it.  If the file currently exists (and is writable) it is overwritten
    * Any IOException encountered will be turned into an Error.
    */
-  public static void writeFile (File file, String contents) {
+  public static void writeFile (@NotNull File file, @NotNull String contents) {
 
     try {
       FileWriter writer = new FileWriter (file);
@@ -924,7 +947,7 @@ public final class UtilMDE {
    * If the key isn't in the HashMap, it is added.
    * Throws an error if the key is in the HashMap but maps to a non-Integer.
    **/
-  public static <T> /*@-Nullable*/ Integer incrementMap(Map<T,Integer> m, T key, int count) {
+  public static <T> /*@-Nullable*/ Integer incrementMap(@NotNull Map<T,Integer> m, T key, int count) {
     Integer old = m.get(key);
     int new_total;
     if (old == null) {
@@ -935,7 +958,7 @@ public final class UtilMDE {
     return m.put(key, new Integer(new_total));
   }
 
-  public static <K,V> String mapToString(Map<K,V> m) {
+  public static <K,V> String mapToString(@NotNull Map<K,V> m) {
     StringBuilder sb = new StringBuilder();
     mapToString(sb, m, "");
     return sb.toString();
@@ -945,7 +968,7 @@ public final class UtilMDE {
    * Write a multi-line representation of the map into the given Appendable
    * (e.g., a StringBuilder).
    */
-  public static <K,V> void mapToString(Appendable sb, Map<K,V> m, String linePrefix) {
+  public static <K,V> void mapToString(@NotNull Appendable sb, @NotNull Map<K,V> m, String linePrefix) {
     try {
       for (Map.Entry<K, V> entry : m.entrySet()) {
         sb.append(linePrefix);
@@ -1004,7 +1027,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(double /*@-Nullable*/ [] a) {
+  public static final int hash(@Nullable double /*@-Nullable*/ [] a) {
     double result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1053,7 +1076,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(long /*@-Nullable*/ [] a) {
+  public static final int hash(@Nullable long /*@-Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1068,7 +1091,7 @@ public final class UtilMDE {
     return hash(hash(a), hash(b));
   }
 
-  public static final int hash(/*@-Nullable*/ String a) {
+  public static final int hash(/*@-Nullable*/ @Nullable String a) {
     return (a == null) ? 0 : a.hashCode();
   }
 
@@ -1087,7 +1110,7 @@ public final class UtilMDE {
     return hash(result);
   }
 
-  public static final int hash(/*@-Nullable*/ String /*@-Nullable*/ [] a) {
+  public static final int hash(/*@-Nullable*/ @Nullable String /*@-Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
       result = result * 37 + a.length;
@@ -1188,6 +1211,7 @@ public final class UtilMDE {
       this.itor = itor; this.filter = filter;
     }
 
+    @NotNull
     @SuppressWarnings("unchecked")
     T invalid_t = (T) new Object();
 
@@ -1226,12 +1250,13 @@ public final class UtilMDE {
     Iterator<T> itor;
     // I don't think this works, because the iterator might itself return null
     // /*@-Nullable*/ T nothing = (/*@-Nullable*/ T) null;
+    @NotNull
     @SuppressWarnings("unchecked")
     T nothing = (T) new Object();
     T first = nothing;
     T current = nothing;
 
-    public RemoveFirstAndLastIterator(Iterator<T> itor) {
+    public RemoveFirstAndLastIterator(@NotNull Iterator<T> itor) {
       this.itor = itor;
       if (itor.hasNext()) {
         first = itor.next();
@@ -1283,10 +1308,10 @@ public final class UtilMDE {
    * there are fewer.  It examines every element of the iterator, but does
    * not keep them all in memory.
    **/
-  public static <T> List<T> randomElements(Iterator<T> itor, int num_elts) {
+  public static <T> List<T> randomElements(@NotNull Iterator<T> itor, int num_elts) {
     return randomElements(itor, num_elts, r);
   }
-  private static Random r = new Random();
+  @NotNull private static Random r = new Random();
 
   /**
    * Return an List containing num_elts randomly chosen
@@ -1294,7 +1319,7 @@ public final class UtilMDE {
    * there are fewer.  It examines every element of the iterator, but does
    * not keep them all in memory.
    **/
-  public static <T> List<T> randomElements(Iterator<T> itor, int num_elts, Random random) {
+  public static <T> List<T> randomElements(@NotNull Iterator<T> itor, int num_elts, Random random) {
     // The elements are chosen with the following probabilities,
     // where n == num_elts:
     //   n n/2 n/3 n/4 n/5 ...
@@ -1331,9 +1356,9 @@ public final class UtilMDE {
   ///
 
   // maps from a string of arg names to an array of Class objects.
-  static HashMap<String,Class<?>[]> args_seen = new HashMap<String,Class<?>[]>();
+  @NotNull static HashMap<String,Class<?>[]> args_seen = new HashMap<String,Class<?>[]>();
 
-  public static Method methodForName(String method)
+  public static Method methodForName(@NotNull String method)
     throws ClassNotFoundException, NoSuchMethodException, SecurityException {
 
     int oparenpos = method.indexOf('(');
@@ -1383,7 +1408,7 @@ public final class UtilMDE {
     return methodForName(classname, methodname, argclasses);
   }
 
-  public static Method methodForName(String classname, String methodname, Class<?>[] params)
+  public static Method methodForName(String classname, @NotNull String methodname, Class<?>[] params)
     throws ClassNotFoundException, NoSuchMethodException, SecurityException {
 
     Class<?> c = Class.forName(classname);
@@ -1407,7 +1432,7 @@ public final class UtilMDE {
   /**
    * Execute the given command, and return all its output as a string.
    */
-  public static String backticks(List<String> command) {
+  public static String backticks(@NotNull List<String> command) {
     ProcessBuilder pb = new ProcessBuilder(command);
     pb.redirectErrorStream(true);
     // TimeLimitProcess p = new TimeLimitProcess(pb.start(), TIMEOUT_SEC * 1000);
@@ -1429,7 +1454,7 @@ public final class UtilMDE {
    * Determines whether a property has value "true", "yes", or "1".
    * @see Properties#getProperty
    **/
-  public static boolean propertyIsTrue(Properties p, String key) {
+  public static boolean propertyIsTrue(@NotNull Properties p, @NotNull String key) {
     String pvalue = p.getProperty(key);
     if (pvalue == null) {
       return false;
@@ -1444,7 +1469,8 @@ public final class UtilMDE {
    * @see Properties#getProperty
    * @see Properties#setProperty
    **/
-  public static /*@-Nullable*/ String appendProperty(Properties p, String key, String value) {
+  @NotNull
+  public static /*@-Nullable*/ String appendProperty(@NotNull Properties p, String key, String value) {
     return (String)p.setProperty(key, p.getProperty(key, "") + value);
   }
 
@@ -1455,7 +1481,7 @@ public final class UtilMDE {
    * @see Properties#setProperty
    **/
   @Deprecated
-  public static /*@-Nullable*/ String setDefault(Properties p, String key, String value) {
+  public static /*@-Nullable*/ String setDefault(@NotNull Properties p, @NotNull String key, String value) {
     String currentValue = p.getProperty(key);
     if (currentValue == null) {
       p.setProperty(key, value);
@@ -1468,7 +1494,7 @@ public final class UtilMDE {
    * @see Properties#getProperty
    * @see Properties#setProperty
    **/
-  public static /*@-Nullable*/ String setDefaultMaybe(Properties p, String key, String value) {
+  public static /*@-Nullable*/ String setDefaultMaybe(@NotNull Properties p, @NotNull String key, String value) {
     String currentValue = p.getProperty(key);
     if (currentValue == null) {
       p.setProperty(key, value);
@@ -1498,7 +1524,8 @@ public final class UtilMDE {
      * @return  A literal string replacement
      * @since 1.5
      */
-    public static String patternQuote(String s) {
+    @NotNull
+    public static String patternQuote(@NotNull String s) {
         int slashEIndex = s.indexOf("\\E");
         if (slashEIndex == -1)
             return "\\Q" + s + "\\E";
@@ -1526,7 +1553,7 @@ public final class UtilMDE {
    * Sets the given field, which may be final.
    * Intended for use in readObject and nowhere else!
    */
-  public static void setFinalField(Object o, String fieldName, Object value)
+  public static void setFinalField(@NotNull Object o, @NotNull String fieldName, Object value)
     throws NoSuchFieldException, IllegalAccessException {
       Field f = o.getClass().getDeclaredField(fieldName);
       f.setAccessible(true);
@@ -1543,7 +1570,8 @@ public final class UtilMDE {
    * The Set abstraction doesn't provide this; it only provides "contains".
    * Returns null if the argument is null, or if it isn't in the set.
    **/
-  public static /*@-Nullable*/ Object getFromSet(Set<?> set, Object key) {
+  @Nullable
+  public static /*@-Nullable*/ Object getFromSet(@NotNull Set<?> set, @Nullable Object key) {
     if (key == null) {
       return null;
     }
@@ -1561,7 +1589,7 @@ public final class UtilMDE {
   ///
 
   /** Copy the contents of the input stream to the output stream. */
-  public static void streamCopy(java.io.InputStream from, java.io.OutputStream to) {
+  public static void streamCopy(@NotNull java.io.InputStream from, @NotNull java.io.OutputStream to) {
     byte[] buffer = new byte[1024];
     int bytes;
     try {
@@ -1579,7 +1607,7 @@ public final class UtilMDE {
   }
 
   /** Return a String containing all the characters from the input stream. **/
-  public static String streamString(java.io.InputStream is) {
+  public static String streamString(@NotNull java.io.InputStream is) {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     streamCopy(is, baos);
     return baos.toString();
@@ -1594,7 +1622,7 @@ public final class UtilMDE {
    * Return a new string which is the text of target with all instances of
    * oldStr replaced by newStr.
    **/
-  public static String replaceString(String target, String oldStr, String newStr) {
+  public static String replaceString(@NotNull String target, @NotNull String oldStr, String newStr) {
     if (oldStr.equals("")) throw new IllegalArgumentException();
 
     StringBuffer result = new StringBuffer();
@@ -1616,7 +1644,8 @@ public final class UtilMDE {
    * empty string).
    * @see #split(String s, String delim)
    **/
-  public static String[] split(String s, char delim) {
+  @NotNull
+  public static String[] split(@NotNull String s, char delim) {
     Vector<String> result = new Vector<String>();
     for (int delimpos = s.indexOf(delim); delimpos != -1; delimpos = s.indexOf(delim)) {
       result.add(s.substring(0, delimpos));
@@ -1635,7 +1664,8 @@ public final class UtilMDE {
    * empty string).
    * @see #split(String s, char delim)
    **/
-  public static String[] split(String s, String delim) {
+  @NotNull
+  public static String[] split(@NotNull String s, @NotNull String delim) {
     int delimlen = delim.length();
     if (delimlen == 0) {
       throw new Error("Second argument to split was empty.");
@@ -1659,7 +1689,7 @@ public final class UtilMDE {
    * will return an empty string as the last element of the array.
    * @see #split(String s, char delim)
    **/
-  public static String[] splitLines(String s) {
+  public static String[] splitLines(@NotNull String s) {
     return s.split ("\r\n?|\n\r?", -1);
   }
 
@@ -1668,7 +1698,7 @@ public final class UtilMDE {
    * delimiter between them.
    * @see plume.ArraysMDE#toString(int[])
    **/
-  public static String join(Object[] a, String delim) {
+  public static String join(@NotNull Object[] a, String delim) {
     if (a.length == 0) return "";
     if (a.length == 1) return String.valueOf(a[0]);
     StringBuffer sb = new StringBuffer(String.valueOf(a[0]));
@@ -1682,7 +1712,7 @@ public final class UtilMDE {
    * system-specific line separator between them.
    * @see plume.ArraysMDE#toString(int[])
    **/
-  public static String joinLines(Object... a) {
+  public static String joinLines(@NotNull Object... a) {
     return join(a, lineSep);
   }
 
@@ -1691,7 +1721,7 @@ public final class UtilMDE {
    * delimiter between them.
    * @see java.util.AbstractCollection#toString()
    **/
-  public static String join(List<?> v, String delim) {
+  public static String join(@NotNull List<?> v, String delim) {
     if (v.size() == 0) return "";
     if (v.size() == 1) return v.get(0).toString();
     // This should perhaps use an iterator rather than get().
@@ -1706,7 +1736,7 @@ public final class UtilMDE {
    * system-specific line separator between them.
    * @see java.util.AbstractCollection#toString()
    **/
-  public static String joinLines(List<String> v, String delim) {
+  public static String joinLines(@NotNull List<String> v, String delim) {
     return join(v, lineSep);
   }
 
@@ -1719,7 +1749,8 @@ public final class UtilMDE {
    * Java string literal denoting the original string. Previously
    * known as quote().
    **/
-  public static String escapeNonJava(String orig) {
+  @NotNull
+  public static String escapeNonJava(@NotNull String orig) {
     StringBuffer sb = new StringBuffer();
     // The previous escape character was seen right before this position.
     int post_esc = 0;
@@ -1760,7 +1791,8 @@ public final class UtilMDE {
   }
 
   // The overhead of this is too high to call in escapeNonJava(String)
-  public static String escapeNonJava(Character ch) {
+  @NotNull
+  public static String escapeNonJava(@NotNull Character ch) {
     char c = ch.charValue();
     switch (c) {
     case '\"':
@@ -1781,7 +1813,7 @@ public final class UtilMDE {
    * Java backslash conventions, so that the result is sure to be
    * printable ASCII.  Returns a new string.
    **/
-  public static String escapeNonASCII(String orig) {
+  public static String escapeNonASCII(@NotNull String orig) {
     StringBuffer sb = new StringBuffer();
     int orig_len = orig.length();
     for (int i=0; i<orig_len; i++) {
@@ -1795,6 +1827,7 @@ public final class UtilMDE {
    * Like escapeNonJava(), but quote more characters so that the
    * result is sure to be printable ASCII. Not particularly optimized.
    **/
+  @NotNull
   private static String escapeNonASCII(char c) {
     if (c == '"') {
       return "\\\"";
@@ -1828,7 +1861,8 @@ public final class UtilMDE {
    * their respective characters). This is the inverse operation of
    * escapeNonJava(). Previously known as unquote().
    **/
-  public static String unescapeNonJava(String orig) {
+  @NotNull
+  public static String unescapeNonJava(@NotNull String orig) {
     StringBuffer sb = new StringBuffer();
     // The previous escape character was seen just before this position.
     int post_esc = 0;
@@ -1920,14 +1954,15 @@ public final class UtilMDE {
 
 
   /** Remove all whitespace before or after instances of delimiter. **/
-  public static String removeWhitespaceAround(String arg, String delimiter) {
+  public static String removeWhitespaceAround(String arg, @NotNull String delimiter) {
     arg = removeWhitespaceBefore(arg, delimiter);
     arg = removeWhitespaceAfter(arg, delimiter);
     return arg;
   }
 
   /** Remove all whitespace after instances of delimiter. **/
-  public static String removeWhitespaceAfter(String arg, String delimiter) {
+  @NotNull
+  public static String removeWhitespaceAfter(@NotNull String arg, @NotNull String delimiter) {
     // String orig = arg;
     int delim_len = delimiter.length();
     int delim_index = arg.indexOf(delimiter);
@@ -1951,7 +1986,8 @@ public final class UtilMDE {
   }
 
   /** Remove all whitespace before instances of delimiter. **/
-  public static String removeWhitespaceBefore(String arg, String delimiter) {
+  @NotNull
+  public static String removeWhitespaceBefore(@NotNull String arg, @NotNull String delimiter) {
     // System.out.println("removeWhitespaceBefore(\"" + arg + "\", \"" + delimiter + "\")");
     // String orig = arg;
     int delim_len = delimiter.length();
@@ -1977,7 +2013,8 @@ public final class UtilMDE {
 
 
   // @return either "n noun" or "n nouns" depending on n
-  public static String nplural(int n, String noun) {
+  @NotNull
+  public static String nplural(int n, @NotNull String noun) {
     if (n == 1)
       return n + " " + noun;
     else if (noun.endsWith("s") || noun.endsWith("x") ||
@@ -1990,7 +2027,8 @@ public final class UtilMDE {
 
   // Returns a string of the specified length, truncated if necessary,
   // and padded with spaces to the right if necessary.
-  public static String rpad(String s, int length) {
+  @NotNull
+  public static String rpad(@NotNull String s, int length) {
     if (s.length() < length) {
       StringBuffer buf = new StringBuffer(s);
       for (int i = s.length(); i < length; i++) {
@@ -2003,11 +2041,13 @@ public final class UtilMDE {
   }
 
   // Converts the int to a String, then formats it using rpad
+  @NotNull
   public static String rpad(int num, int length) {
     return rpad(String.valueOf(num), length);
   }
 
   // Converts the double to a String, then formats it using rpad
+  @NotNull
   public static String rpad(double num, int length) {
     return rpad(String.valueOf(num), length);
   }
@@ -2017,7 +2057,7 @@ public final class UtilMDE {
   public static class NullableStringComparator
     implements Comparator<String>
   {
-    public int compare(String s1, String s2) {
+    public int compare(@Nullable String s1, @Nullable String s2) {
       if (s1 == null && s2 == null) return 0;
       if (s1 == null && s2 != null) return 1;
       if (s1 != null && s2 == null) return -1;
@@ -2026,7 +2066,7 @@ public final class UtilMDE {
   }
 
   /** Return the number of times the character appears in the string. **/
-  public static int count(String s, int ch) {
+  public static int count(@NotNull String s, int ch) {
     int result = 0;
     int pos = s.indexOf(ch);
     while (pos > -1) {
@@ -2037,7 +2077,7 @@ public final class UtilMDE {
   }
 
   /** Return the number of times the second string appears in the first. **/
-  public static int count(String s, String sub) {
+  public static int count(@NotNull String s, @NotNull String sub) {
     int result = 0;
     int pos = s.indexOf(sub);
     while (pos > -1) {
@@ -2060,7 +2100,8 @@ public final class UtilMDE {
    * Enumeration<Object> instead of Enumeration<String> as it should
    * (probably due to backward-compatibility).
    **/
-  public static Vector<Object> tokens(String str, String delim, boolean returnTokens) {
+  @NotNull
+  public static Vector<Object> tokens(@NotNull String str, String delim, boolean returnTokens) {
     return makeVector(new StringTokenizer(str, delim, returnTokens));
   }
 
@@ -2068,7 +2109,8 @@ public final class UtilMDE {
    * Return a Vector of the Strings returned by
    * {@link java.util.StringTokenizer#StringTokenizer(String,String)} with the given arguments.
    **/
-  public static Vector<Object> tokens(String str, String delim) {
+  @NotNull
+  public static Vector<Object> tokens(@NotNull String str, String delim) {
     return makeVector(new StringTokenizer(str, delim));
   }
 
@@ -2076,7 +2118,8 @@ public final class UtilMDE {
    * Return a Vector of the Strings returned by
    * {@link java.util.StringTokenizer#StringTokenizer(String)} with the given arguments.
    **/
-  public static Vector<Object> tokens(String str) {
+  @NotNull
+  public static Vector<Object> tokens(@NotNull String str) {
     return makeVector(new StringTokenizer(str));
   }
 
@@ -2087,7 +2130,7 @@ public final class UtilMDE {
   ///
 
   /** For the current backtrace, do "backtrace(new Throwable())". **/
-  public static String backTrace(Throwable t) {
+  public static String backTrace(@NotNull Throwable t) {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     t.printStackTrace(pw);
@@ -2122,7 +2165,8 @@ public final class UtilMDE {
    * Returns the sorted version of the list.  Does not alter the list.
    * Simply calls Collections.sort(List<T>, Comparator<? super T>).
    **/
-  public static <T> List<T> sortList (List<T> l, Comparator<? super T> c) {
+  @NotNull
+  public static <T> List<T> sortList (@NotNull List<T> l, Comparator<? super T> c) {
     List<T> result = new ArrayList<T>(l);
     Collections.sort(result, c);
     return result;
@@ -2133,7 +2177,8 @@ public final class UtilMDE {
    * Returns a copy of the list with duplicates removed.
    * Retains the original order.
    **/
-  public static <T> List<T> removeDuplicates(List<T> l) {
+  @NotNull
+  public static <T> List<T> removeDuplicates(@NotNull List<T> l) {
     // There are shorter solutions that do not maintain order.
     HashSet<T> hs = new HashSet<T>(l.size());
     List<T> result = new ArrayList<T>();
@@ -2151,7 +2196,8 @@ public final class UtilMDE {
   ///
 
   /** Returns a vector containing the elements of the enumeration. */
-  public static <T> Vector<T> makeVector(Enumeration<T> e) {
+  @NotNull
+  public static <T> Vector<T> makeVector(@NotNull Enumeration<T> e) {
     Vector<T> result = new Vector<T>();
     while (e.hasMoreElements()) {
       result.addElement(e.nextElement());
@@ -2177,7 +2223,8 @@ public final class UtilMDE {
    *    {b, b}, {b, c},
    *    {c, c}
    */
-  public static <T> List<List<T>> create_combinations (int dims, int start, List<T> objs) {
+  @NotNull
+  public static <T> List<List<T>> create_combinations (int dims, int start, @NotNull List<T> objs) {
 
     if (dims < 1) throw new IllegalArgumentException();
 
@@ -2216,6 +2263,7 @@ public final class UtilMDE {
    *    {1, 1}  {1, 2},
    *    {2, 2}
    */
+  @NotNull
   public static ArrayList<ArrayList<Integer>> create_combinations (int arity, int start, int cnt) {
 
     ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
@@ -2245,7 +2293,8 @@ public final class UtilMDE {
    * specified fully qualified name.  For example if qualified name
    * is java.lang.String, String will be returned.
    **/
-  public static String unqualified_name (String qualified_name) {
+  @NotNull
+  public static String unqualified_name (@NotNull String qualified_name) {
 
     int offset = qualified_name.lastIndexOf ('.');
     if (offset == -1)
@@ -2258,7 +2307,8 @@ public final class UtilMDE {
    * specified class.  For example if qualified name of the class
    * is java.lang.String, String will be returned.
    **/
-  public static String unqualified_name (Class<?> cls) {
+  @NotNull
+  public static String unqualified_name (@NotNull Class<?> cls) {
 
     return (unqualified_name (cls.getName()));
   }

@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -15,7 +18,8 @@ import java.util.*;
 public class OrderedPairIterator<T> implements java.util.Iterator<Pair</*@-Nullable*/ T,/*@-Nullable*/ T>> {
 
   Iterator<T> itor1, itor2;
-  /*@-Nullable*/ T next1, next2;
+  /*@-Nullable*/
+  @Nullable T next1, next2;
   /*@-Nullable*/ Comparator<? super T> comparator;
 
   // For this constructor, the arg type is actually Iterator<T extends
@@ -44,18 +48,21 @@ public class OrderedPairIterator<T> implements java.util.Iterator<Pair</*@-Nulla
   // }
   public boolean hasNext() { return ((next1 != null) || (next2 != null)); }
   /** Return an element of the first iterator, paired with null. */
+  @NotNull
   private Pair</*@-Nullable*/ T,/*@-Nullable*/ T> return1() {
     Pair</*@-Nullable*/ T,/*@-Nullable*/ T> result = Pair.of(next1, (T)null);
     setnext1();
     return result;
   }
   /** Return a pair of null and an element of the second iterator. */
+  @NotNull
   private Pair</*@-Nullable*/ T,/*@-Nullable*/ T> return2() {
     Pair</*@-Nullable*/ T,/*@-Nullable*/ T> result = Pair.of((T)null, next2);
     setnext2();
     return result;
   }
   /** Return a pair containing an element from each iterator. */
+  @NotNull
   private Pair</*@-Nullable*/ T,/*@-Nullable*/ T> returnboth() {
     Pair</*@-Nullable*/ T,/*@-Nullable*/ T> result = Pair.of(next1, next2);
     setnext1();
@@ -63,6 +70,7 @@ public class OrderedPairIterator<T> implements java.util.Iterator<Pair</*@-Nulla
     return result;
   }
 
+  @NotNull
   public Pair</*@-Nullable*/ T,/*@-Nullable*/ T> next() {
     if (next1 == null) {
       if (next2 == null) {

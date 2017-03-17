@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -30,10 +32,10 @@ import java.nio.CharBuffer;
 
 public class BibtexClean {
 
-  private static Pattern entry_end = Pattern.compile("^[ \t]*(?i)(year[ \t]*=[ \t]*[12][0-9][0-9][0-9][ \t]*)?[)}]");
-  private static Pattern stringDef = Pattern.compile("^@(?i)string(\\{.*\\}|\\(.*\\))$");
+  @NotNull private static Pattern entry_end = Pattern.compile("^[ \t]*(?i)(year[ \t]*=[ \t]*[12][0-9][0-9][0-9][ \t]*)?[)}]");
+  @NotNull private static Pattern stringDef = Pattern.compile("^@(?i)string(\\{.*\\}|\\(.*\\))$");
 
-  public static void main(String[] args) {
+  public static void main(@NotNull String[] args) {
     for (String filename : args) {
       File in = new File(filename);
       PrintWriter out;

@@ -2,6 +2,8 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.security.*;
 import java.io.*;
 
@@ -13,7 +15,7 @@ public class Digest {
    * reads the contents of a named file and computes a message digest
    * for it, using the specified MessageDigest object.
    **/
-  public static byte[] getFileDigest(String filename, MessageDigest md)
+  public static byte[] getFileDigest(@NotNull String filename, @NotNull MessageDigest md)
        throws IOException {
     // Make sure there is nothing left behind in the MessageDigest
     md.reset();
@@ -34,7 +36,7 @@ public class Digest {
   }
 
   /** This static buffer is used by getFileDigest() above */
-  public static byte[] buffer = new byte[4096];
+  @NotNull public static byte[] buffer = new byte[4096];
 
   /** This array is used to convert from bytes to hexadecimal numbers */
   static final char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7',
@@ -45,7 +47,7 @@ public class Digest {
    * this simply by converting each byte to two hexadecimal digits.  Something
    * like Base 64 encoding is more compact, but harder to encode.
    **/
-  public static String hexEncode(byte[] bytes) {
+  public static String hexEncode(@NotNull byte[] bytes) {
     StringBuffer s = new StringBuffer(bytes.length * 2);
     for (int i = 0; i < bytes.length; i++) {
       byte b = bytes[i];
@@ -59,7 +61,8 @@ public class Digest {
    * A convenience method to convert in the other direction, from a string
    * of hexadecimal digits to an array of bytes.
    **/
-  public static byte[] hexDecode(String s) throws IllegalArgumentException {
+  @NotNull
+  public static byte[] hexDecode(@NotNull String s) throws IllegalArgumentException {
     try {
       int len = s.length();
       byte[] r = new byte[len/2];

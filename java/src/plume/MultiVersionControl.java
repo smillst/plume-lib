@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.tmatesoft.svn.core.wc.*;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
@@ -157,15 +159,18 @@ import java.net.URL;
 
 public class MultiVersionControl {
 
+  @NotNull
   @Option("File with list of checkouts.  Set it to /dev/null to suppress reading.")
   public String checkouts = new File(userHome, ".mvc-checkouts").getPath();
 
+  @NotNull
   @Option("Directory under which to search for checkouts; may be supplied multiple times; default=home dir")
   public List<String> dir = new ArrayList<String>();
 
+  @NotNull
   @Option("Directory under which to NOT search for checkouts; may be supplied multiple times")
   public List<String> ignore_dir = new ArrayList<String>();
-  private List<File> ignoreDirs = new ArrayList<File>();
+  @NotNull private List<File> ignoreDirs = new ArrayList<File>();
 
   // Default is false because searching whole directory structure is slow.
   @Option("Search for all checkouts, not just those listed in a file")
@@ -199,10 +204,10 @@ public class MultiVersionControl {
       LIST
       };
   // Shorter variants
-  private static Action CHECKOUT = Action.CHECKOUT;
-  private static Action STATUS = Action.STATUS;
-  private static Action UPDATE = Action.UPDATE;
-  private static Action LIST = Action.LIST;
+  @NotNull private static Action CHECKOUT = Action.CHECKOUT;
+  @NotNull private static Action STATUS = Action.STATUS;
+  @NotNull private static Action UPDATE = Action.UPDATE;
+  @NotNull private static Action LIST = Action.LIST;
 
   // Terminating the process can leave the repository in a bad state, so
   // set this rather high for safety.
@@ -213,7 +218,7 @@ public class MultiVersionControl {
   @SuppressWarnings("nullness") // user.home property always exists
   static final /*@NonNull*/ String userHome = System.getProperty ("user.home");
 
-  public static void main (String[] args) {
+  public static void main (@NotNull String[] args) {
     setupSVNKIT();
     MultiVersionControl mvc = new MultiVersionControl(args);
 
@@ -260,11 +265,11 @@ public class MultiVersionControl {
     FSRepositoryFactory.setup();
   }
 
-  public MultiVersionControl(String[] args) {
+  public MultiVersionControl(@NotNull String[] args) {
     parseArgs(args);
   }
 
-  public void parseArgs(String[] args) /*@Raw*/ {
+  public void parseArgs(@NotNull String[] args) /*@Raw*/ {
     Options options = new Options ("mvc [options] {checkout,status,update,list}", this);
     String[] remaining_args = options.parse_or_usage (args);
     if (remaining_args.length != 1) {
@@ -338,14 +343,15 @@ public class MultiVersionControl {
      * Non-null for CVS and, optionally, for SVN.
      * Null for distributed version control systems (Bzr, Git, Hg).
      */
-    /*@-Nullable*/ String module;
+    /*@-Nullable*/
+    @Nullable String module;
 
 
-    Checkout(RepoType repoType, File directory) {
+    Checkout(@NotNull RepoType repoType, @NotNull File directory) {
       this(repoType, directory, null, null);
     }
 
-    Checkout(RepoType repoType, File directory, /*@-Nullable*/ String repository, /*@-Nullable*/ String module) {
+    Checkout(@NotNull RepoType repoType, @NotNull File directory, /*@-Nullable*/ String repository, /*@-Nullable*/ @Nullable String module) {
       // Directory might not exist if we are running the checkout command.
       // If it exists, it must be a directory.
       assert (directory.exists() ? directory.isDirectory() : true)
@@ -382,7 +388,7 @@ public class MultiVersionControl {
     }
 
     /** If the directory exists, then the subdirectory must exist too. */
-    private void assertSubdirExists(File directory, String subdirName) {
+    private void assertSubdirExists(@NotNull File directory, @NotNull String subdirName) {
       if (directory.exists()
           && ! new File(directory, subdirName).isDirectory()) {
         System.err.printf("Directory %s exists but %s subdirectory does not exist",
@@ -415,6 +421,7 @@ public class MultiVersionControl {
               + (module == null ? 0 : module.hashCode()));
     }
 
+    @NotNull
     @Override
       public String toString() {
       return repoType
@@ -430,7 +437,7 @@ public class MultiVersionControl {
   /// Read checkouts from a file
   ///
 
-  static void readCheckouts(File file, Set<Checkout> checkouts) throws IOException {
+  static void readCheckouts(@NotNull File file, @NotNull Set<Checkout> checkouts) throws IOException {
     RepoType currentType = RepoType.BZR; // arbitrary choice
     String currentRoot = null;
     boolean currentRootIsRepos = false;
@@ -569,7 +576,7 @@ public class MultiVersionControl {
    * them to checkouts.  Works by checking whether dir or any of its
    * descendants is a version control directory.
    */
-  private static void findCheckouts(File dir, Set<Checkout> checkouts, List<File> ignoreDirs) {
+  private static void findCheckouts(@NotNull File dir, @NotNull Set<Checkout> checkouts, @NotNull List<File> ignoreDirs) {
     assert dir.isDirectory();
     if (ignoreDirs.contains(dir)) {
       return;
@@ -603,7 +610,7 @@ public class MultiVersionControl {
 
   /** Accept only directories that are not symbolic links. */
   static class IsDirectoryFilter implements FileFilter {
-    public boolean accept(File pathname) {
+    public boolean accept(@NotNull File pathname) {
       try {
         return pathname.isDirectory()
           && pathname.getPath().equals(pathname.getCanonicalPath());
@@ -615,7 +622,7 @@ public class MultiVersionControl {
     }
   }
 
-  static IsDirectoryFilter idf = new IsDirectoryFilter();
+  @NotNull static IsDirectoryFilter idf = new IsDirectoryFilter();
 
 
   /**
@@ -624,7 +631,7 @@ public class MultiVersionControl {
    * not a version control directory.  (Google Web Toolkit does that, for
    * example.)
    */
-  static void addCheckoutCvs(File cvsDir, File dir, Set<Checkout> checkouts) {
+  static void addCheckoutCvs(@NotNull File cvsDir, File dir, @NotNull Set<Checkout> checkouts) {
     assert cvsDir.getName().toString().equals("CVS") : cvsDir.getName();
     // relative path within repository
     File repositoryFile = new File(cvsDir, "Repository");
@@ -666,7 +673,8 @@ public class MultiVersionControl {
    * Given a directory named ".hg" , create a corresponding Checkout object
    * for its parent.
    */
-  static Checkout dirToCheckoutHg(File hgDir, File dir) {
+  @Nullable
+  static Checkout dirToCheckoutHg(File hgDir, @NotNull File dir) {
     String repository = null;
 
     File hgrcFile = new File(hgDir, "hgrc");
@@ -696,7 +704,8 @@ public class MultiVersionControl {
    * Given a directory named ".git" , create a corresponding Checkout object
    * for its parent.
    */
-  static Checkout dirToCheckoutGit(File gitDir, File dir) {
+  @Nullable
+  static Checkout dirToCheckoutGit(File gitDir, @NotNull File dir) {
     String repository = UtilMDE.backticks("git", "config", "remote.origin.url");
 
     return new Checkout(RepoType.GIT, dir, repository, null);
@@ -707,7 +716,8 @@ public class MultiVersionControl {
    * Given a directory that contains a .svn subdirectory, create a
    * corresponding Checkout object.
    */
-  static Checkout dirToCheckoutSvn(File dir) {
+  @Nullable
+  static Checkout dirToCheckoutSvn(@NotNull File dir) {
 
     // For SVN, do
     //   svn info
@@ -802,7 +812,8 @@ public class MultiVersionControl {
    * when p2 becomes p2_limit.  If p1_contains is non-null, then p1 must
    * contain a subdirectory of that name.
    */
-  static Pair</*@-Nullable*/ File,/*@-Nullable*/ File> removeCommonSuffixDirs(File p1, File p2, File p2_limit, String p1_contains) {
+  @NotNull
+  static Pair</*@-Nullable*/ File,/*@-Nullable*/ File> removeCommonSuffixDirs(File p1, File p2, @Nullable File p2_limit, @Nullable String p1_contains) {
     if (debug) {
       System.out.printf("removeCommonSuffixDirs(%s, %s, %s, %s)%n", p1, p2, p2_limit, p1_contains);
     }
@@ -838,13 +849,13 @@ public class MultiVersionControl {
       this.regexp = regexp;
       this.replacement = replacement;
     }
-    public String replaceAll(String s) {
+    public String replaceAll(@NotNull String s) {
       return s.replaceAll(regexp, replacement);
     }
   }
 
 
-  public void process(Set<Checkout> checkouts) {
+  public void process(@NotNull Set<Checkout> checkouts) {
     String repo;
 
     ProcessBuilder pb = new ProcessBuilder("");
@@ -1099,7 +1110,7 @@ public class MultiVersionControl {
     }
   }
 
-  void perform_command(ProcessBuilder pb, List<Replacer> replacers) {
+  void perform_command(@NotNull ProcessBuilder pb, @NotNull List<Replacer> replacers) {
 
     if (show) {
       System.out.println(command(pb));
@@ -1151,7 +1162,8 @@ public class MultiVersionControl {
   }
 
 
-  String command(ProcessBuilder pb) {
+  @NotNull
+  String command(@NotNull ProcessBuilder pb) {
     return "  cd " + pb.directory() + "\n"
       + "  " + UtilMDE.join(pb.command(), " ");
   }

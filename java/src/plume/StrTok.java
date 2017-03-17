@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 import java.io.*;
 
@@ -33,7 +36,7 @@ public class StrTok {
   /**
    * Creates a tokenizer for the specified string.
    */
-  public StrTok (String s) {
+  public StrTok (@NotNull String s) {
 
     reader = new StringReader (s);
     stok = new StreamTokenizer (reader);
@@ -44,7 +47,7 @@ public class StrTok {
    * Creates a tokenizer for the specified string with the specified
    * error handler
    */
-  public StrTok (String s, Error e) {
+  public StrTok (@NotNull String s, Error e) {
     this(s);
     set_error_handler (e);
   }
@@ -70,6 +73,7 @@ public class StrTok {
    * returns an empty string.  Delimiters are returned as one character
    * strings.  Quoted strings and words are returned as strings.
    */
+  @Nullable
   public /*@-Nullable*/ /*@Interned*/ String nextToken() {
 
     // Get the next token.  Turn IO exceptions into runtime exceptions
@@ -95,6 +99,7 @@ public class StrTok {
    * Returns the current token.
    * @see #nextToken()
    */
+  @Nullable
   public /*@-Nullable*/ /*@Interned*/ String token() {
 
     int ttype = stok.ttype;
@@ -176,7 +181,7 @@ public class StrTok {
    * #set_error_handler(StrTok.Error) set_error_handler()}).
    * If it does match, just returns.
    */
-  public void need (String tok) {
+  public void need (@NotNull String tok) {
 
     String t = nextToken();
     if (tok.equals(t))
@@ -190,6 +195,7 @@ public class StrTok {
    * If it is not a word, calls the error handling routine.  If it is,
    * returns the string of the word.
    */
+  @Nullable
   public String need_word() {
     String t = nextToken();
     if (!isWord()) {

@@ -7,6 +7,9 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.AbstractMap;
@@ -241,7 +244,7 @@ public class WeakIdentityHashMap<K,V>
      * @throws  NullPointerException if the specified map is null.
      * @since	1.3
      */
-    public WeakIdentityHashMap(Map<? extends K, ? extends V> t) {
+    public WeakIdentityHashMap(@NotNull Map<? extends K, ? extends V> t) {
         this(Math.max((int) (t.size() / DEFAULT_LOAD_FACTOR) + 1, 16),
              DEFAULT_LOAD_FACTOR);
         putAll(t);
@@ -261,7 +264,8 @@ public class WeakIdentityHashMap<K,V>
      * Use NULL_KEY for key if it is null.
      */
     // not: "private static <K> K maskNull(K key)" because NULL_KEY isn't of type K.
-    private static /*@NonNull*/ Object maskNull(/*@-Nullable*/ Object key) {
+    @NotNull
+    private static /*@NonNull*/ Object maskNull(/*@-Nullable*/ @Nullable Object key) {
         return (key == null ? NULL_KEY : key);
     }
 
@@ -369,6 +373,7 @@ public class WeakIdentityHashMap<K,V>
      *          <tt>null</tt> if the map contains no mapping for this key.
      * @see #put(Object, Object)
      */
+    @Nullable
     public /*@-Nullable*/ V get(/*@-Nullable*/ Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
@@ -399,7 +404,9 @@ public class WeakIdentityHashMap<K,V>
      * Returns the entry associated with the specified key in the HashMap.
      * Returns null if the HashMap contains no mapping for this key.
      */
-    /*@-Nullable*/ Entry<K,V> getEntry(/*@-Nullable*/ Object key) {
+    /*@-Nullable*/
+    @Nullable
+    Entry<K,V> getEntry(/*@-Nullable*/ Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
         /*@-Nullable*/ Entry<K,V>[] tab = getTable();
@@ -422,6 +429,7 @@ public class WeakIdentityHashMap<K,V>
      *	       also indicate that the HashMap previously associated
      *	       <tt>null</tt> with the specified key.
      */
+    @Nullable
     public /*@-Nullable*/ V put(K key, V value) {
         @SuppressWarnings("unchecked")
         K k = (K) maskNull(key);
@@ -488,7 +496,7 @@ public class WeakIdentityHashMap<K,V>
     }
 
     /** Transfer all entries from src to dest tables */
-    private void transfer(/*@-Nullable*/ Entry<K,V>[] src, /*@-Nullable*/ Entry<K,V>[] dest) {
+    private void transfer(/*@-Nullable*/ @NotNull Entry<K,V>[] src, /*@-Nullable*/ @NotNull Entry<K,V>[] dest) {
         for (int j = 0; j < src.length; ++j) {
             Entry<K,V> e = src[j];
             src[j] = null;          // Help GC (?)
@@ -517,7 +525,7 @@ public class WeakIdentityHashMap<K,V>
      * @param m mappings to be stored in this map.
      * @throws  NullPointerException if the specified map is null.
      */
-    public void putAll(Map<? extends K, ? extends V> m) {
+    public void putAll(@NotNull Map<? extends K, ? extends V> m) {
         int numKeysToBeAdded = m.size();
         if (numKeysToBeAdded == 0)
             return;
@@ -557,6 +565,7 @@ public class WeakIdentityHashMap<K,V>
      *	       also indicate that the map previously associated <tt>null</tt>
      *	       with the specified key.
      */
+    @Nullable
     public /*@-Nullable*/ V remove(Object key) {
         Object k = maskNull(key);
         int h = hasher (k);
@@ -586,7 +595,9 @@ public class WeakIdentityHashMap<K,V>
 
 
     /** Special version of remove needed by Entry set */
-    /*@-Nullable*/ Entry<K,V> removeMapping(/*@-Nullable*/ Object o) {
+    /*@-Nullable*/
+    @Nullable
+    Entry<K,V> removeMapping(/*@-Nullable*/ Object o) {
         if (!(o instanceof Map.Entry))
             return null;
         /*@-Nullable*/ Entry<K,V>[] tab = getTable();
@@ -645,7 +656,7 @@ public class WeakIdentityHashMap<K,V>
      * @return <tt>true</tt> if this map maps one or more keys to the
      *         specified value.
      */
-    public boolean containsValue(/*@-Nullable*/ Object value) {
+    public boolean containsValue(/*@-Nullable*/ @Nullable Object value) {
 	if (value==null)
             return containsNullValue();
 
@@ -674,9 +685,9 @@ public class WeakIdentityHashMap<K,V>
      * field as the key.
      */
     private static class Entry<K,V> extends WeakReference<K> implements Map.Entry<K,V> {
-        private V value;
+        @Nullable private V value;
         private final int hash;
-        private /*@-Nullable*/ Entry<K,V> next;
+        @Nullable private /*@-Nullable*/ Entry<K,V> next;
 
         /**
          * Create new entry.
@@ -690,14 +701,17 @@ public class WeakIdentityHashMap<K,V>
             this.next  = next;
         }
 
+        @Nullable
         public K getKey() {
             return WeakIdentityHashMap.<K>unmaskNull(get());
         }
 
+        @Nullable
         public V getValue() {
             return value;
         }
 
+        @Nullable
         public V setValue(V newValue) {
 	    V oldValue = value;
             value = newValue;
@@ -726,6 +740,7 @@ public class WeakIdentityHashMap<K,V>
                      (v==null ? 0 : v.hashCode()));
         }
 
+        @Nullable
         public String toString() {
             return getKey() + "=" + getValue();
         }
@@ -733,21 +748,25 @@ public class WeakIdentityHashMap<K,V>
 
     private abstract class HashIterator<T> implements Iterator<T> {
         int index;
-        /*@-Nullable*/ Entry<K,V> entry = null;
-        /*@-Nullable*/ Entry<K,V> lastReturned = null;
+        /*@-Nullable*/
+        @Nullable Entry<K,V> entry = null;
+        /*@-Nullable*/
+        @Nullable Entry<K,V> lastReturned = null;
         int expectedModCount = modCount;
 
         /**
          * Strong reference needed to avoid disappearance of key
          * between hasNext and next
          */
-        /*@-Nullable*/ Object nextKey = null;
+        /*@-Nullable*/
+        @Nullable Object nextKey = null;
 
         /**
          * Strong reference needed to avoid disappearance of key
          * between nextEntry() and any use of the entry
          */
-	/*@-Nullable*/ Object currentKey = null;
+	/*@-Nullable*/
+        @Nullable Object currentKey = null;
 
         HashIterator() {
             index = (size() != 0 ? table.length : 0);
@@ -775,6 +794,7 @@ public class WeakIdentityHashMap<K,V>
         }
 
         /** The common parts of next() across different types of iterators */
+        @Nullable
         protected Entry<K,V> nextEntry() {
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
@@ -803,18 +823,21 @@ public class WeakIdentityHashMap<K,V>
     }
 
     private class ValueIterator extends HashIterator<V> {
+        @Nullable
         public V next() {
             return nextEntry().value;
         }
     }
 
     private class KeyIterator extends HashIterator<K> {
+        @Nullable
         public K next() {
             return nextEntry().getKey();
         }
     }
 
     private class EntryIterator extends HashIterator<Map.Entry<K,V>> {
+        @Nullable
         public Map.Entry<K,V> next() {
             return nextEntry();
         }
@@ -822,8 +845,8 @@ public class WeakIdentityHashMap<K,V>
 
     // Views
 
-    private transient /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
-    private transient volatile /*@-Nullable*/ Set<K>   our_keySet = null;
+    @Nullable private transient /*@-Nullable*/ Set<Map.Entry<K,V>> entrySet = null;
+    @Nullable private transient volatile /*@-Nullable*/ Set<K>   our_keySet = null;
 
     /**
      * Returns a set view of the keys contained in this map.  The set is
@@ -836,12 +859,14 @@ public class WeakIdentityHashMap<K,V>
      *
      * @return a set view of the keys contained in this map.
      */
+    @NotNull
     public Set<K> keySet() {
         Set<K> ks = our_keySet;
         return (ks != null ? ks : (our_keySet = new KeySet()));
     }
 
     private class KeySet extends AbstractSet<K> {
+        @NotNull
         public Iterator<K> iterator() {
             return new KeyIterator();
         }
@@ -867,6 +892,7 @@ public class WeakIdentityHashMap<K,V>
             WeakIdentityHashMap.this.clear();
         }
 
+        @NotNull
         public Object[] toArray() {
             Collection<K> c = new ArrayList<K>(size());
             for (Iterator<K> i = iterator(); i.hasNext(); )
@@ -874,7 +900,8 @@ public class WeakIdentityHashMap<K,V>
             return c.toArray();
         }
 
-        public <T> T[] toArray(T[] a) {
+        @NotNull
+        public <T> T[] toArray(@NotNull T[] a) {
             Collection<K> c = new ArrayList<K>(size());
             for (Iterator<K> i = iterator(); i.hasNext(); )
                 c.add(i.next());
@@ -882,7 +909,7 @@ public class WeakIdentityHashMap<K,V>
         }
     }
 
-    transient volatile /*@-Nullable*/ Collection<V> our_values = null;
+    @Nullable transient volatile /*@-Nullable*/ Collection<V> our_values = null;
 
     /**
      * Returns a collection view of the values contained in this map.  The
@@ -895,12 +922,14 @@ public class WeakIdentityHashMap<K,V>
      *
      * @return a collection view of the values contained in this map.
      */
+    @NotNull
     public Collection<V> values() {
         Collection<V> vs = our_values;
         return (vs != null ?  vs : (our_values = new Values()));
     }
 
     private class Values extends AbstractCollection<V> {
+        @NotNull
         public Iterator<V> iterator() {
             return new ValueIterator();
         }
@@ -917,6 +946,7 @@ public class WeakIdentityHashMap<K,V>
             WeakIdentityHashMap.this.clear();
         }
 
+        @NotNull
         public Object[] toArray() {
             Collection<V> c = new ArrayList<V>(size());
             for (Iterator<V> i = iterator(); i.hasNext(); )
@@ -924,7 +954,8 @@ public class WeakIdentityHashMap<K,V>
             return c.toArray();
         }
 
-        public <T> T[] toArray(T[] a) {
+        @NotNull
+        public <T> T[] toArray(@NotNull T[] a) {
             Collection<V> c = new ArrayList<V>(size());
             for (Iterator<V> i = iterator(); i.hasNext(); )
                 c.add(i.next());
@@ -945,12 +976,14 @@ public class WeakIdentityHashMap<K,V>
      * @return a collection view of the mappings contained in this map.
      * @see java.util.Map.Entry
      */
+    @NotNull
     public Set<Map.Entry<K,V>> entrySet() {
         Set<Map.Entry<K,V>> es = entrySet;
         return (es != null ? es : (entrySet = new EntrySet()));
     }
 
     private class EntrySet extends AbstractSet<Map.Entry<K,V>> {
+        @NotNull
         public Iterator<Map.Entry<K,V>> iterator() {
             return new EntryIterator();
         }
@@ -976,6 +1009,7 @@ public class WeakIdentityHashMap<K,V>
             WeakIdentityHashMap.this.clear();
         }
 
+        @NotNull
         public Object[] toArray() {
             Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>(size());
             for (Iterator<Map.Entry<K,V>> i = iterator(); i.hasNext(); )
@@ -983,7 +1017,8 @@ public class WeakIdentityHashMap<K,V>
             return c.toArray();
         }
 
-        public <T> T[] toArray(T[] a) {
+        @NotNull
+        public <T> T[] toArray(@NotNull T[] a) {
             Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>(size());
             for (Iterator<Map.Entry<K,V>> i = iterator(); i.hasNext(); )
                 c.add(new OurSimpleEntry<K,V>(i.next()));
@@ -1001,7 +1036,7 @@ public class WeakIdentityHashMap<K,V>
                 this.value = value;
         }
 
-        public OurSimpleEntry(Map.Entry<K,V> e) {
+        public OurSimpleEntry(@NotNull Map.Entry<K,V> e) {
             this.key   = e.getKey();
                 this.value = e.getValue();
         }
@@ -1033,11 +1068,12 @@ public class WeakIdentityHashMap<K,V>
                ((value == null)   ? 0 : value.hashCode());
         }
 
+        @NotNull
         public String toString() {
             return key + "=" + value;
         }
 
-        private static boolean eq(/*@-Nullable*/ Object o1, /*@-Nullable*/ Object o2) {
+        private static boolean eq(/*@-Nullable*/ @Nullable Object o1, /*@-Nullable*/ @Nullable Object o2) {
             return (o1 == null ? o2 == null : o1.equals(o2));
         }
     }

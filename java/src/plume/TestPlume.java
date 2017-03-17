@@ -3,6 +3,8 @@ package plume;
 import static plume.Options.ArgException;
 
 import junit.framework.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -40,7 +42,7 @@ public final class TestPlume extends TestCase {
   // under instrumentation such as that of Chicory.
   static boolean short_run = false;
 
-  public static void main(String[] args) {
+  public static void main(@NotNull String[] args) {
     if ((args.length > 0) && args[0].equals("--shortrun")) {
       short_run = true;
     }
@@ -85,14 +87,15 @@ public final class TestPlume extends TestCase {
   /// Utility functions
   ///
 
-  public static Iterator<Integer> int_array_iterator(int[] nums) {
+  public static Iterator<Integer> int_array_iterator(@NotNull int[] nums) {
     List<Integer> asList = new ArrayList<Integer>(nums.length);
     for (int i=0; i<nums.length; i++)
       asList.add(nums[i]);
     return asList.iterator();
   }
 
-  public static int[] int_iterator_array(Iterator<Integer> itor) {
+  @NotNull
+  public static int[] int_iterator_array(@NotNull Iterator<Integer> itor) {
     Vector<Integer> v = new Vector<Integer>();
     while (itor.hasNext())
       v.add(itor.next());
@@ -102,7 +105,8 @@ public final class TestPlume extends TestCase {
     return a;
   }
 
-  public static <T> Vector<T> toVector(Iterator<T> itor) {
+  @NotNull
+  public static <T> Vector<T> toVector(@NotNull Iterator<T> itor) {
     Vector<T> v = new Vector<T>();
     for ( ; itor.hasNext() ; ) {
       v.add(itor.next());
@@ -110,7 +114,8 @@ public final class TestPlume extends TestCase {
     return v;
   }
 
-  public static <T> Vector<T> toVector(Enumeration<T> e) {
+  @NotNull
+  public static <T> Vector<T> toVector(@NotNull Enumeration<T> e) {
     Vector<T> v = new Vector<T>();
     for ( ; e.hasMoreElements() ; ) {
       v.add(e.nextElement());
@@ -1073,7 +1078,7 @@ public final class TestPlume extends TestCase {
   }
 
   // Add elements 0..limit-1 to the set.
-  private static void lsis_add_elts(int limit, LimitedSizeSet<Integer> s) {
+  private static void lsis_add_elts(int limit, @NotNull LimitedSizeSet<Integer> s) {
     Random r = new Random();
     for (int i=0; i<100; i++) {
       s.add(r.nextInt(limit));
@@ -1195,7 +1200,7 @@ public final class TestPlume extends TestCase {
     // class MissingNumbersIteratorInt
     class TestMissingNumbersIteratorInt {
       // javadoc won't let this be static
-      void test(int[] orig, boolean add_ends, int[] goal_missing) {
+      void test(@NotNull int[] orig, boolean add_ends, int[] goal_missing) {
         Iterator<Integer> orig_iterator = int_array_iterator(orig);
         Iterator<Integer> missing_iterator = new MathMDE.MissingNumbersIteratorInt(orig_iterator, add_ends);
         int[] missing = TestPlume.int_iterator_array(missing_iterator);
@@ -1226,7 +1231,7 @@ public final class TestPlume extends TestCase {
 
     class TestModulus {
       // javadoc won't let this be static
-      void check(int[] nums, int[] goal_rm) {
+      void check(@NotNull int[] nums, int[] goal_rm) {
         int[] rm = MathMDE.modulus(nums);
         if (!Arrays.equals(rm, goal_rm))
           throw new Error("Expected (r,m)=" + ArraysMDE.toString(goal_rm)
@@ -1245,7 +1250,7 @@ public final class TestPlume extends TestCase {
       }
 
       // javadoc won't let this be static
-      void check(Iterator<Integer> itor, int[] goal_rm) {
+      void check(@NotNull Iterator<Integer> itor, int[] goal_rm) {
         // There would be no point to this:  it's testing
         // int_iterator_array, not the iterator version!
         // return check(int_iterator_array(itor), goal_rm);
@@ -1253,7 +1258,7 @@ public final class TestPlume extends TestCase {
       }
 
       // javadoc won't let this be static
-      void check_iterator(int[] nums, int[] goal_rm) {
+      void check_iterator(@NotNull int[] nums, int[] goal_rm) {
         check(int_array_iterator(nums), goal_rm);
       }
     }
@@ -1280,19 +1285,19 @@ public final class TestPlume extends TestCase {
 
     class TestNonModulus {
       // javadoc won't let this be static
-      void check_strict(int[] nums, int[] goal_rm) {
+      void check_strict(@NotNull int[] nums, int[] goal_rm) {
         check(nums, goal_rm, true);
         Iterator<Integer> itor = int_array_iterator(nums);
         assert_arrays_equals(MathMDE.nonmodulus_strict_int(itor), goal_rm);
       }
 
       // javadoc won't let this be static
-      void check_nonstrict(int[] nums, int[] goal_rm) {
+      void check_nonstrict(@NotNull int[] nums, int[] goal_rm) {
         check(nums, goal_rm, false);
       }
 
       // javadoc won't let this be static
-      void check(int[] nums, int[] goal_rm, boolean strict) {
+      void check(@NotNull int[] nums, int[] goal_rm, boolean strict) {
         int[] rm;
         if (strict)
           rm = MathMDE.nonmodulus_strict(nums);
@@ -1365,7 +1370,7 @@ public final class TestPlume extends TestCase {
 
   }
 
-  public static void compareOrderedPairIterator(OrderedPairIterator<Integer> opi, int[][] ints) {
+  public static void compareOrderedPairIterator(@NotNull OrderedPairIterator<Integer> opi, @NotNull int[][] ints) {
     int pairno = 0;
     while (opi.hasNext()) {
       Pair<Integer,Integer> pair = opi.next();
@@ -1377,7 +1382,8 @@ public final class TestPlume extends TestCase {
     assert pairno == ints.length;
   }
 
-  private static BitSet randomBitSet(int length, Random r) {
+  @NotNull
+  private static BitSet randomBitSet(int length, @NotNull Random r) {
     BitSet result = new BitSet(length);
     for (int i=0; i<length; i++) {
       result.set(i, r.nextBoolean());
@@ -1391,7 +1397,7 @@ public final class TestPlume extends TestCase {
     compareJoinAndSBD(new String[] { });
   }
 
-  public void compareJoinAndSBD(String[] strings) {
+  public void compareJoinAndSBD(@NotNull String[] strings) {
     StringBuilderDelimited sbd = new StringBuilderDelimited(",");
     for (String str: strings) {
       sbd.append(str);
@@ -1566,7 +1572,7 @@ public final class TestPlume extends TestCase {
 
       class OddFilter implements Filter<Integer> {
         public OddFilter() { }
-        public boolean accept(Integer i) {
+        public boolean accept(@NotNull Integer i) {
           return i.intValue() % 2 == 1;
         }
       }
@@ -1605,6 +1611,7 @@ public final class TestPlume extends TestCase {
       int limit;
       public IotaIterator(int limit) { this.limit = limit; }
       public boolean hasNext() { return i<limit; }
+      @NotNull
       public Integer next() {
         if (! hasNext()) throw new NoSuchElementException();
         return new Integer(i++);
@@ -2411,8 +2418,10 @@ public final class TestPlume extends TestCase {
    */
   public static class TestOptions {
 
+    @NotNull
     @Option ("list of patterns")
       public List<Pattern> lp = new ArrayList<Pattern>();
+    @NotNull
     @Option ("-a <filename> argument 1")
       public String arg1 = "/tmp/foobar";
     @Option ("argument 2")
@@ -2425,6 +2434,7 @@ public final class TestPlume extends TestCase {
       public boolean bool;
     @Option ("-i Integer")
       public /*@-Nullable*/ Integer integer_reference;
+    @NotNull
     @Option ("list of doubles")
       public List<Double> ld = new ArrayList<Double>();
   }

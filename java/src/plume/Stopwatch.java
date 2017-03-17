@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DecimalFormat;
 
 /**
@@ -60,7 +62,7 @@ public final class Stopwatch {
     return elapsedMillis / 1000.0;
   }
 
-  private static DecimalFormat[] timeFormat = {
+  @NotNull private static DecimalFormat[] timeFormat = {
     new DecimalFormat("#.#"),
     new DecimalFormat("#.#"),
     new DecimalFormat("#.#"),
@@ -72,6 +74,7 @@ public final class Stopwatch {
    * Stops the watch, calculates the elapsed time, restarts the watch,
    * and returns the elapsed time.
    */
+  @NotNull
   public String stop_start() {
     stop();
     String result = format();
@@ -79,10 +82,12 @@ public final class Stopwatch {
     return (result);
   }
 
+  @NotNull
   public String format() {
     return format(1);
   }
 
+  @NotNull
   public String format(int digits) {
     long runningMillis = elapsedMillis;
     if (startTime != 0) {

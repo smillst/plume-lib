@@ -5,6 +5,8 @@
 
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.*;
 
 /**
@@ -28,5 +30,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Option {
-  String value();
+  @NotNull String value();
 }

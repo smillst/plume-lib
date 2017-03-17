@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.io.*;
 
@@ -18,7 +20,7 @@ import java.io.*;
  **/
 public class StringBuilderDelimited implements Appendable, CharSequence {
 
-  private StringBuilder delegate = new StringBuilder();
+  @NotNull private StringBuilder delegate = new StringBuilder();
   private boolean empty = true;
   private final String delimiter;
 
@@ -34,30 +36,35 @@ public class StringBuilderDelimited implements Appendable, CharSequence {
     }
   }
 
+  @NotNull
   public StringBuilderDelimited append(/*@-Nullable*/ String str) {
     appendDelimiter();
     delegate.append(str);
     return this;
   }
 
+  @NotNull
   public StringBuilderDelimited append(/*@-Nullable*/ Object o) {
     appendDelimiter();
     delegate.append(o);
     return this;
   }
 
+  @NotNull
   public StringBuilderDelimited append(char c) {
     appendDelimiter();
     delegate.append(c);
     return this;
   }
 
+  @NotNull
   public StringBuilderDelimited append(/*@-Nullable*/ CharSequence csq) {
     appendDelimiter();
     delegate.append(csq);
     return this;
   }
 
+  @NotNull
   public StringBuilderDelimited append(/*@-Nullable*/ CharSequence csq, int start, int end) {
     appendDelimiter();
     delegate.append(csq, start, end);
@@ -76,6 +83,7 @@ public class StringBuilderDelimited implements Appendable, CharSequence {
     return delegate.subSequence(start, end);
   }
 
+  @NotNull
   public String toString() {
     return delegate.toString();
   }

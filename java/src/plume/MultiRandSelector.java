@@ -1,5 +1,7 @@
 // MultiRandSelector.java
 package plume;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -64,7 +66,7 @@ public class MultiRandSelector<T> {
         map = new HashMap<T,RandomSelector<T>>();
     }
 
-    public void acceptIter (Iterator<T> iter) {
+    public void acceptIter (@NotNull Iterator<T> iter) {
         while (iter.hasNext()) {
             accept (iter.next());
         }
@@ -94,6 +96,7 @@ public class MultiRandSelector<T> {
     }
 
     /** Returns an iterator of all objects selected. */
+    @NotNull
     public Iterator<T> valuesIter() {
         ArrayList<T> ret = new ArrayList<T>();
         for (RandomSelector<T> rs : map.values()) {

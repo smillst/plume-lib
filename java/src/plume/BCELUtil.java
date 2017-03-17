@@ -21,6 +21,8 @@ import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.ArrayType;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.generic.RETURN;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.io.*;
@@ -37,7 +39,7 @@ public class BCELUtil {
 
   private static final Type string_array = Type.getType("[Ljava.lang.String;");
 
-  static void dump_method_declarations(ClassGen gen) {
+  static void dump_method_declarations(@NotNull ClassGen gen) {
     out.printf("method signatures for class %s\n", gen.getClassName());
     for (Method m : gen.getMethods()) {
       out.printf("  %s\n", get_method_declaration(m));
@@ -49,7 +51,7 @@ public class BCELUtil {
    * flags (public, private, static, etc), the return type, the method name, and
    * the types of each of its arguments.
    */
-  public static String get_method_declaration(Method m) {
+  public static String get_method_declaration(@NotNull Method m) {
 
     StringBuilder sb = new StringBuilder();
     Formatter f = new Formatter(sb);
@@ -62,7 +64,8 @@ public class BCELUtil {
     return (sb.toString().replace(", )", ")"));
   }
 
-  static String get_access_flags(Method m) {
+  @NotNull
+  static String get_access_flags(@NotNull Method m) {
 
     int flags = m.getAccessFlags();
 
@@ -85,7 +88,7 @@ public class BCELUtil {
   /**
    * Returns the attribute name for the specified attribute.
    */
-  public static String get_attribute_name(Attribute a) {
+  public static String get_attribute_name(@NotNull Attribute a) {
 
     ConstantPool pool = a.getConstantPool();
     int con_index = a.getNameIndex();
@@ -95,7 +98,7 @@ public class BCELUtil {
   }
 
   /** Returns the constant string at the specified offset */
-  public static /*@-Nullable*/ String get_constant_str(ConstantPool pool, int index) {
+  public static /*@-Nullable*/ String get_constant_str(@NotNull ConstantPool pool, int index) {
 
     Constant c = pool.getConstant(index);
     if (c instanceof ConstantUtf8)
@@ -110,32 +113,32 @@ public class BCELUtil {
   }
 
   /** returns whether or not the specified method is a constructor * */
-  public static boolean is_constructor(MethodGen mg) {
+  public static boolean is_constructor(@NotNull MethodGen mg) {
     return (mg.getName().equals("<init>") || mg.getName().equals(""));
   }
 
   /** returns whether or not the specified method is a constructor * */
-  public static boolean is_constructor(Method m) {
+  public static boolean is_constructor(@NotNull Method m) {
     return (m.getName().equals("<init>") || m.getName().equals(""));
   }
 
   /** returns whether or not the specified method is a class initializer */
-  public static boolean is_clinit (MethodGen mg) {
+  public static boolean is_clinit (@NotNull MethodGen mg) {
     return (mg.getName().equals("<clinit>"));
   }
 
   /** returns whether or not the specified method is a class initializer */
-  public static boolean is_clinit (Method m) {
+  public static boolean is_clinit (@NotNull Method m) {
     return (m.getName().equals("<clinit>"));
   }
 
   /** returns whether or not the class is part of the JDK (rt.jar) * */
-  public static boolean in_jdk(ClassGen gen) {
+  public static boolean in_jdk(@NotNull ClassGen gen) {
     return (in_jdk(gen.getClassName()));
   }
 
   /** returns whether or not the classname is part of the JDK (rt.jar) * */
-  public static boolean in_jdk(String classname) {
+  public static boolean in_jdk(@NotNull String classname) {
     return classname.startsWith("java.") || classname.startsWith("com.sun.")
       || classname.startsWith("javax.") || classname.startsWith("org.ietf.")
       || classname.startsWith("org.omg.") || classname.startsWith("org.w3c.")
@@ -144,7 +147,7 @@ public class BCELUtil {
       || classname.startsWith("sunw.");
   }
 
-  static void dump_methods(ClassGen gen) {
+  static void dump_methods(@NotNull ClassGen gen) {
 
     System.out.printf("Class %s methods:\n", gen.getClassName());
     for (Method m : gen.getMethods())
@@ -154,7 +157,7 @@ public class BCELUtil {
   /**
    * Checks the specific method for consistency.
    */
-  public static void checkMgen(MethodGen mgen) {
+  public static void checkMgen(@NotNull MethodGen mgen) {
 
     if (skip_checks)
       return;
@@ -187,7 +190,7 @@ public class BCELUtil {
   /**
    * Checks all of the methods in gen for consistency.
    */
-  public static void checkMgens(final ClassGen gen) {
+  public static void checkMgens(@NotNull final ClassGen gen) {
 
     if (skip_checks)
       return;
@@ -216,7 +219,7 @@ public class BCELUtil {
   }
 
   /** Adds code in nl to start of method mg * */
-  public static void add_to_start(MethodGen mg, InstructionList nl) {
+  public static void add_to_start(@NotNull MethodGen mg, InstructionList nl) {
 
     // Add the code before the first instruction
     InstructionList il = mg.getInstructionList();
@@ -239,7 +242,7 @@ public class BCELUtil {
   }
 
   /** @see #dump(JavaClass, File) **/
-  public static void dump (JavaClass jc, String dump_dir) {
+  public static void dump (@NotNull JavaClass jc, @NotNull String dump_dir) {
 
     dump (jc, new File (dump_dir));
   }
@@ -252,7 +255,7 @@ public class BCELUtil {
    * @param jc javaclass to dump
    * @param dump_dir directory in which to write the file
    */
-  public static void dump(JavaClass jc, File dump_dir) {
+  public static void dump(@NotNull JavaClass jc, @NotNull File dump_dir) {
 
     try {
       dump_dir.mkdir();
@@ -306,9 +309,10 @@ public class BCELUtil {
   }
 
   // TODO: write Javadoc
+  @NotNull
   @SuppressWarnings("rawtypes")
-  public static String instruction_descr(InstructionList il,
-      ConstantPoolGen pool) {
+  public static String instruction_descr(@NotNull InstructionList il,
+                                         @NotNull ConstantPoolGen pool) {
 
     String out = "";
     // not generic because BCEL is not generic
@@ -322,7 +326,7 @@ public class BCELUtil {
   /**
    * Return a description of the local variables (one per line).
    */
-  public static String local_var_descr(MethodGen mg) {
+  public static String local_var_descr(@NotNull MethodGen mg) {
 
     String out = String.format("Locals for %s [cnt %d]\n", mg, mg
         .getMaxLocals());
@@ -338,7 +342,7 @@ public class BCELUtil {
    * Builds an array of line numbers for the specified instruction list. Each
    * opcode is assigned the next source line number starting at 1000.
    */
-  public static void add_line_numbers(MethodGen mg, InstructionList il) {
+  public static void add_line_numbers(@NotNull MethodGen mg, @NotNull InstructionList il) {
 
     il.setPositions(true);
     for (InstructionHandle ih : il.getInstructionHandles()) {
@@ -351,7 +355,7 @@ public class BCELUtil {
    * removed. An instruction list with at least one instruction must exist.
    */
   @SuppressWarnings("nullness")
-  public static void setup_init_locals(MethodGen mg) {
+  public static void setup_init_locals(@NotNull MethodGen mg) {
 
     // Get the parameter types and names.
     Type[] arg_types = mg.getArgumentTypes();
@@ -382,7 +386,7 @@ public class BCELUtil {
    * Empties the method of all code (except for a return).  This
    * includes line numbers, exceptions, local variables, etc.
    */
-  public static void empty_method (MethodGen mg) {
+  public static void empty_method (@NotNull MethodGen mg) {
 
     mg.setInstructionList(new InstructionList(new RETURN()));
     mg.removeExceptionHandlers();
@@ -397,7 +401,7 @@ public class BCELUtil {
    * BCEL support that would be hard to do.  It should be safe to just delete
    * it since it is optional and really only of use to a debugger.
    */
-  public static void remove_local_variable_type_tables (MethodGen mg) {
+  public static void remove_local_variable_type_tables (@NotNull MethodGen mg) {
 
     for (Attribute a : mg.getCodeAttributes()) {
       if (is_local_variable_type_table (a, mg.getConstantPool())) {
@@ -410,15 +414,15 @@ public class BCELUtil {
    * Returns whether or not the specified attribute is a local variable type
    * table.
    */
-  public static boolean is_local_variable_type_table (Attribute a,
-                                                      ConstantPoolGen pool) {
+  public static boolean is_local_variable_type_table (@NotNull Attribute a,
+                                                      @NotNull ConstantPoolGen pool) {
     return (get_attribute_name (a, pool).equals ("LocalVariableTypeTable"));
   }
 
   /**
    * Returns the attribute name for the specified attribute.
    */
-  public static String get_attribute_name (Attribute a, ConstantPoolGen pool) {
+  public static String get_attribute_name (@NotNull Attribute a, @NotNull ConstantPoolGen pool) {
 
     int con_index = a.getNameIndex();
     Constant c = pool.getConstant (con_index);
@@ -430,21 +434,21 @@ public class BCELUtil {
    * Returns whether or not this is a standard main method (static,
    * name is 'main', and one argument of string array.
    */
-  public static boolean is_main (MethodGen mg) {
+  public static boolean is_main (@NotNull MethodGen mg) {
     Type[] arg_types = mg.getArgumentTypes();
     return (mg.isStatic() && mg.getName().equals("main")
             && (arg_types.length == 1) && arg_types[0].equals(string_array));
   }
 
   /** Returns the java classname that corresponds to type **/
-  public static String type_to_classname (Type type) {
+  public static String type_to_classname (@NotNull Type type) {
     String signature = type.getSignature();
     return UtilMDE.classnameFromJvm (signature);
   }
 
   /** Returns the class that corresponds to type **/
   @SuppressWarnings("rawtypes")
-  public static Class type_to_class (Type type) {
+  public static Class type_to_class (@NotNull Type type) {
 
     String classname = type_to_classname (type);
     try {
@@ -458,7 +462,8 @@ public class BCELUtil {
   /**
    * Returns a type array with new_type added to the end of types
    */
-  public static Type[] add_type (Type[] types, Type new_type) {
+  @NotNull
+  public static Type[] add_type (@NotNull Type[] types, Type new_type) {
       Type[] new_types = new Type[types.length + 1];
       for (int ii = 0; ii < types.length; ii++) {
         new_types[ii] = types[ii];
@@ -471,7 +476,8 @@ public class BCELUtil {
   /**
    * Returns a type array with new_type inserted at the beginning
    */
-  public static Type[] insert_type (Type new_type, Type[] types) {
+  @NotNull
+  public static Type[] insert_type (Type new_type, @NotNull Type[] types) {
       Type[] new_types = new Type[types.length + 1];
       for (int ii = 0; ii < types.length; ii++) {
         new_types[ii+1] = types[ii];
@@ -480,7 +486,8 @@ public class BCELUtil {
       return (new_types);
   }
 
-  public static Type classname_to_type (String classname) {
+  @Nullable
+  public static Type classname_to_type (@NotNull String classname) {
 
     // Get the array depth (if any)
     int array_depth = 0;

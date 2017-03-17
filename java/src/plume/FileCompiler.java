@@ -1,5 +1,8 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -57,7 +60,7 @@ public final class FileCompiler {
    * Compiles the files given by fileNames.
    * @param fileNames pathes to the files to be compiled as Strings.
    */
-  public void compileFiles(List<String> fileNames) throws IOException {
+  public void compileFiles(@NotNull List<String> fileNames) throws IOException {
 
     // Start a process to compile all of the files (in one command)
     TimeLimitProcess p = compile_source (fileNames);
@@ -94,6 +97,7 @@ public final class FileCompiler {
   /**
    * @param filename the path of the Java source to be compiled
    **/
+  @NotNull
   private TimeLimitProcess compile_source(String filename) throws IOException {
     String command = compiler + " " + filename;
     // System.out.println ("\nexecuting compile command: " + command);
@@ -106,7 +110,8 @@ public final class FileCompiler {
    * @return The process that executed the external compile command.
    * @throws Error if an empty list of filenames is provided.
    **/
-  private TimeLimitProcess compile_source(List<String> filenames) throws IOException {
+  @NotNull
+  private TimeLimitProcess compile_source(@NotNull List<String> filenames) throws IOException {
     int num_files = filenames.size();
 
     if (num_files == 0) {
@@ -130,7 +135,7 @@ public final class FileCompiler {
    * compile all the files supplied to it if some of them contain
    * errors. So some "good" files end up not being compiled.
    */
-  private void recompile_without_errors (List<String> fileNames, String errorString) throws IOException {
+  private void recompile_without_errors (@NotNull List<String> fileNames, @Nullable String errorString) throws IOException {
     // search the error string and extract the files with errors.
     if (errorString != null) {
       HashSet<String> errorClasses = new HashSet<String>();
@@ -172,7 +177,8 @@ public final class FileCompiler {
    * Return the file path to where a class file for a source
    * file at sourceFilePath would be generated.
    */
-  private static String getClassFilePath(String sourceFilePath) {
+  @NotNull
+  private static String getClassFilePath(@NotNull String sourceFilePath) {
     int index = sourceFilePath.lastIndexOf('.');
     if (index == -1) {
       throw new IllegalArgumentException("sourceFilePath: "
@@ -188,7 +194,7 @@ public final class FileCompiler {
    * Returns the name of the class that sourceFilePath is
    * a path for.
    */
-  private static String getClassName(String sourceFilePath) {
+  private static String getClassName(@NotNull String sourceFilePath) {
     int dotIndex = sourceFilePath.lastIndexOf('.');
     int slashIndex = sourceFilePath.lastIndexOf(File.separator);
     if (dotIndex == -1) {
@@ -206,7 +212,7 @@ public final class FileCompiler {
     return sourceFilePath.substring(slashIndex + 1, dotIndex);
   }
 
-  private static boolean fileExists(String pathName) {
+  private static boolean fileExists(@NotNull String pathName) {
     return (new File(pathName)).exists();
   }
 

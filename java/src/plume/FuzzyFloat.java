@@ -1,5 +1,7 @@
 package plume;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -163,7 +165,7 @@ public class FuzzyFloat {
    *    or -1 if the element is not found in the array.
    * @see java.util.Vector#indexOf(java.lang.Object)
    **/
-  /* @ pure */ public int indexOf (double[] a, double elt) {
+  /* @ pure */ public int indexOf (@NotNull double[] a, double elt) {
      for (int i=0; i<a.length; i++)
        if (eq (elt, a[i]))
         return i;
@@ -180,7 +182,7 @@ public class FuzzyFloat {
    * @see java.util.Vector#indexOf(java.lang.Object)
    * @see java.lang.String#indexOf(java.lang.String)
    **/
-  /* @ pure */ public int indexOf (double[] a, double[] sub) {
+  /* @ pure */ public int indexOf (@NotNull double[] a, @NotNull double[] sub) {
 
     int a_index_max = a.length - sub.length;
 
@@ -294,7 +296,7 @@ public class FuzzyFloat {
      *
      * @return positive if o1 > 02, 0 if 01 == 02, negative if 01 < 02
      */
-    public int compare(double[] a1, double[] a2) {
+    public int compare(@NotNull double[] a1, @NotNull double[] a2) {
       if (a1 == a2)
         return 0;
       int len = Math.min(a1.length, a2.length);
