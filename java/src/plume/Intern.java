@@ -330,30 +330,29 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Intern.valueOf is intended to promise
   // the same).  This does not currently take advantage of that.
-  @Nullable
   @SuppressWarnings("interning")
   public static /*@Interned*/ Integer intern(Integer a) {
     WeakReference</*@Interned*/ Integer> lookup = internedIntegers.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      Integer lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ Integer result = (/*@Interned*/ Integer) a;
       internedIntegers.put(result, new WeakReference</*@Interned*/ Integer>(result));
       return result;
-    }
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Integer with value i. */
-  @Nullable
   public static /*@Interned*/ Integer internedInteger(int i) {
     return intern(Integer.valueOf(i));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Integer with value parsed from the string. */
-  @Nullable
   public static /*@Interned*/ Integer internedInteger(@NotNull String s) {
     return intern(Integer.decode(s));
   }
@@ -366,30 +365,29 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Long.valueOf is intended to promise
   // the same).  This could take advantage of that.
-  @Nullable
   @SuppressWarnings("interning")
   public static /*@Interned*/ Long intern(Long a) {
     WeakReference</*@Interned*/ Long> lookup =  internedLongs.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      Long lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ Long result = (/*@Interned*/ Long) a;
       internedLongs.put(result, new WeakReference</*@Interned*/ Long>(result));
       return result;
-    }
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Long with value i. */
-  @Nullable
   public static /*@Interned*/ Long internedLong(long i) {
     return intern(Long.valueOf(i));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Long with value parsed from the string. */
-  @Nullable
   public static /*@Interned*/ Long internedLong(@NotNull String s) {
     return intern(Long.decode(s));
   }
@@ -414,13 +412,15 @@ public final class Intern {
 
     WeakReference<int /*@Interned*/ []> lookup = internedIntArrays.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      int[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ int[] result = (int /*@Interned*/ []) a;
       internedIntArrays.put(result, new WeakReference<int /*@Interned*/ []>(result));
       return result;
-    }
   }
 
   /**
@@ -428,20 +428,21 @@ public final class Intern {
    * Returns a canonical representation for the long[] array.
    * Arrays are compared according to their elements.
    **/
-  @Nullable
   @SuppressWarnings("interning")
   public static long /*@Interned*/ [] intern(long[] a) {
     //System.out.printf ("intern %s %s long[] %s\n", a.getClass(),
     //                   a, Arrays.toString (a));
     WeakReference<long /*@Interned*/ []> lookup = internedLongArrays.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      long[] lookUpResult = lookup.get();
+      if (lookUpResult != null) {
+        return lookUpResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ long[] result = (long /*@Interned*/ []) a;
       internedLongArrays.put(result, new WeakReference<long /*@Interned*/ []>(result));
       return result;
-    }
   }
 
   /**
@@ -451,7 +452,6 @@ public final class Intern {
   // TODO: JLS 5.1.7 requires that the boxing conversion interns integer
   // values between -128 and 127 (and Double.valueOf is intended to promise
   // the same).  This could take advantage of that.
-  @Nullable
   @SuppressWarnings("interning")
   public static /*@Interned*/ Double intern(@NotNull Double a) {
     // Double.NaN == Double.Nan  always evaluates to false.
@@ -462,25 +462,25 @@ public final class Intern {
       return internedDoubleZero;
     WeakReference</*@Interned*/ Double> lookup = internedDoubles.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      Double lookupResult = lookup.get();
+      if(lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ Double result = (/*@Interned*/ Double) a;
       internedDoubles.put(result, new WeakReference</*@Interned*/ Double>(result));
       return result;
-    }
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Double with value i. */
-  @Nullable
   public static /*@Interned*/ Double internedDouble(double d) {
     return intern(Double.valueOf(d));
   }
 
   // Not sure whether this convenience method is really worth it.
   /** Returns an interned Double with value parsed from the string. */
-  @Nullable
   public static /*@Interned*/ Double internedDouble(@NotNull String s) {
     return internedDouble(Double.parseDouble(s));
   }
@@ -496,18 +496,19 @@ public final class Intern {
    * Returns a canonical representation for the double[] array.
    * Arrays are compared according to their elements.
    **/
-  @Nullable
   @SuppressWarnings("interning")
   public static double /*@Interned*/ [] intern(double[] a) {
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleArrays.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      double[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@Interned*/ double[] result = (double /*@Interned*/ []) a;
       internedDoubleArrays.put(result, new WeakReference<double /*@Interned*/ []>(result));
       return result;
-    }
   }
 
   /**
@@ -517,7 +518,6 @@ public final class Intern {
    * The elements should themselves already be interned;
    * they are compared using their equals() methods.
    **/
-  @Nullable
   @SuppressWarnings("interning")
   public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] intern(/*@PolyNull*/ /*@Interned*/ @NotNull String[] a) {
 
@@ -530,13 +530,16 @@ public final class Intern {
     @SuppressWarnings("nullness")
     WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> lookup = internedStringArrays.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      String[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] result = (/*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []) a;
       internedStringArrays.put(result, new WeakReference</*@-Nullable*/ /*@Interned*/ String /*@Interned*/ []>(result));
       return result;
-    }
+
   }
 
   /**
@@ -546,7 +549,6 @@ public final class Intern {
    * The elements should themselves already be interned;
    * they are compared using their equals() methods.
    **/
-  @Nullable
   @SuppressWarnings({"interning"})
   public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] intern(/*@PolyNull*/ /*@Interned*/ Object[] a) {
     // PolyNull because the value = parameter a, so the type is the same as
@@ -554,13 +556,14 @@ public final class Intern {
     @SuppressWarnings("nullness")
     WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> lookup = internedObjectArrays.get(a);
     if (lookup != null) {
-      return lookup.get();
-    } else {
-      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      Object[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
       /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] result = (/*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []) a;
       internedObjectArrays.put(result, new WeakReference</*@-Nullable*/ /*@Interned*/ Object /*@Interned*/ []>(result));
       return result;
-    }
   }
 
 
@@ -571,7 +574,6 @@ public final class Intern {
    * If the argument is an array, its elements should themselves be
    * interned.
    **/
-  @Nullable
   public static /*@Interned*/ /*@PolyNull*/ Object intern(/*@PolyNull*/ @Nullable Object a) {
     if (a == null) {
       return null;
@@ -617,95 +619,100 @@ public final class Intern {
    * Requires that seq is already interned.
    * @return a subsequence of seq from start to end that is interned.
    **/
-  @Nullable
   public static int /*@Interned*/ [] internSubsequence (@NotNull int /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<int /*@Interned*/ []> sai = new SequenceAndIndices<int /*@Interned*/ []> (seq, start, end);
     WeakReference<int /*@Interned*/ []> lookup = internedIntSequenceAndIndices.get(sai);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      int[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       int[] subseqUninterned = ArraysMDE.subarray(seq, start, end - start);
       int /*@Interned*/ [] subseq = Intern.intern (subseqUninterned);
       internedIntSequenceAndIndices.put (sai, new WeakReference<int /*@Interned*/ []>(subseq));
       return subseq;
-    }
   }
 
   /**
    * @see #internSubsequence(int[], int, int)
    **/
-  @Nullable
   public static long /*@Interned*/ [] internSubsequence (@NotNull long /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<long /*@Interned*/ []> sai = new SequenceAndIndices<long /*@Interned*/ []> (seq, start, end);
     WeakReference<long /*@Interned*/ []> lookup = internedLongSequenceAndIndices.get(sai);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      long[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       long[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
       long /*@Interned*/ [] subseq = Intern.intern (subseq_uninterned);
       internedLongSequenceAndIndices.put (sai, new WeakReference<long /*@Interned*/ []>(subseq));
       return subseq;
-    }
   }
 
   /**
    * @see #internSubsequence(int[], int, int)
    **/
-  @Nullable
   public static double /*@Interned*/ [] internSubsequence (@NotNull double /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices<double /*@Interned*/ []> sai = new SequenceAndIndices<double /*@Interned*/ []> (seq, start, end);
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleSequenceAndIndices.get(sai);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      double[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       double[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
       double /*@Interned*/ [] subseq = Intern.intern (subseq_uninterned);
       internedDoubleSequenceAndIndices.put (sai, new WeakReference<double /*@Interned*/ []>(subseq));
       return subseq;
-    }
   }
 
   /**
    * @see #internSubsequence(int[], int, int)
    **/
-  @Nullable
   public static /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ @NotNull Object /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> (seq, start, end);
     @SuppressWarnings("nullness")                   // same nullness as key
     WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> lookup = internedObjectSequenceAndIndices.get(sai);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      Object[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       /*@PolyNull*/ /*@Interned*/ Object[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
       /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] subseq = Intern.intern (subseq_uninterned);
       @SuppressWarnings("nullness") Object ignore = // safe because map does no side effects
       internedObjectSequenceAndIndices.put (sai, new WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []>(subseq));
       return subseq;
-    }
   }
 
   /**
    * @see #internSubsequence(int[], int, int)
    **/
-  @Nullable
   public static /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] internSubsequence (/*@PolyNull*/ /*@Interned*/ @NotNull String /*@Interned*/ [] seq, int start, int end) {
     assert Intern.isInterned(seq);
     SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> sai = new SequenceAndIndices</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> (seq, start, end);
     @SuppressWarnings("nullness")                   // same nullness as key
     WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> lookup = internedStringSequenceAndIndices.get(sai);
     if (lookup != null) {
-      return lookup.get();
-    } else {
+      String[] lookupResult = lookup.get();
+      if (lookupResult != null) {
+        return lookupResult;
+      }
+    }
       /*@PolyNull*/ /*@Interned*/ String[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
       /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] subseq = Intern.intern (subseq_uninterned);
       @SuppressWarnings("nullness") Object ignore = // safe because map does no side effects
       internedStringSequenceAndIndices.put (sai, new WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []>(subseq));
       return subseq;
-    }
   }
 
   /**
